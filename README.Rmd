@@ -1,0 +1,89 @@
+---
+title: "IBCF.MTME"
+author: "Francisco Javier Luna-Vázquez"
+date: "`r format(Sys.Date())`"
+output: github_document
+---
+
+Item Based Collaborative Filterign For Multi-trait and Multi-environment Data in R.
+
+## Instructions for proper implementation
+
+### Installation
+
+To complete installation of dev version of IBCF.MTME from GitHub, you have to install a few packages first.
+
+```{r installation, eval = FALSE}
+install.packages('devtools')
+devtools::install_github('frahik/IBCF.MTME')
+```
+
+### Quick use 
+
+#### Load data
+
+```{r loadData}
+rm(list = ls())
+library(IBCF.MTME)
+data('Wheat_IBCF')
+
+DataSet <- data.frame(Data.Trigo_IBCF[,-1]) # Load from wheat_BGFRA data
+
+dim(DataSet)
+head(DataSet)
+```
+
+
+### Cross-validation model
+
+```{r CVModel}
+##############Example of how to use the IBCF fucntion#######
+CV <- CV.RandomPart(NLine = nrow(DataSet), NEnv = 3, NTraits = 4, NPartitions =  10, PTesting = 0.2, Set_seed = 5)
+
+IBCF_Wheat <- IBCF(DataSet = DataSet, CrossValidation = CV)
+
+IBCF_Wheat$Ave_predictions
+
+par(mai = c(2, 1, 1, 1))
+
+plot(IBCF_Wheat) # By default graphs Pearson Correlation results
+plot(IBCF_Wheat, select = 'Pearson') 
+plot(IBCF_Wheat, select = 'MSEP')
+```
+
+### Params
+
+In progress
+
+## Advanced demos
+
+From Tidy-data to Matrix requiered form
+```{r BGFRA}
+library(BGFRA)
+data('wheat_BGFRA')
+data <- Wheat # Load from wheat_BGFRA data
+
+head(data)
+
+New_DataSet <- Td2M(data)
+
+head(New_DataSet)
+
+CrossValidation <- CV.RandomPart(NLine = nrow(New_DataSet), NEnv = 3, NTraits = 1, NPartitions = 10, PTesting = .3, Set_seed = 5)
+
+BGFRA_Wheat <- IBCF(DataSet = New_DataSet, CrossValidation = CrossValidation)
+
+BGFRA_Wheat$Ave_predictions
+
+```
+
+
+## Citation
+
+How to cite the package...
+
+## Authors
+
+Francisco Javier Luna-Vázquez (Author, Maintainer)
+
+Osval Antonio Montesinos-López (Author)
