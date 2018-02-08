@@ -57,7 +57,27 @@ In progress
 
 ## Advanced demos
 
-From Tidy-data to Matrix requiered form
+### Transform TidyData to Matrix and rollback
+
+```{r MatrixAndTidy}
+library(BGFRA)
+data('wheat_BGFRA')
+data <- Wheat # Load from wheat_BGFRA data
+
+head(data)
+
+New_Data <- Tidy2Matrix(data)
+
+head(New_Data)
+
+## Rollback
+New_DataSet <- Matrix2Tidy(New_Data)
+
+head(New_DataSet)
+```
+
+
+### From Tidy-data to Matrix requiered form
 ```{r BGFRA}
 library(BGFRA)
 data('wheat_BGFRA')
@@ -65,18 +85,17 @@ data <- Wheat # Load from wheat_BGFRA data
 
 head(data)
 
-New_DataSet <- Td2M(data)
+New_Data <- Tidy2Matrix(data)
 
-head(New_DataSet)
+head(New_Data)
 
-CrossValidation <- CV.RandomPart(NLine = nrow(New_DataSet), NEnv = 3, NTraits = 1, NPartitions = 10, PTesting = .3, Set_seed = 5)
+CrossValidation <- CV.RandomPart(NLine = nrow(New_Data), NEnv = 3, NTraits = 1, NPartitions = 10, PTesting = .3, Set_seed = 5)
 
-BGFRA_Wheat <- IBCF(DataSet = New_DataSet, CrossValidation = CrossValidation)
+BGFRA_Wheat <- IBCF(DataSet = New_Data, CrossValidation = CrossValidation)
 
 BGFRA_Wheat$Ave_predictions
 
 ```
-
 
 ## Citation
 

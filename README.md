@@ -118,7 +118,7 @@ In progress
 Advanced demos
 --------------
 
-From Tidy-data to Matrix requiered form
+### Transform TidyData to Matrix and rollback
 
 ``` r
 library(BGFRA)
@@ -137,9 +137,13 @@ head(data)
     ## 6 1.882823 6935856 Drought
 
 ``` r
-New_DataSet <- Td2M(data)
+New_Data <- Tidy2Matrix(data)
+```
 
-head(New_DataSet)
+    ## Trait is null, Trait will appear like ''
+
+``` r
+head(New_Data)
 ```
 
     ##      Line _Drought _Irrigated _ReducedIrrigated
@@ -151,9 +155,60 @@ head(New_DataSet)
     ## 6 6862365 2.496954   6.949405          3.945550
 
 ``` r
-CrossValidation <- CV.RandomPart(NLine = nrow(New_DataSet), NEnv = 3, NTraits = 1, NPartitions = 10, PTesting = .3, Set_seed = 5)
+## Rollback
+New_DataSet <- Matrix2Tidy(New_Data)
 
-BGFRA_Wheat <- IBCF(DataSet = New_DataSet, CrossValidation = CrossValidation)
+head(New_DataSet)
+```
+
+    ##      Line Trait     Env Response
+    ## 1 3827768       Drought 1.587324
+    ## 2 4905617       Drought 3.145934
+    ## 3 6176013       Drought 3.140629
+    ## 4 6861480       Drought 2.637310
+    ## 5 6861485       Drought 1.852880
+    ## 6 6862365       Drought 2.496954
+
+### From Tidy-data to Matrix requiered form
+
+``` r
+library(BGFRA)
+data('wheat_BGFRA')
+data <- Wheat # Load from wheat_BGFRA data
+
+head(data)
+```
+
+    ##   Response    Line     Env
+    ## 1 1.587324 3827768 Drought
+    ## 2 3.140629 6176013 Drought
+    ## 3 3.145934 4905617 Drought
+    ## 4 0.984776 6931494 Drought
+    ## 5 2.936291 6932344 Drought
+    ## 6 1.882823 6935856 Drought
+
+``` r
+New_Data <- Tidy2Matrix(data)
+```
+
+    ## Trait is null, Trait will appear like ''
+
+``` r
+head(New_Data)
+```
+
+    ##      Line _Drought _Irrigated _ReducedIrrigated
+    ## 1 3827768 1.587324   6.862352          3.090779
+    ## 2 4905617 3.145934   6.290179          3.938520
+    ## 3 6176013 3.140629   6.844494          3.938209
+    ## 4 6861480 2.637310   6.279018          4.168493
+    ## 5 6861485 1.852880   6.204613          3.806392
+    ## 6 6862365 2.496954   6.949405          3.945550
+
+``` r
+CrossValidation <- CV.RandomPart(NLine = nrow(New_Data), NEnv = 3, NTraits = 1, NPartitions = 10, PTesting = .3, Set_seed = 5)
+
+BGFRA_Wheat <- IBCF(DataSet = New_Data, CrossValidation = CrossValidation)
 
 BGFRA_Wheat$Ave_predictions
 ```
