@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods.R
 \name{summary.IBCF}
 \alias{summary.IBCF}
-\title{Summary.IBCF}
+\title{Summary}
 \usage{
 \method{summary}{IBCF}(object, ...)
 }
@@ -10,5 +10,5 @@
 \item{object}{\code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF}
 }
 \description{
-Solo es una prueba
+Summary of IBCF object
 }

@@ -4,15 +4,10 @@
 \alias{CV.RandomPart}
 \title{Cross-Validation with Random Partions}
 \usage{
-CV.RandomPart(NLine = 10, NEnv = 1, NTraits = 1, NPartitions = 10,
-  PTesting = 0.35, Set_seed = NULL)
+CV.RandomPart(DataSet, NPartitions = 10, PTesting = 0.35, Set_seed = NULL)
 }
 \arguments{
-\item{NLine}{\code{integer} Number of Lines in the DataSet. By default are 10 Lines.}
-
-\item{NEnv}{\code{integer} Number of Enviroments in the DataSet. Is 1 by default.}
-
-\item{NTraits}{\code{integer} Number of Traits in the DataSet. Is 1 by default.}
+\item{DataSet}{\code{data.frame} Number of Lines in the DataSet. By default are 10 Lines.}
 
 \item{NPartitions}{\code{integer} Number of Partitions for the Cross-Validation. Is 10 by default.}
 
@@ -21,15 +16,13 @@ CV.RandomPart(NLine = 10, NEnv = 1, NTraits = 1, NPartitions = 10,
 \item{Set_seed}{\code{integer} Number of seed for replicable research. Is NULL by default.}
 }
 \value{
-\code{List} A list object with lenght of \code{NPartitions}, every indice has a \code{matrix} $n \times x$, where $n$ is the number of \code{NLines} and $x$ is the number of  \code{NEnv} $\times$ \code{NTraits}. the values inside is 1 for training and 2 for testing.
+\code{List} A list object with lenght of \code{NPartitions}, every indice has a \code{matrix} \eqn{n \times x}, where \eqn{n} is the number of \code{NLines} and \eqn{x} is the number of  \code{NEnv} \eqn{\times} \code{NTraits}. The values inside is 1 for training and 2 for testing.
 }
 \examples{
 \dontrun{
-  CV.RandomPart(NLine = 100, NEnv = 5)
-  CV.RandomPart(NLine = 100, NTraits = 5)
-  CV.RandomPart(NLine = 100, NEnv = 3, NTraits = 3)
-  CV.RandomPart(NLine = 100, NEnv = 3, NTraits = 3, NPartitions = 20)
-  CV.RandomPart(NLine = 100, NEnv = 3, NTraits = 3, NPartitions = 20, PTesting = .5)
-  CV.RandomPart(NLine = 100, NEnv = 3, NTraits = 3, NPartitions = 20, PTesting = .5, Set_seed = 123)
+  CV.RandomPart(DataSet)
+  CV.RandomPart(DataSet, NPartitions = 10)
+  CV.RandomPart(DataSet, NPartitions = 10, PTesting = .35)
+  CV.RandomPart(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 5)
 }
 }

@@ -4,11 +4,9 @@
 \alias{IBCF}
 \title{IBCF: Item Based Collaborative Filterign}
 \usage{
-IBCF(DataSet, CrossValidation = NULL)
+IBCF(object, ...)
 }
 \arguments{
-\item{DataSet}{\code{data.frame} Sets of data...}
-
 \item{CrossValidation}{\code{list} List with the partitions}
 }
 \description{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods.R
 \name{plot.IBCF}
 \alias{plot.IBCF}
-\title{plot.IBCF}
+\title{Plot IBCF graph}
 \usage{
 \method{plot}{IBCF}(x, select = "Pearson", ...)
 }
@@ -10,5 +10,5 @@
 \item{object}{\code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF()}
 }
 \description{
-Solo es una prueba
+Graphs from IBCF object
 }
