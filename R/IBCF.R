@@ -1,6 +1,5 @@
 #' @title IBCF: Item Based Collaborative Filterign
 #' @description Item Based Collaborative Filterign for multi-trait and multi-environment data.
-#' @param DataSet \code{data.frame} Sets of data...
 #' @param CrossValidation \code{list} List with the partitions
 #'
 #' @return
@@ -8,14 +7,11 @@
 #'
 #' @examples
 #'
-IBCF <- function(DataSet, CrossValidation = NULL) {
-
-  if (!is.data.frame(DataSet)) {
-    stop('DataSet requieres be a data.frame object with')
-  }
-  if (is.null(CrossValidation)) {
-    stop('Cross-Validation was not provided. Use the functions provided for this.')
-  }
+IBCF <- function(object, ...) {
+  if (!inherits(object, "CrossValidation")) stop("This function only works for objects of class 'CrossValidation'")
+  # object <- CV
+  DataSet <- object$DataSet
+  CrossValidation <- object$CrossValidation_list
 
   #####Matrix for saving the observed and predicted values for each partion###
   Data.Obs_Pred <- data.frame(matrix(NA, nrow = nrow(DataSet), ncol = (2 * ncol(DataSet) - 2)))
@@ -40,9 +36,10 @@ IBCF <- function(DataSet, CrossValidation = NULL) {
 
     pos.NA <- which(Part == 2, arr.ind = T)
 
-    if (length(pos.NA) == 0){
+    if (length(pos.NA) == 0) {
       stop('An error ocurred with the CrossValidation data')
     }
+
     pos.NA[, 2] <- c(pos.NA[, 2]) + 1
 
     Data.trn <- DataSet
@@ -54,7 +51,7 @@ IBCF <- function(DataSet, CrossValidation = NULL) {
     Means_trn <- apply(Data.trn[, -c(1)], 2, mean, na.rm = T)
     SDs_trn <- apply(Data.trn[, -c(1)], 2, sd, na.rm = T)
 
-    Mean_and_SD <- data.frame(cbind(Means_trn, SDs_trn))
+    # Mean_and_SD <- data.frame(cbind(Means_trn, SDs_trn))
 
     Scaled_Col <- scale(Data.trn[, -c(1)])
 
@@ -78,7 +75,7 @@ IBCF <- function(DataSet, CrossValidation = NULL) {
 
     ##############Positions with no missing values########################
     pos.used <- c(1:nrow(ratings))
-    pos.complete <- pos.used[-rows.Na]
+    # pos.complete <- pos.used[-rows.Na]
     pos.w.Na <- rows.Na
 
     Hyb.pred <- as.data.frame(Data.trn_scaled)
@@ -133,12 +130,12 @@ IBCF <- function(DataSet, CrossValidation = NULL) {
   Ave_predictions[,5] <- SD_MSEP/sqrt(NPartitions)
 
   Ave_predictions <- data.frame(Ave_predictions)
-  colnames(Ave_predictions) <- c('Env_Trait', 'Pearson', 'Cor_SE', 'MSEP', 'MSEP_SE')
+  colnames(Ave_predictions) <- c('Trait_Env', 'Pearson', 'Cor_SE', 'MSEP', 'MSEP_SE')
 
-  Ave_predictions$Env_Trait <- colnames(DataSet[,-c(1)])
+  Ave_predictions$Trait_Env <- colnames(DataSet[,-c(1)])
 
   out <- list(NPartitions = NPartitions,
-              Ave_predictions = Ave_predictions)
+              Summary_predictions = Ave_predictions)
   class(out) <- 'IBCF'
   return(out)
 }

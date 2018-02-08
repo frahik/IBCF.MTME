@@ -1,8 +1,6 @@
 #' @title Cross-Validation with Random Partions
 #'
-#' @param NLine \code{integer} Number of Lines in the DataSet. By default are 10 Lines.
-#' @param NEnv \code{integer} Number of Enviroments in the DataSet. Is 1 by default.
-#' @param NTraits \code{integer} Number of Traits in the DataSet. Is 1 by default.
+#' @param DataSet \code{data.frame} Number of Lines in the DataSet. By default are 10 Lines.
 #' @param NPartitions \code{integer} Number of Partitions for the Cross-Validation. Is 10 by default.
 #' @param PTesting \code{Double} Porcentage of Testing for the Cross-Validation. Is 0.35 by default.
 #' @param Set_seed \code{integer} Number of seed for replicable research. Is NULL by default.
@@ -11,33 +9,45 @@
 #'
 #' @examples
 #' \dontrun{
-#'   CV.RandomPart(NLine = 100, NEnv = 5)
-#'   CV.RandomPart(NLine = 100, NTraits = 5)
-#'   CV.RandomPart(NLine = 100, NEnv = 3, NTraits = 3)
-#'   CV.RandomPart(NLine = 100, NEnv = 3, NTraits = 3, NPartitions = 20)
-#'   CV.RandomPart(NLine = 100, NEnv = 3, NTraits = 3, NPartitions = 20, PTesting = .5)
-#'   CV.RandomPart(NLine = 100, NEnv = 3, NTraits = 3, NPartitions = 20, PTesting = .5, Set_seed = 123)
+#'   CV.RandomPart(DataSet)
+#'   CV.RandomPart(DataSet, NPartitions = 10)
+#'   CV.RandomPart(DataSet, NPartitions = 10, PTesting = .35)
+#'   CV.RandomPart(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 5)
 #' }
 #' @export
-CV.RandomPart <- function(NLine = 10, NEnv = 1, NTraits = 1, NPartitions = 10, PTesting = .35, Set_seed = NULL) {
+CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = NULL) {
   if (!is.null(Set_seed)) {
     set.seed(Set_seed)
   }
 
-  env <- c(1:NEnv)
-  p_list <- vector('list',NPartitions)
-  names(p_list) <- paste0('p',1:NPartitions)
+  new_Data <- getMatrixForm(DataSet, withYears = F)
+  NLine <- dim(new_Data)[1]
+
+  if (length(unique(DataSet$Env)) < 2) {
+    No_Env_I <- length(unique(DataSet$Env))
+    NEnv <- length(unique(DataSet$Trait))
+    NTraits <- No_Env_I
+    Trait <- unique(DataSet$Env)
+    Env <- unique(DataSet$Trait)
+  } else {
+    NEnv <- length(unique(DataSet$Env))
+    NTraits <- length(unique(DataSet$Trait))
+    Trait <- unique(DataSet$Trait)
+    Env <- unique(DataSet$Env)
+  }
+
+
+  p_list <- vector('list', NPartitions)
+  names(p_list) <- paste0('p', 1:NPartitions)
   resp <- rep(1, NLine * NEnv)
-  y <- resp
   Y <- matrix(resp, ncol = NEnv, byrow = FALSE)
 
   for (i in 1:NPartitions) {
-    nEnv <- length(env)
-    y <- Y[,env]
+    y <- Y[,1:NEnv]
     n <- nrow(Y)
     percTST <- PTesting
     nTST <- round(percTST*n)
-    nNA <- nEnv*nTST
+    nNA <- NEnv*nTST
     if (nNA < n) {
       indexNA <- sample(1:n,nNA,replace = FALSE)
     }
@@ -55,11 +65,11 @@ CV.RandomPart <- function(NLine = 10, NEnv = 1, NTraits = 1, NPartitions = 10, P
       }
     }
 
-    indexEnv <- rep(1:nEnv, each = nTST)
+    indexEnv <- rep(1:NEnv, each = nTST)
     yNA <- y
 
-    for (j in 1:nEnv) {
-      if (nEnv < 2) {
+    for (j in 1:NEnv) {
+      if (NEnv < 2) {
         yNA[indexNA] <- 2
       } else {
         yNA[indexNA[indexEnv == j], j] <- 2
@@ -70,5 +80,172 @@ CV.RandomPart <- function(NLine = 10, NEnv = 1, NTraits = 1, NPartitions = 10, P
     B <- kronecker(A, yNA)
     p_list[[paste0('p',i)]] <- B
   }
-  return(p_list)
+
+
+  out <- list(
+    DataSet = new_Data,
+    CrossValidation_list = p_list,
+    Environments = Env,
+    Traits = Trait,
+    Observations = NLine
+  )
+
+  class(out) <- 'CrossValidation'
+  return(out)
+}
+
+
+#' @title Cross-Validation with K-Folds
+#'
+#' @param DataSet \code{data.frame} Tidy data.frame, with $Line especified on it, also works taking account $Env and $Trait.
+#' @param K \code{integer} Number of folds.
+#' @param Set_seed \code{integer} Number of seed
+#'
+#' @return \code{List} A list object with lenght of
+#'
+#' @examples
+#' \dontrun{
+#'   library(IBCF.MTME)
+#'   data('Wheat_IBCF')
+#'   DataSet <- data.frame(Data.Trigo_IBCF[,-1])
+#'   Tidy_DataSet <- Matrix2Tidy(DataSet)
+#'   CV.KFold(Tidy_DataSet = Tidy_DataSet, K = 5, Set_seed = 10)
+#' }
+#' @export
+CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
+  stop('Is not implemented yet')
+
+  if (!is.null(Set_seed)) {
+    set.seed(Set_seed)
+  }
+
+  if (is.null(Tidy_DataSet$Line)){
+    stop('Lines are not specified')
+  }
+
+  Data <- Tidy2Matrix(Tidy_DataSet)
+  pos <- matrix(NA, nrow = dim(Data)[1], ncol = dim(Data)[2], dimnames = list(NULL, names(Data)))
+
+  if ((is.null(Tidy_DataSet$Env) || length(unique(Tidy_DataSet$Env)) == 1) && (is.null(Tidy_DataSet$Trait) || length(unique(Tidy_DataSet$Trait)) == 1)) {
+    pm <- sample(dim(Tidy_DataSet)[1])
+    grs <- cut(seq(1, length(pm)), breaks = K, labels = FALSE)
+    g_list <- vector('list', K)
+    pos <- vector('list', K)
+    ng <- 0
+    names(g_list) <- paste0('partition', 1:K)
+    for (i in 1:K) {
+      g_list[[paste0('partition', i)]] <- pm[grs == i]
+      ng[i] <- length(g_list[[paste0('partition', i)]])
+      pos[[paste0('partition', i)]] <- matrix(1:dim(Data)[1], nrow = dim(Data)[1], ncol = dim(Data)[2], dimnames = list(NULL, names(Data)))
+
+      pos[[paste0('partition', i)]][g_list[[paste0('partition', i)]]== pos[[paste0('partition', i)]]] <- NA
+      pos[[paste0('partition', i)]][g_list[[paste0('partition', i)]]!= pos[[paste0('partition', i)]]] <- 2
+      pos[[paste0('partition', i)]][is.na(pos[[paste0('partition', i)]])] <- 1
+    }
+    return(g_list)
+  }
+
+  UL <- unique(Tidy_DataSet$Line)
+  #Number of sites where each line appear
+  n_UL <- length(UL)
+  nSLA <- rep(NA, n_UL)
+
+  nEAL <- table(Tidy_DataSet[, c('Line')])#Number of Sites that appear  each line
+  L_nE <- data.frame(Line = names(nEAL), nE = c(nEAL))
+
+  #A list of Positions in data set dat_F that will conform the groups
+  g_list <- vector('list', K)
+  names(g_list) <- paste0('partition', 1:K)
+
+  #Lines that will appear in all groups because
+  # only appear in only one Site
+  Pos1 <- which(L_nE$nE == 1)
+  Pos_1_dat_F <- match(L_nE$Line[Pos1], Tidy_DataSet$Line)
+  #dat_F[Pos_1_dat_F,]
+
+  #Tama?o de cada partici?n sin considerar las lineas
+  # que se incluir?n por defaul (las que aparecen en un solo ambiente)
+  n <- dim(Tidy_DataSet)[1]
+  nR <- n - length(Pos1)
+  ifelse(nR %% K == 0,
+         ng <- rep(nR / K, K),
+         ng <- rep(trunc(nR / K), K) + c(rep(1, nR - trunc(nR / K) * K), rep(0, K - (nR - trunc( nR / K ) * K))))
+  #ng
+  Pos_all <- 1:n
+  #---------------------------------------------------------------
+  #First group
+  #---------------------------------------------------------------
+  if (length(Pos1) == 0) {
+    dat_F_k <- Tidy_DataSet
+  }
+  else{
+    dat_F_k <- Tidy_DataSet[-Pos_1_dat_F,]
+  }
+  #Lineas ?nicas restantes
+  UL_k <- unique(dat_F_k$Line)
+  Pos_R_k <- rep(NA, length(UL_k))
+  for (j in 1:length(UL_k)) {
+    Pos_j_k <-  which(Tidy_DataSet$Line == UL_k[j])
+    Pos_R_k[j] <- sample(Pos_j_k, 1)
+  }
+  Pos_R_k <- Pos_R_k
+
+  Pos_k_2_dat_F <- sample(Pos_all[-c(Pos_1_dat_F, Pos_R_k)], ng[1])
+  g_list[[1]] <- c(Pos_1_dat_F, Pos_k_2_dat_F)
+
+  #---------------------------------------------------------------
+  #Group 2,3, .., K
+  #---------------------------------------------------------------
+  for (k in 2:(K - 1))  {
+    #Assigned positions
+    Pos_k_a_R <- unique(unlist(g_list[1:(k - 1)]))
+    dat_F_k <- Tidy_DataSet[-Pos_k_a_R,]
+    UL_k <- unique(dat_F_k$Line)
+    #A las lineas que no aparecen en el grupo k-1, se remueve un
+    # site donde aparencen para garantizar que ?stas aparezcan
+    # en al menos un site
+    UL_k <- UL_k[(UL_k %in% Tidy_DataSet[Pos_k_a_R,]$Line) == FALSE]
+    if (length(UL_k) > 0) {
+      #Posiciones de lineas a mantener fuera del grupo k
+      Pos_R_k <- rep(NA, length(UL_k))
+
+      for (j in 1:length(UL_k)) {
+        Pos_j_k <-  which((Tidy_DataSet$Line == UL_k[j]))
+        if (length(Pos_j_k) > 1) {
+          Pos_R_k[j] <- sample(Pos_j_k, 1)
+        }
+      }
+      Pos_R_k <- na.omit(Pos_R_k)
+      Pos_k_2_dat_F <- sample(Pos_all[-c(Pos_k_a_R, Pos_R_k)], ng[k])
+      g_list[[k]] <- c(Pos_1_dat_F, Pos_k_2_dat_F)
+    }
+    else{
+      Pos_k_2_dat_F <- sample(Pos_all[-c(Pos_k_a_R)], ng[k])
+      g_list[[k]] <- c(Pos_1_dat_F, Pos_k_2_dat_F)
+    }
+  }
+
+  k <- K
+  Pos_k_a_R <- unique(unlist(g_list[1:(k - 1)]))
+  Pos_k_2_dat_F <- sample(Pos_all[-c(Pos_k_a_R)], ng[k])
+  g_list[[k]] <- c(Pos_1_dat_F, Pos_k_2_dat_F)
+
+  n_CL <- length(Pos_1_dat_F)
+
+
+  return(g_list)
+
+  out <- list(
+    DataSet = new_Data,
+    CrossValidation_list = p_list,
+    Environments = Env,
+    Traits = Trait,
+    Observations = NLine
+  )
+
+  class(out) <- 'CrossValidation'
+  # return(out)
+
+  return(g_list)
+
 }

@@ -1,45 +1,48 @@
 #' TidyData to Matrix
 #'
-#' @param DataSet Dataset
+#' @param Tidy_DataSet Tidy_DataSet
 #'
 #' @return
 #' @export
 #'
 #' @examples
-Td2M <- function(DataSet){
-  if (is.null(DataSet$Env)) {
-    message("Env is null, Enviroment will appear like ''")
-    DataSet$Env <- ''
+getMatrixForm <- function(Tidy_DataSet, withYears = FALSE){
+
+  if (withYears) {
+    names_diff <- which(names(Tidy_DataSet) %in% c('Years', 'Trait', 'Response') == FALSE)
+    Tidy_DataSet <- Tidy_DataSet[ , c('Years', names(Tidy_DataSet)[names_diff], 'Trait', 'Response')]
+    out <- tidyr::spread(Tidy_DataSet, 'Trait', Response)
+  } else {
+    if (is.null(Tidy_DataSet$Env)) {
+      message("Env is null, Enviroment will appear like ''")
+      Tidy_DataSet$Env <- ''
+    }
+
+    if (is.null(Tidy_DataSet$Trait)) {
+      message("Trait is null, Trait will appear like ''")
+      Tidy_DataSet$Trait <- ''
+    }
+
+    out <- tidyr::unite(Tidy_DataSet, 'TraitxEnv', Trait, Env, sep = "_")
+    out <- tidyr::spread(out, 'TraitxEnv', Response)
   }
 
-  if (is.null(DataSet$Trait)) {
-    message("Trait is null, Trait will appear like ''")
-    DataSet$Trait <- ''
-  }
-
-  data <- tidyr::unite(DataSet, 'TraitxEnv', Trait, Env, sep = "_")
-  return(tidyr::spread(data, 'TraitxEnv', Response))
+  return(out)
 }
 
 #' Matrix to TidyData
 #'
-#' @param DataSet Dataset
+#' @param Matrix Matrix
 #'
 #' @return
 #' @export
 #'
 #' @examples
-Td2M <- function(DataSet){
-
-
-  if (is.null(DataSet$Env)) {
-    DataSet$Env <- ''
+getTidyForm <- function(Matrix_DataSet, withYears = F){
+  if (withYears) {
+    return(tidyr::gather(Matrix_DataSet, 'Trait', 'Response', -c(1,2)))
+  } else {
+    data <- tidyr::gather(Matrix_DataSet, 'TraitxEnv', 'Response', -c(1))
+    return(tidyr::separate(data, TraitxEnv, c("Trait", "Env"), sep = "_"))
   }
-
-  if (is.null(DataSet$Trait)) {
-    DataSet$Trait <- ''
-  }
-
-  data <- tidyr::unite(DataSet, 'TraitxEnv', Trait, Env, sep = "_")
-  return(tidyr::spread(data, 'TraitxEnv', Response))
 }
