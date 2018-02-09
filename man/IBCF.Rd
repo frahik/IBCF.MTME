@@ -4,7 +4,7 @@
 \alias{IBCF}
 \title{IBCF: Item Based Collaborative Filterign}
 \usage{
-IBCF(object, ...)
+IBCF(object, dec = 4, ...)
 }
 \arguments{
 \item{CrossValidation}{\code{list} List with the partitions}

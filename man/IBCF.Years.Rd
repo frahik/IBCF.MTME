@@ -4,7 +4,7 @@
 \alias{IBCF.Years}
 \title{IBCF.Years}
 \usage{
-IBCF.Years(DataSet, Years.testing = "", Traits.testing = "")
+IBCF.Years(DataSet, Years.testing = "", Traits.testing = "", dec = 4)
 }
 \arguments{
 \item{DataSet}{\code{data.frame}}
