@@ -7,9 +7,22 @@
 #' @export
 summary.IBCF <- function(object,...){
   if (!inherits(object, "IBCF")) stop("This function only works for objects of class 'IBCF'")
-  paste('--------------------> Summary of data & model <--------------------')
   print(object$Summary_predictions)
 }
+
+
+#' @title Summary
+#'
+#' @description Summary of IBCFY object
+#'
+#' @param object \code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Years
+#'
+#' @export
+summary.IBCFY <- function(object,...){
+  if (!inherits(object, "IBCFY")) stop("This function only works for objects of class 'IBCFY'")
+  print(object$predictions_Summary)
+}
+
 
 #' @title Plot IBCF graph
 #'
@@ -28,27 +41,29 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
   results[, select] <- results[order(results[, select]), select]
 
   if (select == "Pearson") {
-    results$SE <- results$Cor_SE * 1.96
+    results$SE <- results$SE_Cor * 1.96
+    ylab <- 'Pearson Correlation'
   } else if (select == "MSEP") {
-    results$SE <- results$MSEP_SE * 1.96
+    results$SE <- results$SE_MSEP * 1.96
+    ylab <- select
   }
 
   x <- 1:length(results$Trait_Env)
   plot(x, results[, select], ylim = range(c(results[, select] - results$SE, results[, select] + results$SE)),
-       type = 'p', ylab = 'Response', ann = F, xaxt = "n", las = 2)
+       type = 'p', ylab = ylab, xlab = '', xaxt = "n", las = 2)
   axis(1, at = x, lab = results$Trait_Env, las = 2)
   arrows(x, results[, select] - results$SE, x, results[, select] + results$SE, code = 3, length = 0.02, angle = 90)
 }
 
 
-#' @title plot.IBCFY
+#' @title barplot.IBCFY
 #'
 #' @description Solo es una prueba
 #'
 #' @param object \code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Year()
 #'
 #' @export
-plot.IBCFY <- function(x, select = 'Pearson', ...){
+barplot.IBCFY <- function(x, select = 'Pearson', ...){
   ### Check that object is compatible
   if (!inherits(x, "IBCFY")) stop("This function only works for objects of class 'IBCF'")
 
@@ -59,7 +74,7 @@ plot.IBCFY <- function(x, select = 'Pearson', ...){
   if (select == 'Pearson')
     select <- 'Pearson Correlation'
 
-  barplot(vector, type = 'p', ylab = select, las = 1)
+  barplot(vector, ylab = select, las = 1)
 }
 
 

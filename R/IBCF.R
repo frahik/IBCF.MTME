@@ -7,7 +7,7 @@
 #'
 #' @examples
 #'
-IBCF <- function(object, ...) {
+IBCF <- function(object, dec = 4, ...) {
   if (!inherits(object, "CrossValidation")) stop("This function only works for objects of class 'CrossValidation'")
   # object <- CV
   DataSet <- object$DataSet
@@ -124,13 +124,13 @@ IBCF <- function(object, ...) {
   SD_Cor <- sqrt(post_cor_2 - (post_cor^2))
   SD_MSEP <- sqrt(post_MSEP_2 - (post_MSEP^2))
 
-  Ave_predictions[,2] <- post_cor
-  Ave_predictions[,3] <- SD_Cor/sqrt(NPartitions)
-  Ave_predictions[,4] <- post_MSEP
-  Ave_predictions[,5] <- SD_MSEP/sqrt(NPartitions)
+  Ave_predictions[,2] <- round(post_cor, digits = dec)
+  Ave_predictions[,3] <- round(SD_Cor/sqrt(NPartitions), digits = dec)
+  Ave_predictions[,4] <- round(post_MSEP, digits = dec)
+  Ave_predictions[,5] <- round(SD_MSEP/sqrt(NPartitions), digits = dec)
 
   Ave_predictions <- data.frame(Ave_predictions)
-  colnames(Ave_predictions) <- c('Trait_Env', 'Pearson', 'Cor_SE', 'MSEP', 'MSEP_SE')
+  colnames(Ave_predictions) <- c('Trait_Env', 'Pearson', 'SE_Cor', 'MSEP', 'SE_MSEP')
 
   Ave_predictions$Trait_Env <- colnames(DataSet[,-c(1)])
 

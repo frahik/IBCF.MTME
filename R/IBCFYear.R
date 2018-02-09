@@ -15,14 +15,14 @@
 #'
 #'
 #' @export
-IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '') {
+IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4) {
   No.Years <- length(unique(DataSet$Years))
   No.Years.testing <- length(Years.testing)
-  No.Traits <- length(colnames(DataSet))-2
+  No.Traits <- length(colnames(DataSet)) - 2
   No.Traits.testing <- length(Traits.testing)
   No.Traits.Accepted <- round(0.7*No.Traits)
 
-  if (No.Years.testing==No.Years) {
+  if (No.Years.testing == No.Years) {
     stop("No.Years.testing must be less than No.Years in the whole data set") }
 
   if (No.Traits.testing > No.Traits.Accepted) {
@@ -40,20 +40,20 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '') {
 
   pos.Years.Missing <- c()
   for (q in 1:length(Years.Missing)) {
-    pos.Years1 <- which(c(Data.Final[,1])==Years.Missing[q])
+    pos.Years1 <- which(c(Data.Final[,1]) == Years.Missing[q])
     pos.Years.Missing <- c(pos.Years.Missing, pos.Years1)
   }
 
   pos.Traits.missing <- c()
   for (q in 1:length(Traits.missing)) {
-    pos.Traits1 <- which(grepl(Traits.missing[q], colnames(Data.Final))==T)
+    pos.Traits1 <- which(grepl(Traits.missing[q], colnames(Data.Final)) == T)
     pos.Traits.missing <- c(pos.Traits.missing, pos.Traits1)
   }
 
   Data.trn <- Data.Final
   Data.trn[pos.Years.Missing,pos.Traits.missing] <- NA
 
-  rows.Na <- which(apply(Data.trn,1,function(x)any(is.na(x)))==TRUE)
+  rows.Na <- which(apply(Data.trn,1,function(x)any(is.na(x))) == TRUE)
 
   Means_trn <- apply(Data.trn[,-c(1,2)], 2, mean, na.rm = T)
   SDs_trn <- apply(Data.trn[,-c(1,2)], 2, sd, na.rm = T)
@@ -61,8 +61,8 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '') {
   Mean_and_SD <- data.frame(cbind(Means_trn, SDs_trn))
 
   Scaled_Col <- scale(Data.trn[,-c(1,2)])
-  Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm=T)
-  SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm=T)
+  Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = T)
+  SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = T)
 
   Scaled_Row <- t(scale(t(Scaled_Col)))
 
@@ -92,14 +92,14 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '') {
   }
   All.Pred <- data.matrix(Hyb.pred[,-1])
 
-  All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i]+Means_trn_Row[i])) )
+  All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
   All.Pred_O_Row
 
-  All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i]+Means_trn[i]))
+  All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
 
   colnames(All.Pred_O) <- colnames(Data.trn_scaled[,-c(1,2)])
 
-  Data.Obs_Pred <- data.frame(Data.Final[pos.Years.Missing,c(1,2,pos.Traits.missing)],All.Pred_O[pos.Years.Missing,(pos.Traits.missing-2)])
+  Data.Obs_Pred <- data.frame(Data.Final[pos.Years.Missing, c(1, 2, pos.Traits.missing)], All.Pred_O[pos.Years.Missing, (pos.Traits.missing - 2)])
 
   Pearson <- c()
   MSEP <- c()
@@ -108,21 +108,21 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '') {
   Data.Final_P <- Data.Final[,-c(1,2)]
 
   for (q in 1:length(Years.Missing)) {
-    pos.Years_q <- which(c(Data.Final[,1])==Years.Missing[q])
+    pos.Years_q <- which(c(Data.Final[,1]) == Years.Missing[q])
 
-    Data.Final_tst <- Data.Final_P[pos.Years_q,(pos.Traits.missing-2)]
-    All.Pred_O_tst <- All.Pred_O[pos.Years_q,(pos.Traits.missing-2)]
+    Data.Final_tst <- Data.Final_P[pos.Years_q, (pos.Traits.missing - 2)]
+    All.Pred_O_tst <- All.Pred_O[pos.Years_q, (pos.Traits.missing - 2)]
 
     Cor_all_tst <- cor(Data.Final_tst,All.Pred_O_tst)
     Cor_all_tst
 
-    Dif_Obs_pred <- Data.Final_tst-All.Pred_O_tst
+    Dif_Obs_pred <- Data.Final_tst - All.Pred_O_tst
     Dif_Obs_pred2 <- Dif_Obs_pred^2
     MSEP <- apply(Dif_Obs_pred2, 2, mean)
     Cor_vec <- diag(Cor_all_tst)
     MSEP_vec <- MSEP
-    Pearson <- c(Pearson,Cor_vec)
-    MSEP <- c(MSEP,MSEP_vec)
+    Pearson <- c(Pearson, round(Cor_vec, digits = dec))
+    MSEP <- c(MSEP, round(MSEP_vec, digits = dec))
     Names_Trait_env <- c(paste(Years.Missing[q], colnames(Data.Final_tst), sep = "_"))
     Year_Trait <- c(Year_Trait, Names_Trait_env)
   }
@@ -130,10 +130,10 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '') {
   names(MSEP) <- Year_Trait
   Summary_predictions <- data.frame(cbind(Year_Trait, Pearson, MSEP))
 
-  out <- list(Years.testing=Years.testing,
-              Traits.testing=Traits.testing,
-              Data_Obs_Pred=Data.Obs_Pred,
-              predictions_Summary=Summary_predictions)
+  out <- list(Years.testing = Years.testing,
+              Traits.testing = Traits.testing,
+              Data_Obs_Pred = Data.Obs_Pred,
+              predictions_Summary = Summary_predictions)
   class(out) <- 'IBCFY'
   return(out)
   }
