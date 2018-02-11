@@ -118,9 +118,8 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
 
     Dif_Obs_pred <- Data.Final_tst - All.Pred_O_tst
     Dif_Obs_pred2 <- Dif_Obs_pred^2
-    MSEP <- apply(Dif_Obs_pred2, 2, mean)
+    MSEP_vec <- apply(Dif_Obs_pred2, 2, mean)
     Cor_vec <- diag(Cor_all_tst)
-    MSEP_vec <- MSEP
     Pearson <- c(Pearson, round(Cor_vec, digits = dec))
     MSEP <- c(MSEP, round(MSEP_vec, digits = dec))
     Names_Trait_env <- c(paste(Years.Missing[q], colnames(Data.Final_tst), sep = "_"))
