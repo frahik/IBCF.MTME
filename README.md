@@ -1,7 +1,7 @@
 IBCF.MTME
 ================
 Francisco Javier Luna-Vázquez
-2018-02-06
+2018-02-10
 
 Item Based Collaborative Filterign For Multi-trait and Multi-environment Data in R.
 
@@ -10,7 +10,7 @@ Instructions for proper implementation
 
 ### Installation
 
-To complete installation of dev version of IBCF.MTME from GitHub, you have to install a few packages first.
+To complete installation of dev version of IBCF.MTME from GitHub, you must have previously installed the devtools package.
 
 ``` r
 install.packages('devtools')
@@ -26,75 +26,63 @@ rm(list = ls())
 library(IBCF.MTME)
 data('Wheat_IBCF')
 
-DataSet <- data.frame(Data.Trigo_IBCF[,-1]) # Load from wheat_BGFRA data
-
-dim(DataSet)
+head(Wheat_IBCF)
 ```
 
-    ## [1] 250  13
+    ##       GID Trait    Env   Response
+    ## 1 6569128    DH Bed2IR -17.565895
+    ## 2 6688880    DH Bed2IR  -4.565895
+    ## 3 6688916    DH Bed2IR  -3.565895
+    ## 4 6688933    DH Bed2IR  -4.565895
+    ## 5 6688934    DH Bed2IR  -7.565895
+    ## 6 6688949    DH Bed2IR  -7.565895
 
 ``` r
-head(DataSet)
+data('Year_IBCF')
+
+head(Year_IBCF)
 ```
 
-    ##       Gid  Bed5IR_DH  Bed2IR_DH   Drip_DH  Bed5IR_NDVI  Bed2IR_NDVI
-    ## 1 6569128  1.6923078 -17.565895  0.945047 -0.002449404 -0.016692414
-    ## 2 6688880 -0.3076922  -4.565895  0.945047 -0.011380990 -0.016657172
-    ## 3 6688916 -1.3076922  -3.565895 -2.054953 -0.000877320  0.002233731
-    ## 4 6688933 -3.3076922  -4.565895 -1.054953 -0.011128989 -0.009772406
-    ## 5 6688934 -3.3076922  -7.565895 -0.054953 -0.010064999 -0.002767986
-    ## 6 6688949 -6.3076922  -7.565895 -2.054953  0.002153392 -0.015566957
-    ##      Drip_NDVI   Bed5IR_GY   Bed2IR_GY     Drip_GY  Bed5IR_PH  Bed2IR_PH
-    ## 1  0.006528357 -0.38496851 -0.35188724 -0.44365852  -1.282471  -6.968964
-    ## 2 -0.022684209 -0.29930171 -0.61107566 -0.19868885  -8.725086 -11.030829
-    ## 3 -0.030087900 -0.30202380 -0.03534797 -0.09566196  -6.680635 -10.494572
-    ## 4  0.003965353  0.08545996 -0.11721194 -0.03161493  -5.546853  -4.033027
-    ## 5  0.008624755 -0.24010219  0.05415546 -0.35510868 -11.590284 -12.103778
-    ## 6 -0.021943740  0.19542652 -0.48406932 -0.04798615  -1.954483  -5.316197
-    ##      Drip_PH
-    ## 1  3.6682234
-    ## 2 -3.6481125
-    ## 3 -6.1052408
-    ## 4  0.7411906
-    ## 5 -6.4430134
-    ## 6  3.0296975
+    ##   Years Gids Trait Response
+    ## 1  2014    1    T1 5.144009
+    ## 2  2014    2    T1 5.678792
+    ## 3  2014    3    T1 4.854895
+    ## 4  2014    4    T1 3.570019
+    ## 5  2014    5    T1 5.018380
+    ## 6  2014    6    T1 3.196160
 
-### Cross-validation model
+### Cross-validation IBCF
 
 ``` r
-##############Example of how to use the IBCF fucntion#######
-CV <- CV.RandomPart(NLine = nrow(DataSet), NEnv = 3, NTraits = 4, NPartitions =  10, PTesting = 0.2, Set_seed = 5)
+CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
 
-IBCF_Wheat <- IBCF(DataSet = DataSet, CrossValidation = CV)
-
-IBCF_Wheat$Ave_predictions
+pm <- IBCF(CrossV)
+summary(pm)
 ```
 
-    ##      Env_Trait   Pearson      Cor_SE         MSEP      MSEP_SE
-    ## 1    Bed5IR_DH 0.9553870 0.008206702 3.237381e+00 5.536694e-01
-    ## 2    Bed2IR_DH 0.9636410 0.003593301 3.387745e+00 3.148134e-01
-    ## 3      Drip_DH 0.9702301 0.002487230 7.471933e-01 5.351929e-02
-    ## 4  Bed5IR_NDVI 0.9358702 0.003185817 2.711550e-05 1.271907e-06
-    ## 5  Bed2IR_NDVI 0.9131947 0.005074519 3.155560e-05 1.910383e-06
-    ## 6    Drip_NDVI 0.9022589 0.009612018 5.461028e-05 5.259142e-06
-    ## 7    Bed5IR_GY 0.8791503 0.004411913 2.229956e-02 9.461502e-04
-    ## 8    Bed2IR_GY 0.7772166 0.016948262 9.855992e-02 6.068931e-03
-    ## 9      Drip_GY 0.8735614 0.009172020 4.715808e-02 3.617277e-03
-    ## 10   Bed5IR_PH 0.8748436 0.007689060 8.918394e+00 4.407668e-01
-    ## 11   Bed2IR_PH 0.8146294 0.009791089 5.015601e+00 2.981762e-01
-    ## 12     Drip_PH 0.8687220 0.007515882 8.466822e+00 4.839951e-01
+    ##      Trait_Env Pearson SE_Cor   MSEP SE_MSEP
+    ## 1    DH_Bed2IR  0.9597 0.0036 3.7767  0.3262
+    ## 2    DH_Bed5IR  0.9611 0.0060 2.8238  0.4393
+    ## 3      DH_Drip  0.9757 0.0018 0.6122  0.0432
+    ## 4    GY_Bed2IR  0.7572 0.0143 0.1030  0.0051
+    ## 5    GY_Bed5IR  0.8929 0.0050 0.0193  0.0009
+    ## 6      GY_Drip  0.8735 0.0077 0.0460  0.0030
+    ## 7  NDVI_Bed2IR  0.9251 0.0046 0.0000  0.0000
+    ## 8  NDVI_Bed5IR  0.9418 0.0021 0.0000  0.0000
+    ## 9    NDVI_Drip  0.9093 0.0059 0.0001  0.0000
+    ## 10   PH_Bed2IR  0.8202 0.0102 4.9820  0.2742
+    ## 11   PH_Bed5IR  0.8793 0.0062 8.4841  0.3827
+    ## 12     PH_Drip  0.8696 0.0063 8.2196  0.2796
 
 ``` r
 par(mai = c(2, 1, 1, 1))
-
-plot(IBCF_Wheat) # By default graphs Pearson Correlation results
-plot(IBCF_Wheat, select = 'Pearson') 
+plot(pm, select = 'Pearson')
 ```
 
 ![](README_files/figure-markdown_github-ascii_identifiers/CVModel-1.png)
 
 ``` r
-plot(IBCF_Wheat, select = 'MSEP')
+plot(pm, select = 'MSEP')
 ```
 
     ## Warning in arrows(x, results[, select] - results$SE, x, results[, select]
@@ -111,112 +99,51 @@ plot(IBCF_Wheat, select = 'MSEP')
 
 ![](README_files/figure-markdown_github-ascii_identifiers/CVModel-2.png)
 
-### Params
+### IBCF.Years Function
 
-In progress
+``` r
+data('Year_IBCF')
+DataSet <- getMatrixForm(Year_IBCF, withYears = T)
 
-Advanced demos
---------------
+pm4 <- IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
+summary(pm4)
+```
+
+    ##         Year_Trait Pearson   MSEP
+    ## 2015_T5    2015_T5  0.8582 0.3665
+    ## 2015_T6    2015_T6  0.8475 0.3218
+    ## 2016_T5    2016_T5  0.7953 0.3525
+    ## 2016_T6    2016_T6  0.8539 0.3245
+
+``` r
+barplot(pm4, select = 'Pearson')
+```
+
+![](README_files/figure-markdown_github-ascii_identifiers/Years-1.png)
+
+``` r
+barplot(pm4, select = 'MSEP')
+```
+
+![](README_files/figure-markdown_github-ascii_identifiers/Years-2.png)
 
 ### Transform TidyData to Matrix and rollback
 
 ``` r
-library(BGFRA)
-data('wheat_BGFRA')
-data <- Wheat # Load from wheat_BGFRA data
+data('Wheat_IBCF')
 
-head(data)
+M <- getMatrixForm(Wheat_IBCF)
+dim(M)
 ```
 
-    ##   Response    Line     Env
-    ## 1 1.587324 3827768 Drought
-    ## 2 3.140629 6176013 Drought
-    ## 3 3.145934 4905617 Drought
-    ## 4 0.984776 6931494 Drought
-    ## 5 2.936291 6932344 Drought
-    ## 6 1.882823 6935856 Drought
+    ## [1] 250  13
 
 ``` r
-New_Data <- Tidy2Matrix(data)
+Tidy <- getTidyForm(M)
+dim(Tidy)
 ```
 
-    ## Trait is null, Trait will appear like ''
-
-``` r
-head(New_Data)
-```
-
-    ##      Line _Drought _Irrigated _ReducedIrrigated
-    ## 1 3827768 1.587324   6.862352          3.090779
-    ## 2 4905617 3.145934   6.290179          3.938520
-    ## 3 6176013 3.140629   6.844494          3.938209
-    ## 4 6861480 2.637310   6.279018          4.168493
-    ## 5 6861485 1.852880   6.204613          3.806392
-    ## 6 6862365 2.496954   6.949405          3.945550
-
-``` r
-## Rollback
-New_DataSet <- Matrix2Tidy(New_Data)
-
-head(New_DataSet)
-```
-
-    ##      Line Trait     Env Response
-    ## 1 3827768       Drought 1.587324
-    ## 2 4905617       Drought 3.145934
-    ## 3 6176013       Drought 3.140629
-    ## 4 6861480       Drought 2.637310
-    ## 5 6861485       Drought 1.852880
-    ## 6 6862365       Drought 2.496954
-
-### From Tidy-data to Matrix requiered form
-
-``` r
-library(BGFRA)
-data('wheat_BGFRA')
-data <- Wheat # Load from wheat_BGFRA data
-
-head(data)
-```
-
-    ##   Response    Line     Env
-    ## 1 1.587324 3827768 Drought
-    ## 2 3.140629 6176013 Drought
-    ## 3 3.145934 4905617 Drought
-    ## 4 0.984776 6931494 Drought
-    ## 5 2.936291 6932344 Drought
-    ## 6 1.882823 6935856 Drought
-
-``` r
-New_Data <- Tidy2Matrix(data)
-```
-
-    ## Trait is null, Trait will appear like ''
-
-``` r
-head(New_Data)
-```
-
-    ##      Line _Drought _Irrigated _ReducedIrrigated
-    ## 1 3827768 1.587324   6.862352          3.090779
-    ## 2 4905617 3.145934   6.290179          3.938520
-    ## 3 6176013 3.140629   6.844494          3.938209
-    ## 4 6861480 2.637310   6.279018          4.168493
-    ## 5 6861485 1.852880   6.204613          3.806392
-    ## 6 6862365 2.496954   6.949405          3.945550
-
-``` r
-CrossValidation <- CV.RandomPart(NLine = nrow(New_Data), NEnv = 3, NTraits = 1, NPartitions = 10, PTesting = .3, Set_seed = 5)
-
-BGFRA_Wheat <- IBCF(DataSet = New_Data, CrossValidation = CrossValidation)
-
-BGFRA_Wheat$Ave_predictions
-```
-
-    ##           Env_Trait   Pearson      Cor_SE       MSEP     MSEP_SE
-    ## 1          _Drought 0.8317218 0.013070914 0.13205402 0.009601551
-    ## 2        _Irrigated 0.6039633 0.035587716 0.25632422 0.018465327
-    ## 3 _ReducedIrrigated 0.8365320 0.009216862 0.04399918 0.002668383
+    ## [1] 3000    4
 
 Citation
 --------

@@ -11,7 +11,7 @@ Item Based Collaborative Filterign For Multi-trait and Multi-environment Data in
 
 ### Installation
 
-To complete installation of dev version of IBCF.MTME from GitHub, you have to install a few packages first.
+To complete installation of dev version of IBCF.MTME from GitHub, you must have previously installed the devtools package.
 
 ```{r installation, eval = FALSE}
 install.packages('devtools')
@@ -27,75 +27,52 @@ rm(list = ls())
 library(IBCF.MTME)
 data('Wheat_IBCF')
 
-DataSet <- data.frame(Data.Trigo_IBCF[,-1]) # Load from wheat_BGFRA data
-
-dim(DataSet)
-head(DataSet)
+head(Wheat_IBCF)
 ```
 
+```{r loadYearData}
+data('Year_IBCF')
 
-### Cross-validation model
+head(Year_IBCF)
+```
+
+### Cross-validation IBCF
 
 ```{r CVModel}
-##############Example of how to use the IBCF fucntion#######
-CV <- CV.RandomPart(NLine = nrow(DataSet), NEnv = 3, NTraits = 4, NPartitions =  10, PTesting = 0.2, Set_seed = 5)
+CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
 
-IBCF_Wheat <- IBCF(DataSet = DataSet, CrossValidation = CV)
-
-IBCF_Wheat$Ave_predictions
+pm <- IBCF(CrossV)
+summary(pm)
 
 par(mai = c(2, 1, 1, 1))
-
-plot(IBCF_Wheat) # By default graphs Pearson Correlation results
-plot(IBCF_Wheat, select = 'Pearson') 
-plot(IBCF_Wheat, select = 'MSEP')
+plot(pm, select = 'Pearson')
+plot(pm, select = 'MSEP')
 ```
 
-### Params
+### IBCF.Years Function
+```{r Years}
+data('Year_IBCF')
+DataSet <- getMatrixForm(Year_IBCF, withYears = T)
 
-In progress
+pm4 <- IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
+summary(pm4)
 
-## Advanced demos
+barplot(pm4, select = 'Pearson')
+barplot(pm4, select = 'MSEP')
+```
 
 ### Transform TidyData to Matrix and rollback
 
 ```{r MatrixAndTidy}
-library(BGFRA)
-data('wheat_BGFRA')
-data <- Wheat # Load from wheat_BGFRA data
+data('Wheat_IBCF')
 
-head(data)
+M <- getMatrixForm(Wheat_IBCF)
+dim(M)
 
-New_Data <- Tidy2Matrix(data)
-
-head(New_Data)
-
-## Rollback
-New_DataSet <- Matrix2Tidy(New_Data)
-
-head(New_DataSet)
+Tidy <- getTidyForm(M)
+dim(Tidy)
 ```
 
-
-### From Tidy-data to Matrix requiered form
-```{r BGFRA}
-library(BGFRA)
-data('wheat_BGFRA')
-data <- Wheat # Load from wheat_BGFRA data
-
-head(data)
-
-New_Data <- Tidy2Matrix(data)
-
-head(New_Data)
-
-CrossValidation <- CV.RandomPart(NLine = nrow(New_Data), NEnv = 3, NTraits = 1, NPartitions = 10, PTesting = .3, Set_seed = 5)
-
-BGFRA_Wheat <- IBCF(DataSet = New_Data, CrossValidation = CrossValidation)
-
-BGFRA_Wheat$Ave_predictions
-
-```
 
 ## Citation
 
