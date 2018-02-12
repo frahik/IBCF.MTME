@@ -1,7 +1,7 @@
 #' TidyData to Matrix
 #'
 #' @param Tidy_DataSet Tidy_DataSet
-#' @param withYears \code{logical} by default is \code{FALSE}, if is \code{TRUE} \code{$Years} is expected in \code{Tidy_DataSet}.
+#' @param onlyTrait \code{logical} by default is \code{FALSE}, if is \code{TRUE} only the column \code{$Trait} is transformed.
 #'
 #' @return A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
 #' @export
@@ -14,13 +14,13 @@
 #'
 #' \dontrun{
 #'   data('Year_IBCF')
-#'   M.Y <- getMatrixForm(Year_IBCF, withYears = T)
+#'   M.Y <- getMatrixForm(Year_IBCF, onlyTrait = T)
 #' }
-getMatrixForm <- function(Tidy_DataSet, withYears = FALSE){
+getMatrixForm <- function(Tidy_DataSet, onlyTrait = FALSE){
 
-  if (withYears) {
-    names_diff <- which(names(Tidy_DataSet) %in% c('Years', 'Trait', 'Response') == FALSE)
-    Tidy_DataSet <- Tidy_DataSet[ , c('Years', names(Tidy_DataSet)[names_diff], 'Trait', 'Response')]
+  if (onlyTrait) {
+    names_diff <- which(names(Tidy_DataSet) %in% c('Trait', 'Response') == FALSE)
+    Tidy_DataSet <- Tidy_DataSet[ , c(names(Tidy_DataSet)[names_diff], 'Trait', 'Response')]
     out <- tidyr::spread(Tidy_DataSet, 'Trait', Response)
   } else {
     if (is.null(Tidy_DataSet$Env)) {
@@ -43,7 +43,7 @@ getMatrixForm <- function(Tidy_DataSet, withYears = FALSE){
 #' Matrix to TidyData
 #'
 #' @param Matrix_DataSet A data.frame object with the response values divided in \eqn{n} enviroments or traits columns
-#' @param withYears \code{logical} by default is \code{FALSE}, if is \code{TRUE} \code{$Years} is expected in \code{Matrix_DataSet}.
+#' @param onlyTrait \code{logical} by default is \code{FALSE}, if is \code{TRUE} only is considered the \code{$Trait} column.
 #'
 #' @return A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
 #' @export
@@ -57,13 +57,13 @@ getMatrixForm <- function(Tidy_DataSet, withYears = FALSE){
 #'
 #' \dontrun{
 #'   data('Year_IBCF')
-#'   M.Y <- getMatrixForm(Year_IBCF, withYears = T)
-#'   Tidy.Y <- getTidyForm(M.Y, withYears = T)
+#'   M.Y <- getMatrixForm(Year_IBCF, onlyTrait = T)
+#'   Tidy.Y <- getTidyForm(M.Y, onlyTrait = T)
 #' }
 #'
-getTidyForm <- function(Matrix_DataSet, withYears = F){
+getTidyForm <- function(Matrix_DataSet, onlyTrait = F){
 
-  if (withYears) {
+  if (onlyTrait) {
     return(tidyr::gather(Matrix_DataSet, 'Trait', 'Response', -c(1:2)))
   } else {
     data <- tidyr::gather(Matrix_DataSet, 'TraitxEnv', 'Response', -c(1))

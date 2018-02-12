@@ -8,7 +8,7 @@
 #' @export
 summary.IBCF <- function(object,...){
   if (!inherits(object, "IBCF")) stop("This function only works for objects of class 'IBCF'")
-  print(object$Summary_predictions)
+  return(object$predictions_Summary)
 }
 
 
@@ -22,7 +22,7 @@ summary.IBCF <- function(object,...){
 #' @export
 summary.IBCFY <- function(object,...){
   if (!inherits(object, "IBCFY")) stop("This function only works for objects of class 'IBCFY'")
-  print(object$predictions_Summary)
+  return(object$predictions_Summary)
 }
 
 
@@ -40,7 +40,7 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
   ### Check that object is compatible
   if (!inherits(x, "IBCF")) stop("This function only works for objects of class 'IBCF'")
 
-  results <- x$Summary_predictions
+  results <- x$predictions_Summary
 
   results$Trait_Env <- results$Trait_Env[order(results[, select])]
   results[, select] <- results[order(results[, select]), select]

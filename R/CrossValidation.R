@@ -20,15 +20,21 @@
 #' @export
 CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = NULL) {
 
-
   if (!is.null(Set_seed)) {
     set.seed(Set_seed)
   }
 
-  new_Data <- getMatrixForm(DataSet, withYears = F)
+  if (length(unique(DataSet$Env)) == 0 ) {
+    DataSet$Env <- ''
+  }
+  if (length(unique(DataSet$Trait)) == 0 ) {
+    DataSet$Trait <- ''
+  }
+
+  new_Data <- getMatrixForm(DataSet, onlyTrait = F)
   NLine <- dim(new_Data)[1]
 
-  if (length(unique(DataSet$Env)) < 2) {
+  if (length(unique(DataSet$Env)) == 1 ) {
     No_Env_I <- length(unique(DataSet$Env))
     NEnv <- length(unique(DataSet$Trait))
     NTraits <- No_Env_I
@@ -118,31 +124,48 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 
 #' }
 #' @export
 CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
-  stop('Is not implemented yet')
-
   if (!is.null(Set_seed)) {
     set.seed(Set_seed)
   }
-
-  if (is.null(DataSet$Line)){
-    stop('Lines are not specified')
+  # df <- data.frame(matrix(rnorm(80), nrow=40))
+  # df$Rasgo <-  rep(c("T1", "T2", "T3", "T4"), times=c(10,10,15,5))
+  # indiceAleatorio <- with(df, ave(X1, Rasgo, FUN=function(x) {sample.int(length(x))}))
+  #
+  # seq(1, 15, 15/6)
+  # seq(1, 15, 15/6)
+  # df[rndid>=10&rndid<=15,]
+  # df[rndid>=1&rndid<=3.5,]
+  if (length(unique(DataSet$Env)) == 0 ) {
+    DataSet$Env <- ''
+  }
+  if (length(unique(DataSet$Trait)) == 0 ) {
+    DataSet$Trait <- ''
   }
 
   Data <- getMatrixForm(DataSet)
   NLine <- dim(Data)[1]
   if (length(unique(DataSet$Env)) < 2) {
     No_Env_I <- length(unique(DataSet$Env))
-    NEnv <- length(unique(DataSet$Trait))
+    if (length(unique(DataSet$Trait)) == 0) {
+      DataSet$Trait <- ''
+      NEnv <- 1
+    }else{
+      NEnv <- length(unique(DataSet$Trait))
+    }
     NTraits <- No_Env_I
     Trait <- unique(DataSet$Env)
     Env <- unique(DataSet$Trait)
   } else {
     NEnv <- length(unique(DataSet$Env))
-    NTraits <- length(unique(DataSet$Trait))
+    if (length(unique(DataSet$Trait)) == 0) {
+      DataSet$Trait <- ''
+      NTraits <- 1
+    }else{
+      NTraits <- length(unique(DataSet$Trait))
+    }
     Trait <- unique(DataSet$Trait)
     Env <- unique(DataSet$Env)
   }
-
   pos <- matrix(NA, nrow = dim(Data)[1], ncol = dim(Data)[2], dimnames = list(NULL, names(Data)))
 
   if ((is.null(DataSet$Env) || length(unique(DataSet$Env)) == 1) && (is.null(DataSet$Trait) || length(unique(DataSet$Trait)) == 1)) {
@@ -153,17 +176,27 @@ CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
     ng <- 0
     names(g_list) <- paste0('partition', 1:K)
     for (i in 1:K) {
-      g_list[[paste0('partition', i)]] <- pm[grs == i]
-      ng[i] <- length(g_list[[paste0('partition', i)]])
-      pos[[paste0('partition', i)]] <- matrix(1:dim(Data)[1], nrow = dim(Data)[1], ncol = dim(Data)[2], dimnames = list(NULL, names(Data)))
+      pos_testing <- pm[grs == i]
+      partition <- 1:dim(DataSet)[1]
+      partition[-pos_testing] <- 1
+      partition[pos_testing] <- 2
 
-      pos[[paste0('partition', i)]][g_list[[paste0('partition', i)]]== pos[[paste0('partition', i)]]] <- NA
-      pos[[paste0('partition', i)]][g_list[[paste0('partition', i)]]!= pos[[paste0('partition', i)]]] <- 2
-      pos[[paste0('partition', i)]][is.na(pos[[paste0('partition', i)]])] <- 1
+      pos[[paste0('partition', i)]] <- matrix(partition, nrow = dim(Data)[1], ncol = (dim(Data)[2]-1), dimnames = list(NULL, names(Data)[-1]))
     }
-    return(g_list)
-  }
+    out <- list(
+      DataSet = Data,
+      CrossValidation_list = pos,
+      Environments = Env,
+      Traits = Trait,
+      Observations = NLine
+    )
 
+    class(out) <- 'CrossValidation'
+    # return(out)
+
+    return(out)
+  }
+  stop('Is not implemented yet for more than 1 enviroment or trait')
   UL <- unique(DataSet$Line)
   #Number of sites where each line appear
   n_UL <- length(UL)
