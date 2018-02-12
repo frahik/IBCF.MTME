@@ -7,8 +7,27 @@
 getTidyForm(Matrix_DataSet, withYears = F)
 }
 \arguments{
-\item{Matrix}{Matrix}
+\item{Matrix_DataSet}{A data.frame object with the response values divided in \eqn{n} enviroments or traits columns}
+
+\item{withYears}{\code{logical} by default is \code{FALSE}, if is \code{TRUE} \code{$Years} is expected in \code{Matrix_DataSet}.}
+}
+\value{
+A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
 }
 \description{
 Matrix to TidyData
+}
+\examples{
+\dontrun{
+  data('Wheat_IBCF')
+  M <- getMatrixForm(Wheat_IBCF)
+  Tidy <- getTidyForm(M)
+}
+
+\dontrun{
+  data('Year_IBCF')
+  M.Y <- getMatrixForm(Year_IBCF, withYears = T)
+  Tidy.Y <- getTidyForm(M.Y, withYears = T)
+}
+
 }

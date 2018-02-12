@@ -8,7 +8,23 @@ getMatrixForm(Tidy_DataSet, withYears = FALSE)
 }
 \arguments{
 \item{Tidy_DataSet}{Tidy_DataSet}
+
+\item{withYears}{\code{logical} by default is \code{FALSE}, if is \code{TRUE} \code{$Years} is expected in \code{Tidy_DataSet}.}
+}
+\value{
+A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
 }
 \description{
 TidyData to Matrix
+}
+\examples{
+\dontrun{
+  data('Wheat_IBCF')
+  M <- getMatrixForm(Wheat_IBCF)
+}
+
+\dontrun{
+  data('Year_IBCF')
+  M.Y <- getMatrixForm(Year_IBCF, withYears = T)
+}
 }

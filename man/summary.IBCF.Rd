@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object}{\code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 Summary of IBCF object

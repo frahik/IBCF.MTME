@@ -20,9 +20,12 @@ CV.RandomPart(DataSet, NPartitions = 10, PTesting = 0.35, Set_seed = NULL)
 }
 \examples{
 \dontrun{
-  CV.RandomPart(DataSet)
-  CV.RandomPart(DataSet, NPartitions = 10)
-  CV.RandomPart(DataSet, NPartitions = 10, PTesting = .35)
-  CV.RandomPart(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 5)
+  library(IBCF.MTME)
+  data('Wheat_IBCF')
+
+  CV.RandomPart(Wheat_IBCF)
+  CV.RandomPart(Wheat_IBCF, NPartitions = 10)
+  CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35)
+  CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35, Set_seed = 5)
 }
 }

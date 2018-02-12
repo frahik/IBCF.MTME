@@ -4,10 +4,14 @@
 \alias{barplot.IBCFY}
 \title{barplot.IBCFY}
 \usage{
-\method{barplot}{IBCFY}(x, select = "Pearson", ...)
+\method{barplot}{IBCFY}(height, select = "Pearson", ...)
 }
 \arguments{
-\item{object}{\code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Year()}
+\item{height}{\code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Year()}
+
+\item{select}{\code{character} By default ('Pearson'), plot the Pearson Correlations of the IBCF Object, else ('MSEP'), plot the MSEP of the IBCF Object.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 Solo es una prueba

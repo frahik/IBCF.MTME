@@ -21,7 +21,7 @@ CV.KFold(DataSet, K = 5, Set_seed = NULL)
   library(IBCF.MTME)
   data('Wheat_IBCF')
   DataSet <- data.frame(Data.Trigo_IBCF[,-1])
-  Tidy_DataSet <- Matrix2Tidy(DataSet)
-  CV.KFold(Tidy_DataSet = Tidy_DataSet, K = 5, Set_seed = 10)
+  DataSet <- Matrix2Tidy(DataSet)
+  CV.KFold(DataSet = DataSet, K = 5, Set_seed = 10)
 }
 }

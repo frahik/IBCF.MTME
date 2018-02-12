@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object}{\code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Years}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 Summary of IBCFY object

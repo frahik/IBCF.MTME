@@ -4,14 +4,28 @@
 \alias{IBCF}
 \title{IBCF: Item Based Collaborative Filterign}
 \usage{
-IBCF(object, dec = 4, ...)
+IBCF(object, dec = 4)
 }
 \arguments{
-\item{CrossValidation}{\code{list} List with the partitions}
+\item{object}{\code{list} CrossValidation object, is obtained from CV.RandomPartition function.}
+
+\item{dec}{\code{integer} Number of decimals to print in the results.}
+}
+\value{
+A list with the next components
+\item{NPartitions}{\code{integer} Number of partitions used for testing data}
+\item{Summary_predictions}{\code{data.frame} A data.frame with the results of the test}
 }
 \description{
 Item Based Collaborative Filterign for multi-trait and multi-environment data.
 }
 \examples{
+ \dontrun{
+  library(IBCF.MTME)
+  data('Wheat_IBCF')
+
+  CV <- CV.RandomPart(Wheat_IBCF)
+  IBCF(CV)
+}
 
 }

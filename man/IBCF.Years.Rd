@@ -7,11 +7,13 @@
 IBCF.Years(DataSet, Years.testing = "", Traits.testing = "", dec = 4)
 }
 \arguments{
-\item{DataSet}{\code{data.frame}}
+\item{DataSet}{\code{data.frame} A dataSet in Matrix Form.}
 
-\item{Years.testing}{\code{vector}}
+\item{Years.testing}{\code{vector} A vector with the names of the years to use in test.}
 
-\item{Traits.testing}{\code{vector}}
+\item{Traits.testing}{\code{vector} A vector with the names of the traits to use in test.}
+
+\item{dec}{\code{integer} Number of decimals to print in the results.}
 }
 \value{
 A list with the next components
@@ -24,6 +26,12 @@ A list with the next components
 Item Based Collaborative Filterign for Years data
 }
 \examples{
+\dontrun{
+  library(IBCF.MTME)
+  data('Year_IBCF')
+  DataSet <- getMatrixForm(Year_IBCF, withYears = T)
+  IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
 
+}
 
 }
