@@ -1,9 +1,10 @@
 #' @title IBCF.Years
 #' @description Item Based Collaborative Filterign for Years data
 #'
-#' @param DataSet \code{data.frame}
-#' @param Years.testing \code{vector}
-#' @param Traits.testing \code{vector}
+#' @param DataSet \code{data.frame} A dataSet in Matrix Form.
+#' @param Years.testing \code{vector} A vector with the names of the years to use in test.
+#' @param Traits.testing \code{vector} A vector with the names of the traits to use in test.
+#' @param dec \code{integer} Number of decimals to print in the results.
 #'
 #' @return A list with the next components
 #' \item{Year.testing}{\code{vector} a vector with the Years used for the testing data}
@@ -12,7 +13,13 @@
 #' \item{predictions_Summary}{\code{data.frame} Contains the summary of the correlation of the predictions and de mean squared error of the predictions (MSEP)}
 #'
 #' @examples
+#' \dontrun{
+#'   library(IBCF.MTME)
+#'   data('Year_IBCF')
+#'   DataSet <- getMatrixForm(Year_IBCF, withYears = T)
+#'   IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
 #'
+#' }
 #'
 #' @export
 IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4) {

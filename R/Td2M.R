@@ -1,11 +1,21 @@
 #' TidyData to Matrix
 #'
 #' @param Tidy_DataSet Tidy_DataSet
+#' @param withYears \code{logical} by default is \code{FALSE}, if is \code{TRUE} \code{$Years} is expected in \code{Tidy_DataSet}.
 #'
-#' @return
+#' @return A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#'   data('Wheat_IBCF')
+#'   M <- getMatrixForm(Wheat_IBCF)
+#' }
+#'
+#' \dontrun{
+#'   data('Year_IBCF')
+#'   M.Y <- getMatrixForm(Year_IBCF, withYears = T)
+#' }
 getMatrixForm <- function(Tidy_DataSet, withYears = FALSE){
 
   if (withYears) {
@@ -32,15 +42,29 @@ getMatrixForm <- function(Tidy_DataSet, withYears = FALSE){
 
 #' Matrix to TidyData
 #'
-#' @param Matrix Matrix
+#' @param Matrix_DataSet A data.frame object with the response values divided in \eqn{n} enviroments or traits columns
+#' @param withYears \code{logical} by default is \code{FALSE}, if is \code{TRUE} \code{$Years} is expected in \code{Matrix_DataSet}.
 #'
-#' @return
+#' @return A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#'   data('Wheat_IBCF')
+#'   M <- getMatrixForm(Wheat_IBCF)
+#'   Tidy <- getTidyForm(M)
+#' }
+#'
+#' \dontrun{
+#'   data('Year_IBCF')
+#'   M.Y <- getMatrixForm(Year_IBCF, withYears = T)
+#'   Tidy.Y <- getTidyForm(M.Y, withYears = T)
+#' }
+#'
 getTidyForm <- function(Matrix_DataSet, withYears = F){
+
   if (withYears) {
-    return(tidyr::gather(Matrix_DataSet, 'Trait', 'Response', -c(1,2)))
+    return(tidyr::gather(Matrix_DataSet, 'Trait', 'Response', -c(1:2)))
   } else {
     data <- tidyr::gather(Matrix_DataSet, 'TraitxEnv', 'Response', -c(1))
     return(tidyr::separate(data, TraitxEnv, c("Trait", "Env"), sep = "_"))

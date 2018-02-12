@@ -3,6 +3,7 @@
 #' @description Summary of IBCF object
 #'
 #' @param object \code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF
+#' @param ... Further arguments passed to or from other methods.
 #'
 #' @export
 summary.IBCF <- function(object,...){
@@ -16,6 +17,7 @@ summary.IBCF <- function(object,...){
 #' @description Summary of IBCFY object
 #'
 #' @param object \code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Years
+#' @param ... Further arguments passed to or from other methods.
 #'
 #' @export
 summary.IBCFY <- function(object,...){
@@ -28,8 +30,11 @@ summary.IBCFY <- function(object,...){
 #'
 #' @description Graphs from IBCF object
 #'
-#' @param object \code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF()
+#' @param x \code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF()
+#' @param select \code{character} By default ('Pearson'), plot the Pearson Correlations of the IBCF Object, else ('MSEP'), plot the MSEP of the IBCF Object.
+#' @param ... Further arguments passed to or from other methods.
 #'
+#' @importFrom graphics arrows axis plot
 #' @export
 plot.IBCF <- function(x, select = 'Pearson', ...){
   ### Check that object is compatible
@@ -51,7 +56,7 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
   x <- 1:length(results$Trait_Env)
   plot(x, results[, select], ylim = range(c(results[, select] - results$SE, results[, select] + results$SE)),
        type = 'p', ylab = ylab, xlab = '', xaxt = "n", las = 2)
-  axis(1, at = x, lab = results$Trait_Env, las = 2)
+  axis(1, at = x, labels = results$Trait_Env, las = 2)
   arrows(x, results[, select] - results$SE, x, results[, select] + results$SE, code = 3, length = 0.02, angle = 90)
 }
 
@@ -60,14 +65,17 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
 #'
 #' @description Solo es una prueba
 #'
-#' @param object \code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Year()
+#' @param height \code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Year()
+#' @param select \code{character} By default ('Pearson'), plot the Pearson Correlations of the IBCF Object, else ('MSEP'), plot the MSEP of the IBCF Object.
+#' @param ... Further arguments passed to or from other methods.
 #'
+#' @importFrom graphics barplot
 #' @export
-barplot.IBCFY <- function(x, select = 'Pearson', ...){
+barplot.IBCFY <- function(height, select = 'Pearson', ...){
   ### Check that object is compatible
-  if (!inherits(x, "IBCFY")) stop("This function only works for objects of class 'IBCF'")
+  if (!inherits(height, "IBCFY")) stop("This function only works for objects of class 'IBCF'")
 
-  results <- x$predictions_Summary
+  results <- height$predictions_Summary
   vector <- as.numeric(paste(results[, select]))
   names(vector) <- names(results[, select])
 

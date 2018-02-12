@@ -1,15 +1,3 @@
-#' @title Title
-#' @details Non details provided
-#'
-#' @param geno_no
-#' @param item_sim
-#' @param ratings
-#'
-#' @return
-#'
-#' @export
-#'
-#' @examples
 rec_itm_for_geno <- function(geno_no, item_sim, ratings)  {
   genoRatings <- ratings[geno_no,]
   non_rated_items <- list()

@@ -1,13 +1,26 @@
 #' @title IBCF: Item Based Collaborative Filterign
 #' @description Item Based Collaborative Filterign for multi-trait and multi-environment data.
-#' @param CrossValidation \code{list} List with the partitions
 #'
-#' @return
+#' @param object \code{list} CrossValidation object, is obtained from CV.RandomPartition function.
+#' @param dec \code{integer} Number of decimals to print in the results.
+#'
+#' @return A list with the next components
+#' \item{NPartitions}{\code{integer} Number of partitions used for testing data}
+#' \item{Summary_predictions}{\code{data.frame} A data.frame with the results of the test}
+#'
 #' @export
 #'
+#' @importFrom stats cor na.omit sd
 #' @examples
+#'  \dontrun{
+#'   library(IBCF.MTME)
+#'   data('Wheat_IBCF')
 #'
-IBCF <- function(object, dec = 4, ...) {
+#'   CV <- CV.RandomPart(Wheat_IBCF)
+#'   IBCF(CV)
+#' }
+#'
+IBCF <- function(object, dec = 4) {
   if (!inherits(object, "CrossValidation")) stop("This function only works for objects of class 'CrossValidation'")
   # object <- CV
   DataSet <- object$DataSet

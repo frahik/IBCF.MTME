@@ -9,13 +9,18 @@
 #'
 #' @examples
 #' \dontrun{
-#'   CV.RandomPart(DataSet)
-#'   CV.RandomPart(DataSet, NPartitions = 10)
-#'   CV.RandomPart(DataSet, NPartitions = 10, PTesting = .35)
-#'   CV.RandomPart(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 5)
+#'   library(IBCF.MTME)
+#'   data('Wheat_IBCF')
+#'
+#'   CV.RandomPart(Wheat_IBCF)
+#'   CV.RandomPart(Wheat_IBCF, NPartitions = 10)
+#'   CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35)
+#'   CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35, Set_seed = 5)
 #' }
 #' @export
 CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = NULL) {
+
+
   if (!is.null(Set_seed)) {
     set.seed(Set_seed)
   }
@@ -108,8 +113,8 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 
 #'   library(IBCF.MTME)
 #'   data('Wheat_IBCF')
 #'   DataSet <- data.frame(Data.Trigo_IBCF[,-1])
-#'   Tidy_DataSet <- Matrix2Tidy(DataSet)
-#'   CV.KFold(Tidy_DataSet = Tidy_DataSet, K = 5, Set_seed = 10)
+#'   DataSet <- Matrix2Tidy(DataSet)
+#'   CV.KFold(DataSet = DataSet, K = 5, Set_seed = 10)
 #' }
 #' @export
 CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
@@ -119,15 +124,29 @@ CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
     set.seed(Set_seed)
   }
 
-  if (is.null(Tidy_DataSet$Line)){
+  if (is.null(DataSet$Line)){
     stop('Lines are not specified')
   }
 
-  Data <- Tidy2Matrix(Tidy_DataSet)
+  Data <- getMatrixForm(DataSet)
+  NLine <- dim(Data)[1]
+  if (length(unique(DataSet$Env)) < 2) {
+    No_Env_I <- length(unique(DataSet$Env))
+    NEnv <- length(unique(DataSet$Trait))
+    NTraits <- No_Env_I
+    Trait <- unique(DataSet$Env)
+    Env <- unique(DataSet$Trait)
+  } else {
+    NEnv <- length(unique(DataSet$Env))
+    NTraits <- length(unique(DataSet$Trait))
+    Trait <- unique(DataSet$Trait)
+    Env <- unique(DataSet$Env)
+  }
+
   pos <- matrix(NA, nrow = dim(Data)[1], ncol = dim(Data)[2], dimnames = list(NULL, names(Data)))
 
-  if ((is.null(Tidy_DataSet$Env) || length(unique(Tidy_DataSet$Env)) == 1) && (is.null(Tidy_DataSet$Trait) || length(unique(Tidy_DataSet$Trait)) == 1)) {
-    pm <- sample(dim(Tidy_DataSet)[1])
+  if ((is.null(DataSet$Env) || length(unique(DataSet$Env)) == 1) && (is.null(DataSet$Trait) || length(unique(DataSet$Trait)) == 1)) {
+    pm <- sample(dim(DataSet)[1])
     grs <- cut(seq(1, length(pm)), breaks = K, labels = FALSE)
     g_list <- vector('list', K)
     pos <- vector('list', K)
@@ -145,12 +164,12 @@ CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
     return(g_list)
   }
 
-  UL <- unique(Tidy_DataSet$Line)
+  UL <- unique(DataSet$Line)
   #Number of sites where each line appear
   n_UL <- length(UL)
   nSLA <- rep(NA, n_UL)
 
-  nEAL <- table(Tidy_DataSet[, c('Line')])#Number of Sites that appear  each line
+  nEAL <- table(DataSet[, c('Line')])#Number of Sites that appear  each line
   L_nE <- data.frame(Line = names(nEAL), nE = c(nEAL))
 
   #A list of Positions in data set dat_F that will conform the groups
@@ -160,12 +179,12 @@ CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
   #Lines that will appear in all groups because
   # only appear in only one Site
   Pos1 <- which(L_nE$nE == 1)
-  Pos_1_dat_F <- match(L_nE$Line[Pos1], Tidy_DataSet$Line)
+  Pos_1_dat_F <- match(L_nE$Line[Pos1], DataSet$Line)
   #dat_F[Pos_1_dat_F,]
 
   #Tama?o de cada partici?n sin considerar las lineas
   # que se incluir?n por defaul (las que aparecen en un solo ambiente)
-  n <- dim(Tidy_DataSet)[1]
+  n <- dim(DataSet)[1]
   nR <- n - length(Pos1)
   ifelse(nR %% K == 0,
          ng <- rep(nR / K, K),
@@ -176,16 +195,16 @@ CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
   #First group
   #---------------------------------------------------------------
   if (length(Pos1) == 0) {
-    dat_F_k <- Tidy_DataSet
+    dat_F_k <- DataSet
   }
   else{
-    dat_F_k <- Tidy_DataSet[-Pos_1_dat_F,]
+    dat_F_k <- DataSet[-Pos_1_dat_F,]
   }
   #Lineas ?nicas restantes
   UL_k <- unique(dat_F_k$Line)
   Pos_R_k <- rep(NA, length(UL_k))
   for (j in 1:length(UL_k)) {
-    Pos_j_k <-  which(Tidy_DataSet$Line == UL_k[j])
+    Pos_j_k <-  which(DataSet$Line == UL_k[j])
     Pos_R_k[j] <- sample(Pos_j_k, 1)
   }
   Pos_R_k <- Pos_R_k
@@ -199,18 +218,18 @@ CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
   for (k in 2:(K - 1))  {
     #Assigned positions
     Pos_k_a_R <- unique(unlist(g_list[1:(k - 1)]))
-    dat_F_k <- Tidy_DataSet[-Pos_k_a_R,]
+    dat_F_k <- DataSet[-Pos_k_a_R,]
     UL_k <- unique(dat_F_k$Line)
     #A las lineas que no aparecen en el grupo k-1, se remueve un
     # site donde aparencen para garantizar que ?stas aparezcan
     # en al menos un site
-    UL_k <- UL_k[(UL_k %in% Tidy_DataSet[Pos_k_a_R,]$Line) == FALSE]
+    UL_k <- UL_k[(UL_k %in% DataSet[Pos_k_a_R,]$Line) == FALSE]
     if (length(UL_k) > 0) {
       #Posiciones de lineas a mantener fuera del grupo k
       Pos_R_k <- rep(NA, length(UL_k))
 
       for (j in 1:length(UL_k)) {
-        Pos_j_k <-  which((Tidy_DataSet$Line == UL_k[j]))
+        Pos_j_k <-  which((DataSet$Line == UL_k[j]))
         if (length(Pos_j_k) > 1) {
           Pos_R_k[j] <- sample(Pos_j_k, 1)
         }
@@ -233,11 +252,9 @@ CV.KFold <- function(DataSet, K = 5, Set_seed = NULL){
   n_CL <- length(Pos_1_dat_F)
 
 
-  return(g_list)
-
   out <- list(
-    DataSet = new_Data,
-    CrossValidation_list = p_list,
+    DataSet = Data,
+    CrossValidation_list = g_list,
     Environments = Env,
     Traits = Trait,
     Observations = NLine
