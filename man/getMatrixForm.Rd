@@ -4,12 +4,12 @@
 \alias{getMatrixForm}
 \title{TidyData to Matrix}
 \usage{
-getMatrixForm(Tidy_DataSet, withYears = FALSE)
+getMatrixForm(Tidy_DataSet, onlyTrait = FALSE)
 }
 \arguments{
 \item{Tidy_DataSet}{Tidy_DataSet}
 
-\item{withYears}{\code{logical} by default is \code{FALSE}, if is \code{TRUE} \code{$Years} is expected in \code{Tidy_DataSet}.}
+\item{onlyTrait}{\code{logical} by default is \code{FALSE}, if is \code{TRUE} only the column \code{$Trait} is transformed.}
 }
 \value{
 A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
@@ -25,6 +25,6 @@ TidyData to Matrix
 
 \dontrun{
   data('Year_IBCF')
-  M.Y <- getMatrixForm(Year_IBCF, withYears = T)
+  M.Y <- getMatrixForm(Year_IBCF, onlyTrait = T)
 }
 }
