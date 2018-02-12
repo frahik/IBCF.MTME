@@ -26,10 +26,6 @@ IBCF <- function(object, dec = 4) {
   DataSet <- object$DataSet
   CrossValidation <- object$CrossValidation_list
 
-  #####Matrix for saving the observed and predicted values for each partion###
-  Data.Obs_Pred <- data.frame(matrix(NA, nrow = nrow(DataSet), ncol = (2 * ncol(DataSet) - 2)))
-  Data.Obs_Pred[, 1:(ncol(DataSet) - 1)] <- DataSet[, -c(1)]
-
   ##############Creating the partions of the cross-validation############
   # CrossValidation <- CV.RandomPart(NLine = nrow(DataSet), NEnv = NEnv, NTraits = NTraits, NPartitions = NPartitions, PTesting = PTesting)
 
@@ -44,6 +40,10 @@ IBCF <- function(object, dec = 4) {
 
   NPartitions <- length(CrossValidation)
   Ave_predictions <- matrix(NA, ncol = 5, nrow = nIL)
+
+  predicted <- vector('list', NPartitions)
+  names(predicted) <- paste0('Partition', 1:NPartitions)
+
   for (j in 1:NPartitions) {
     Part <- CrossValidation[[j]]
 
@@ -72,8 +72,8 @@ IBCF <- function(object, dec = 4) {
     SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = T)
 
     Scaled_Row <- t(scale(t(Scaled_Col)))
-
-    Data.trn_scaled <- data.frame(cbind(Data.trn[, c(1)], Scaled_Row))
+    # Data.trn_scaled <- cbind(Data.trn[, c(1)], Scaled_Row)
+    Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, c(1)]), Scaled_Row)
 
     Hybrids.New <- Data.trn_scaled
     Hybrids.New[, 2:ncol(Data.trn_scaled)] <- NA
@@ -87,7 +87,7 @@ IBCF <- function(object, dec = 4) {
     item_sim <- lsa::cosine(as.matrix((x)))
 
     ##############Positions with no missing values########################
-    pos.used <- c(1:nrow(ratings))
+    # pos.used <- c(1:nrow(ratings))
     # pos.complete <- pos.used[-rows.Na]
     pos.w.Na <- rows.Na
 
@@ -105,10 +105,9 @@ IBCF <- function(object, dec = 4) {
 
     All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
     colnames(All.Pred_O) <- colnames(Data.trn_scaled[,-c(1)])
-
     All.Pred_O_tst <- All.Pred_O[rows.Na,]
 
-    Data.Obs_Pred[rows.Na, (ncol(All.Pred_O) + 1):(2 * ncol(All.Pred_O))] <- All.Pred_O[rows.Na,]
+    predicted[[paste0('Partition', j)]] <- All.Pred_O_tst
 
     DataSet_tst <- DataSet[rows.Na, -c(1)]
 
@@ -148,7 +147,8 @@ IBCF <- function(object, dec = 4) {
   Ave_predictions$Trait_Env <- colnames(DataSet[,-c(1)])
 
   out <- list(NPartitions = NPartitions,
-              Summary_predictions = Ave_predictions)
+              predictions_Summary = Ave_predictions,
+              Predictions = predicted)
   class(out) <- 'IBCF'
   return(out)
 }
