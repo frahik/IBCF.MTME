@@ -65,7 +65,7 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
   Means_trn <- apply(Data.trn[,-c(1,2)], 2, mean, na.rm = T)
   SDs_trn <- apply(Data.trn[,-c(1,2)], 2, sd, na.rm = T)
 
-  Mean_and_SD <- data.frame(cbind(Means_trn, SDs_trn))
+  # Mean_and_SD <- data.frame(cbind(Means_trn, SDs_trn))
 
   Scaled_Col <- scale(Data.trn[,-c(1,2)])
   Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = T)
@@ -73,7 +73,7 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
 
   Scaled_Row <- t(scale(t(Scaled_Col)))
 
-  Data.trn_scaled <- data.frame(cbind(Data.trn[,c(1,2)], Scaled_Row))
+  Data.trn_scaled <- data.frame(Data.trn[,c(1,2)], Scaled_Row)
 
   Hybrids.New <- Data.trn_scaled
   Hybrids.New[, 2:ncol(Data.trn_scaled)] <- NA
@@ -87,7 +87,7 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
 
   ##############Positions with no missing values########################
   pos.used <- c(1:nrow(ratings1))
-  pos.complete <- pos.used[-rows.Na]
+  # pos.complete <- pos.used[-rows.Na]
   pos.w.Na <- rows.Na
 
   Hyb.pred <- as.data.frame(Data.trn_scaled[,-1])
@@ -100,7 +100,6 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
   All.Pred <- data.matrix(Hyb.pred[,-1])
 
   All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
-  All.Pred_O_Row
 
   All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
 
@@ -121,12 +120,22 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
     All.Pred_O_tst <- All.Pred_O[pos.Years_q, (pos.Traits.missing - 2)]
 
     Cor_all_tst <- cor(Data.Final_tst,All.Pred_O_tst)
-    Cor_all_tst
 
     Dif_Obs_pred <- Data.Final_tst - All.Pred_O_tst
     Dif_Obs_pred2 <- Dif_Obs_pred^2
-    MSEP_vec <- apply(Dif_Obs_pred2, 2, mean)
-    Cor_vec <- diag(Cor_all_tst)
+
+    MSEP_vec = tryCatch({
+      apply(Dif_Obs_pred2, 2, mean)
+    }, error = function(e) {
+      mean(Dif_Obs_pred2)
+    })
+
+    if (length(Cor_all_tst)[1] == 1) {
+      Cor_vec = Cor_all_tst
+    }else{
+      Cor_vec = diag(Cor_all_tst)
+    }
+
     Pearson <- c(Pearson, round(Cor_vec, digits = dec))
     MSEP <- c(MSEP, round(MSEP_vec, digits = dec))
     Names_Trait_env <- c(paste(Years.Missing[q], colnames(Data.Final_tst), sep = "_"))
@@ -134,7 +143,7 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
   }
   names(Pearson) <- Year_Trait
   names(MSEP) <- Year_Trait
-  Summary_predictions <- data.frame(cbind(Year_Trait, Pearson, MSEP))
+  Summary_predictions <- data.frame(Year_Trait, Pearson, MSEP)
 
   out <- list(Years.testing = Years.testing,
               Traits.testing = Traits.testing,
