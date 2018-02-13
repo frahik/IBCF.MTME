@@ -33,6 +33,7 @@ test_that('Crossvalidation function', {
   expect_output(str(CrossV1), 'List of 5')
   expect_is(CrossV1, 'CrossValidation')
   expect_false(any(is.na(CrossV1$DataSet)))
+  expect_false(any(is.na(CrossV1$CrossValidation_list)))
 })
 
 context('IBCF Tests')
