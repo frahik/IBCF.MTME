@@ -1,17 +1,8 @@
 rec_itm_for_geno <- function(geno_no, item_sim, ratings)  {
   genoRatings <- ratings[geno_no,]
-  non_rated_items <- list()
-  rated_items <- list()
-  for (i in 2:ncol(genoRatings)) {
-    if (is.na(genoRatings[,i])) {
-      non_rated_items <- c(non_rated_items, colnames(genoRatings)[i])
-    } else {
-      rated_items <- c(rated_items, colnames(genoRatings)[i])
-    }
-  }
 
-  non_rated_items <- unlist(non_rated_items)
-  rated_items <- unlist(rated_items)
+  non_rated_items <- colnames(genoRatings)[which(is.na(genoRatings))]
+  rated_items <- colnames(genoRatings)[which(!is.na(genoRatings))]
 
   #create weighted similarity for all the rated items by geno
   non_rated_pred_score <- list()

@@ -71,9 +71,12 @@ IBCF <- function(object, dec = 4) {
     Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = T)
     SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = T)
 
-    Scaled_Row <- t(scale(t(Scaled_Col)))
-    # Data.trn_scaled <- cbind(Data.trn[, c(1)], Scaled_Row)
-    Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, c(1)]), Scaled_Row)
+    if (any(is.na(SDs_trn_Row))) {
+      Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, c(1)]), Scaled_Col)
+    } else {
+      Scaled_Row <- t(scale(t(Scaled_Col)))
+      Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, c(1)]), Scaled_Row)
+    }
 
     Hybrids.New <- Data.trn_scaled
     Hybrids.New[, 2:ncol(Data.trn_scaled)] <- NA
@@ -91,19 +94,24 @@ IBCF <- function(object, dec = 4) {
     # pos.complete <- pos.used[-rows.Na]
     pos.w.Na <- rows.Na
 
-    Hyb.pred <- as.data.frame(Data.trn_scaled)
     pos.lim <- length(pos.w.Na)
 
     for (i in 1:pos.lim) {
       pos <- pos.w.Na[i]
-      Hyb.pred[pos, c(2:ncol(Hyb.pred))] <- c(rec_itm_for_geno(pos, item_sim, ratings)[2:ncol(Hyb.pred)])
+      ratings[pos, c(2:ncol(ratings))] <- c(rec_itm_for_geno(pos, item_sim, ratings[,2:(ncol(ratings))]))
     }
 
-    All.Pred <- data.matrix(Hyb.pred[,-1])
+    All.Pred <- data.matrix(ratings[,-1])
 
-    All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
+    if (any(is.na(SDs_trn_Row))) {
+      ## cambiar por all.Pred solo si ocurre error
+      All.Pred_O <- sapply(1:ncol(All.Pred), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
+    } else {
+      ## Si ocurre error, este se evita.
+      All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
+      All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
+    }
 
-    All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
     colnames(All.Pred_O) <- colnames(Data.trn_scaled[,-c(1)])
     All.Pred_O_tst <- All.Pred_O[rows.Na,]
 

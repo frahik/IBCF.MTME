@@ -2,6 +2,7 @@
 #' @description Item Based Collaborative Filterign for Years data
 #'
 #' @param DataSet \code{data.frame} A dataSet in Matrix Form.
+#' @param colYears \code{string or integer} A name or the position of the 'Years' column just in case that is´t the first column.
 #' @param Years.testing \code{vector} A vector with the names of the years to use in test.
 #' @param Traits.testing \code{vector} A vector with the names of the traits to use in test.
 #' @param dec \code{integer} Number of decimals to print in the results.
@@ -22,8 +23,8 @@
 #' }
 #'
 #' @export
-IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4) {
-  No.Years <- length(unique(DataSet$Years))
+IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing = '', dec = 4) {
+  No.Years <- length(unique(DataSet[, colYears]))
   No.Years.testing <- length(Years.testing)
   No.Traits <- length(colnames(DataSet)) - 2
   No.Traits.testing <- length(Traits.testing)
@@ -35,30 +36,12 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
   if (No.Traits.testing > No.Traits.Accepted) {
     stop( "No.Traits.testing must be larger than No.Traits.Accepted in the whole data set")}
 
-  #####Data set to use###########################
-  Data.Final <- data.frame(DataSet)
+  pos.Years.testing <- which(DataSet[, colYears] %in% Years.testing)
 
-  ##########Years for testing set####################
-  Years.Missing <- Years.testing
+  pos.Traits.testing <- which(colnames(DataSet) %in% Traits.testing)
 
-  ############Traits for testing set##################
-  Traits.missing <- Traits.testing
-  nIL <- ncol(Data.Final) - 2
-
-  pos.Years.Missing <- c()
-  for (q in 1:length(Years.Missing)) {
-    pos.Years1 <- which(c(Data.Final[,1]) == Years.Missing[q])
-    pos.Years.Missing <- c(pos.Years.Missing, pos.Years1)
-  }
-
-  pos.Traits.missing <- c()
-  for (q in 1:length(Traits.missing)) {
-    pos.Traits1 <- which(grepl(Traits.missing[q], colnames(Data.Final)) == T)
-    pos.Traits.missing <- c(pos.Traits.missing, pos.Traits1)
-  }
-
-  Data.trn <- Data.Final
-  Data.trn[pos.Years.Missing,pos.Traits.missing] <- NA
+  Data.trn <- DataSet
+  Data.trn[pos.Years.testing, pos.Traits.testing] <- NA
 
   rows.Na <- which(apply(Data.trn,1,function(x)any(is.na(x))) == TRUE)
 
@@ -71,23 +54,23 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
   Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = T)
   SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = T)
 
-  Scaled_Row <- t(scale(t(Scaled_Col)))
-
-  Data.trn_scaled <- data.frame(Data.trn[,c(1,2)], Scaled_Row)
+  if (any(is.na(SDs_trn_Row))) {
+    Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, c(1)]), Scaled_Col)
+  } else {
+    Scaled_Row <- t(scale(t(Scaled_Col)))
+    Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, c(1)]), Scaled_Row)
+  }
 
   Hybrids.New <- Data.trn_scaled
   Hybrids.New[, 2:ncol(Data.trn_scaled)] <- NA
 
-  ratings1 <- Data.trn_scaled[,-1]
-  ratings <- ratings1
+  ratings <- Data.trn_scaled[,-1]
 
-  x <- ratings[,2:(ncol(ratings))]
+  x <- ratings
   x[is.na(x)] <- 0
   item_sim <- lsa::cosine(as.matrix((x)))
 
   ##############Positions with no missing values########################
-  pos.used <- c(1:nrow(ratings1))
-  # pos.complete <- pos.used[-rows.Na]
   pos.w.Na <- rows.Na
 
   Hyb.pred <- as.data.frame(Data.trn_scaled[,-1])
@@ -95,33 +78,39 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
 
   for (i in 1:pos.lim) {
     pos <- pos.w.Na[i]
-    Hyb.pred[pos,c(2:ncol(Hyb.pred))] <- c(rec_itm_for_geno(pos,item_sim,ratings)[2:ncol(Hyb.pred)])
+    Hyb.pred[pos,c(1:ncol(Hyb.pred))] <- c(rec_itm_for_geno(pos,item_sim,ratings)[1:ncol(Hyb.pred)])
   }
-  All.Pred <- data.matrix(Hyb.pred[,-1])
 
-  All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
+  All.Pred <- data.matrix(Hyb.pred)
 
-  All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
+  if (any(is.na(SDs_trn_Row))) {
+    ## cambiar por all.Pred solo si ocurre error
+    All.Pred_O <- sapply(1:ncol(All.Pred), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
+  } else {
+    ## Si ocurre error, este se evita.
+    All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
+    All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
+  }
 
-  colnames(All.Pred_O) <- colnames(Data.trn_scaled[,-c(1,2)])
+  colnames(All.Pred_O) <- colnames(Data.trn_scaled[,-1])
 
-  Data.Obs_Pred <- data.frame(Data.Final[pos.Years.Missing, c(1, 2, pos.Traits.missing)], All.Pred_O[pos.Years.Missing, (pos.Traits.missing - 2)])
+  Data.Obs_Pred <- data.frame(DataSet[pos.Years.testing, c(1, 2, pos.Traits.testing)], All.Pred_O[pos.Years.testing, (pos.Traits.testing - 2)])
 
   Pearson <- c()
   MSEP <- c()
   Year_Trait <- c()
 
-  Data.Final_P <- Data.Final[,-c(1,2)]
+  DataSet_P <- DataSet[,-c(1,2)]
 
-  for (q in 1:length(Years.Missing)) {
-    pos.Years_q <- which(c(Data.Final[,1]) == Years.Missing[q])
+  for (q in 1:length(Years.testing)) {
+    pos.Years_q <- which(c(DataSet[, colYears]) == Years.testing[q])
 
-    Data.Final_tst <- Data.Final_P[pos.Years_q, (pos.Traits.missing - 2)]
-    All.Pred_O_tst <- All.Pred_O[pos.Years_q, (pos.Traits.missing - 2)]
+    DataSet_tst <- DataSet_P[pos.Years_q, (pos.Traits.testing - 2)]
+    All.Pred_O_tst <- All.Pred_O[pos.Years_q, (pos.Traits.testing - 2)]
 
-    Cor_all_tst <- cor(Data.Final_tst,All.Pred_O_tst)
+    Cor_all_tst <- cor(DataSet_tst,All.Pred_O_tst)
 
-    Dif_Obs_pred <- Data.Final_tst - All.Pred_O_tst
+    Dif_Obs_pred <- DataSet_tst - All.Pred_O_tst
     Dif_Obs_pred2 <- Dif_Obs_pred^2
 
     MSEP_vec = tryCatch({
@@ -138,7 +127,7 @@ IBCF.Years <- function(DataSet, Years.testing = '', Traits.testing = '', dec = 4
 
     Pearson <- c(Pearson, round(Cor_vec, digits = dec))
     MSEP <- c(MSEP, round(MSEP_vec, digits = dec))
-    Names_Trait_env <- c(paste(Years.Missing[q], colnames(Data.Final_tst), sep = "_"))
+    Names_Trait_env <- c(paste(Years.testing[q], colnames(DataSet_tst), sep = "_"))
     Year_Trait <- c(Year_Trait, Names_Trait_env)
   }
   names(Pearson) <- Year_Trait
