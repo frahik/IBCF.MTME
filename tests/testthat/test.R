@@ -1,7 +1,7 @@
 library(testthat)
 library(IBCF.MTME)
 
-context('Functions')
+context('Data transformation tests')
 
 test_that('getMatrixForm and getTidyForm functions', {
   data('Wheat_IBCF')
@@ -20,6 +20,8 @@ test_that('getMatrixForm and getTidyForm functions', {
   expect_output(str(Tidy.Y), '720 obs. of  4 variables')
 })
 
+context('CrossValidation Tests')
+
 test_that('Crossvalidation function', {
   data('Wheat_IBCF')
   CrossV1 <- CV.RandomPart(Wheat_IBCF, Set_seed = 123)
@@ -33,6 +35,7 @@ test_that('Crossvalidation function', {
   expect_false(any(is.na(CrossV1$DataSet)))
 })
 
+context('IBCF Tests')
 test_that('IBCF function', {
   data('Wheat_IBCF')
   CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
@@ -73,12 +76,24 @@ test_that('IBCF function without Env', {
   expect_is(pm$NPartitions, 'integer')
 })
 
+test_that('IBCF function with BGFRA data', {
+  library(BGFRA)
+  data("wheat_BGFRA")
+  CrossV <- CV.RandomPart(Wheat, Set_seed = 123)
+  pm <- IBCF(CrossV)
 
+  expect_is(pm, 'IBCF')
+  expect_output(str(pm), 'List of 3')
+  expect_false(any(is.na(pm$predictions_Summary)))
+  expect_is(pm$NPartitions, 'integer')
+})
+
+context('IBCFY Tests')
 test_that('IBCFY function', {
   data('Year_IBCF')
   DataSet <- getMatrixForm(Year_IBCF, onlyTrait = T)
 
-  pm <- IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
+  pm <- IBCF.Years(DataSet, colYears = 'Years' , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
 
   expect_is(pm, 'IBCFY')
   expect_output(str(pm), 'List of 4')
@@ -103,6 +118,34 @@ test_that('IBCFY function one Trait for test', {
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
 })
+
+test_that('IBCFY function for one year and one trait', {
+  data('Year_IBCF')
+  DataSet <- getMatrixForm(Year_IBCF, onlyTrait = T)
+
+  pm <- IBCF.Years(DataSet , Years.testing = c('2015'), Traits.testing = c('T5'))
+
+  expect_is(pm, 'IBCFY')
+  expect_output(str(pm), 'List of 4')
+  expect_false(any(is.na(pm$predictions_Summary)))
+  expect_is(pm$Years.testing, 'character')
+  expect_is(pm$Traits.testing, 'character')
+})
+
+test_that('IBCFY function with Wheat_IBCF Training', {
+  data('Wheat_IBCF')
+
+  DataSet <- getMatrixForm(Wheat_IBCF, onlyTrait = T)
+  pm <- IBCF.Years(DataSet, colYears = "Env", Years.testing = 'Drip', Traits.testing = c('DH','GY'))
+
+  expect_is(pm, 'IBCFY')
+  expect_output(str(pm), 'List of 4')
+  expect_false(any(is.na(pm$predictions_Summary)))
+  expect_is(pm$Years.testing, 'character')
+  expect_is(pm$Traits.testing, 'character')
+})
+
+
 
 
 
