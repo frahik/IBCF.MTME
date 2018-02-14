@@ -1,7 +1,7 @@
 #' @name Year_IBCF
 #' @title Year_IBCF Data
 #' @description Dataset based on simulated data with the next code:
-#' \code{
+#' \preformatted{
 #' set.seed(2)
 #' A <- matrix(0.65,ncol=12,nrow=12)
 #' diag(A) <- 1

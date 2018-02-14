@@ -21,6 +21,7 @@ NeedsCompilation: no
 Collate:
   CrossValidation.R
   IBCF.R
+  IBCF.MTME.R
   IBCFYear.R
   methods.R
   Td2M.R
