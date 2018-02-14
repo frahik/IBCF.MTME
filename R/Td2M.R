@@ -25,7 +25,7 @@ getMatrixForm <- function(Tidy_DataSet, onlyTrait = FALSE){
   if (onlyTrait) {
     names_diff <- which(names(Tidy_DataSet) %in% c('Trait', 'Response') == FALSE)
     Tidy_DataSet <- Tidy_DataSet[ , c(names(Tidy_DataSet)[names_diff], 'Trait', 'Response')]
-    out <- tidyr::spread(Tidy_DataSet, 'Trait', Response)
+    out <- tidyr::spread(Tidy_DataSet, 'Trait', 'Response')
   } else {
     if (is.null(Tidy_DataSet$Env)) {
       message("Env is null, Enviroment will appear like ''")
@@ -37,8 +37,8 @@ getMatrixForm <- function(Tidy_DataSet, onlyTrait = FALSE){
       Tidy_DataSet$Trait <- ''
     }
 
-    out <- tidyr::unite(Tidy_DataSet, 'TraitxEnv', Trait, Env, sep = "_")
-    out <- tidyr::spread(out, 'TraitxEnv', Response)
+    out <- tidyr::unite(Tidy_DataSet, 'TraitxEnv', 'Trait', 'Env', sep = "_")
+    out <- tidyr::spread(out, 'TraitxEnv', 'Response')
   }
 
   return(out)
@@ -71,6 +71,6 @@ getTidyForm <- function(Matrix_DataSet, onlyTrait = F){
     return(tidyr::gather(Matrix_DataSet, 'Trait', 'Response', -c(1:2)))
   } else {
     data <- tidyr::gather(Matrix_DataSet, 'TraitxEnv', 'Response', -c(1))
-    return(tidyr::separate(data, TraitxEnv, c("Trait", "Env"), sep = "_"))
+    return(tidyr::separate(data, 'TraitxEnv', c("Trait", "Env"), sep = "_"))
   }
 }
