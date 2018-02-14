@@ -79,18 +79,6 @@ test_that('IBCF function without Env', {
   expect_is(pm$NPartitions, 'integer')
 })
 
-test_that('IBCF function with BGFRA data', {
-  library(BGFRA)
-  data("wheat_BGFRA")
-  CrossV <- CV.RandomPart(Wheat, Set_seed = 123)
-  pm <- IBCF(CrossV)
-
-  expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 3')
-  expect_false(any(is.na(pm$predictions_Summary)))
-  expect_is(pm$NPartitions, 'integer')
-})
-
 context('IBCFY Tests')
 test_that('IBCFY function', {
   data('Year_IBCF')
