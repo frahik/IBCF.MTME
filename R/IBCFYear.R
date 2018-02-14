@@ -61,24 +61,17 @@ IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing
     Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, c(1)]), Scaled_Row)
   }
 
-  Hybrids.New <- Data.trn_scaled
-  Hybrids.New[, 2:ncol(Data.trn_scaled)] <- NA
-
   ratings <- Data.trn_scaled[,-1]
 
   x <- ratings
   x[is.na(x)] <- 0
   item_sim <- lsa::cosine(as.matrix((x)))
 
-  ##############Positions with no missing values########################
-  pos.w.Na <- rows.Na
-
   Hyb.pred <- as.data.frame(Data.trn_scaled[,-1])
-  pos.lim <- length(pos.w.Na)
 
-  for (i in 1:pos.lim) {
-    pos <- pos.w.Na[i]
-    Hyb.pred[pos,c(1:ncol(Hyb.pred))] <- c(rec_itm_for_geno(pos,item_sim,ratings)[1:ncol(Hyb.pred)])
+  for (i in 1:length(rows.Na)) {
+    pos <- rows.Na[i]
+    Hyb.pred[pos,] <- c(rec_itm_for_geno(pos,item_sim,ratings))
   }
 
   All.Pred <- data.matrix(Hyb.pred)
@@ -140,10 +133,4 @@ IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing
               predictions_Summary = Summary_predictions)
   class(out) <- 'IBCFY'
   return(out)
-  }
-
-
-
-
-
-
+}

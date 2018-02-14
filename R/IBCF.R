@@ -22,14 +22,8 @@
 #'
 IBCF <- function(object, dec = 4) {
   if (!inherits(object, "CrossValidation")) stop("This function only works for objects of class 'CrossValidation'")
-  # object <- CV
-  DataSet <- object$DataSet
-  CrossValidation <- object$CrossValidation_list
 
-  ##############Creating the partions of the cross-validation############
-  # CrossValidation <- CV.RandomPart(NLine = nrow(DataSet), NEnv = NEnv, NTraits = NTraits, NPartitions = NPartitions, PTesting = PTesting)
-
-  nIL <- ncol(DataSet) - 1
+  nIL <- ncol(object$DataSet) - 1
 
   ##########Saving the averages of Pearson corr and MSEP###########
   post_cor <- matrix(0, ncol = 1, nrow = nIL)
@@ -38,14 +32,14 @@ IBCF <- function(object, dec = 4) {
   post_MSEP_2 <- matrix(0, ncol = 1, nrow = nIL)
   nSums <- 0
 
-  NPartitions <- length(CrossValidation)
+  NPartitions <- length(object$CrossValidation_list)
   Ave_predictions <- matrix(NA, ncol = 5, nrow = nIL)
 
   predicted <- vector('list', NPartitions)
   names(predicted) <- paste0('Partition', 1:NPartitions)
 
   for (j in 1:NPartitions) {
-    Part <- CrossValidation[[j]]
+    Part <- object$CrossValidation_list[[j]]
 
     pos.NA <- which(Part == 2, arr.ind = T)
 
@@ -55,7 +49,7 @@ IBCF <- function(object, dec = 4) {
 
     pos.NA[, 2] <- c(pos.NA[, 2]) + 1
 
-    Data.trn <- DataSet
+    Data.trn <- object$DataSet
 
     Data.trn[pos.NA] <- NA
 
@@ -89,15 +83,8 @@ IBCF <- function(object, dec = 4) {
 
     item_sim <- lsa::cosine(as.matrix((x)))
 
-    ##############Positions with no missing values########################
-    # pos.used <- c(1:nrow(ratings))
-    # pos.complete <- pos.used[-rows.Na]
-    pos.w.Na <- rows.Na
-
-    pos.lim <- length(pos.w.Na)
-
-    for (i in 1:pos.lim) {
-      pos <- pos.w.Na[i]
+    for (i in 1:length(rows.Na)) {
+      pos <- rows.Na[i]
       ratings[pos, c(2:ncol(ratings))] <- c(rec_itm_for_geno(pos, item_sim, ratings[,2:(ncol(ratings))]))
     }
 
@@ -117,7 +104,7 @@ IBCF <- function(object, dec = 4) {
 
     predicted[[paste0('Partition', j)]] <- All.Pred_O_tst
 
-    DataSet_tst <- DataSet[rows.Na, -c(1)]
+    DataSet_tst <- object$DataSet[rows.Na, -c(1)]
 
     Y_all_tst <- cbind(DataSet_tst, All.Pred_O_tst)
 
@@ -125,11 +112,10 @@ IBCF <- function(object, dec = 4) {
 
     Dif_Obs_pred <- Y_all_tst[,1:nIL] - Y_all_tst[,(nIL + 1):(2*nIL)]
 
-    Dif_Obs_pred2 <- Dif_Obs_pred^2
+    # Dif_Obs_pred2 <- Dif_Obs_pred^2
 
-    MSEP <- apply(Dif_Obs_pred2, 2, mean)
+    MSEP <- apply(Dif_Obs_pred^2, 2, mean)
     Cor_vec <- diag(Cor_all_tst)
-    MSEP_vec <- MSEP
 
     nSums <- nSums + 1
 
@@ -137,8 +123,8 @@ IBCF <- function(object, dec = 4) {
     post_cor <- post_cor*k + Cor_vec/nSums
     post_cor_2 <- post_cor_2*k + (Cor_vec^2)/nSums
 
-    post_MSEP <- post_MSEP*k + MSEP_vec/nSums
-    post_MSEP_2 <- post_MSEP_2*k + (MSEP_vec^2)/nSums
+    post_MSEP <- post_MSEP*k + MSEP/nSums
+    post_MSEP_2 <- post_MSEP_2*k + (MSEP^2)/nSums
   }
 
   SD_Cor <- sqrt(post_cor_2 - (post_cor^2))
@@ -152,7 +138,7 @@ IBCF <- function(object, dec = 4) {
   Ave_predictions <- data.frame(Ave_predictions)
   colnames(Ave_predictions) <- c('Trait_Env', 'Pearson', 'SE_Cor', 'MSEP', 'SE_MSEP')
 
-  Ave_predictions$Trait_Env <- colnames(DataSet[,-c(1)])
+  Ave_predictions$Trait_Env <- colnames(object$DataSet[,-c(1)])
 
   out <- list(NPartitions = NPartitions,
               predictions_Summary = Ave_predictions,
