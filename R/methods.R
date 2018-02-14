@@ -55,7 +55,7 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
 
   x <- 1:length(results$Trait_Env)
   plot(x, results[, select], ylim = range(c(results[, select] - results$SE, results[, select] + results$SE)),
-       type = 'p', ylab = ylab, xlab = '', xaxt = "n", las = 2)
+       type = 'p', ylab = ylab, xlab = '', xaxt = "n", las = 2, ...)
   axis(1, at = x, labels = results$Trait_Env, las = 2)
   arrows(x, results[, select] - results$SE, x, results[, select] + results$SE, code = 3, length = 0.02, angle = 90)
 }
@@ -78,6 +78,7 @@ barplot.IBCFY <- function(height, select = 'Pearson', ...){
   results <- height$predictions_Summary
   vector <- as.numeric(paste(results[, select]))
   names(vector) <- results[, 1]
+  vector <- vector[order(vector)]
 
   if (select == 'Pearson')
     select <- 'Pearson Correlation'
