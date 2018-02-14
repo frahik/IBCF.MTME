@@ -2,12 +2,12 @@
 % Please edit documentation in R/Td2M.R
 \name{getTidyForm}
 \alias{getTidyForm}
-\title{Matrix to TidyData}
+\title{Matrix format to Tidy data format}
 \usage{
 getTidyForm(Matrix_DataSet, onlyTrait = F)
 }
 \arguments{
-\item{Matrix_DataSet}{A data.frame object with the response values divided in \eqn{n} enviroments or traits columns}
+\item{Matrix_DataSet}{A data.frame object with the response values divided in \eqn{n} environments or traits columns}
 
 \item{onlyTrait}{\code{logical} by default is \code{FALSE}, if is \code{TRUE} only is considered the \code{$Trait} column.}
 }
@@ -15,7 +15,7 @@ getTidyForm(Matrix_DataSet, onlyTrait = F)
 A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
 }
 \description{
-Matrix to TidyData
+Matrix format to Tidy data format
 }
 \examples{
 \dontrun{

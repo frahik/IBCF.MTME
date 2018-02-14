@@ -2,12 +2,16 @@
 % Please edit documentation in R/Td2M.R
 \name{getMatrixForm}
 \alias{getMatrixForm}
-\title{TidyData to Matrix}
+\title{Tidy data format to Matrix format}
 \usage{
 getMatrixForm(Tidy_DataSet, onlyTrait = FALSE)
 }
 \arguments{
-\item{Tidy_DataSet}{Tidy_DataSet}
+\item{Tidy_DataSet}{\code{data.frame} object that contains 4 columns:
+\code{$Line}: Line or genotype identifier, and the name of this column could change.
+\code{$Env}: Name of the evaluated environment (s).
+\code{$Trait}: Name of the evaluated trait (s).
+\code{$Response}: Variable response obtained for the row corresponding to line and environment.}
 
 \item{onlyTrait}{\code{logical} by default is \code{FALSE}, if is \code{TRUE} only the column \code{$Trait} is transformed.}
 }
@@ -15,7 +19,7 @@ getMatrixForm(Tidy_DataSet, onlyTrait = FALSE)
 A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
 }
 \description{
-TidyData to Matrix
+Tidy data format to Matrix format
 }
 \examples{
 \dontrun{

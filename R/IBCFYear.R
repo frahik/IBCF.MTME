@@ -1,8 +1,8 @@
 #' @title IBCF.Years
-#' @description Item Based Collaborative Filterign for Years data
+#' @description Item Based Collaborative Filtering for Years data
 #'
 #' @param DataSet \code{data.frame} A data set in Matrix Form.
-#' @param colYears \code{string or integer} A name or the position of the 'Years' column just in case that is't the first column.
+#' @param colYears \code{string or integer} A name or the position of the 'Years' column just in case that is not the first column.
 #' @param Years.testing \code{vector} A vector with the names of the years to use in test.
 #' @param Traits.testing \code{vector} A vector with the names of the traits to use in test.
 #' @param dec \code{integer} Number of decimals to print in the results.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/IBCF.R
 \name{IBCF}
 \alias{IBCF}
-\title{IBCF: Item Based Collaborative Filterign}
+\title{IBCF: Item Based Collaborative Filtering}
 \usage{
 IBCF(object, dec = 4)
 }
@@ -18,7 +18,7 @@ A list with the next components
 \item{Predictions}{\code{list} A list with the predicted results for each partition}
 }
 \description{
-Item Based Collaborative Filterign for multi-trait and multi-environment data.
+Item Based Collaborative Filtering for multi-trait and multi-environment data.
 }
 \examples{
  \dontrun{

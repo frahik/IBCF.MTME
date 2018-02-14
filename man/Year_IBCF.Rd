@@ -30,5 +30,5 @@ Year_IBCF <- getTidyForm(Data.Final, onlyTrait = T)
 }
 }
 \author{
-Montesinos-López, O. A.
+Montesinos-Lopez, O. A.
 }

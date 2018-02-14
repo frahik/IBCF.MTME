@@ -2,25 +2,25 @@
 % Please edit documentation in R/CrossValidation.R
 \name{CV.RandomPart}
 \alias{CV.RandomPart}
-\title{Cross-Validation with Random Partions}
+\title{Cross-Validation with Random Partitions}
 \usage{
 CV.RandomPart(DataSet, NPartitions = 10, PTesting = 0.35, Set_seed = NULL)
 }
 \arguments{
 \item{DataSet}{\code{data.frame} The data set object is a data.frame object that contains 4 columns in the Tidy data format:
-$Line is the Line or genotype identifier, and the name of this column could change.
-$Env is the name of the evaluated environment (s).
-$Trait is the name of the evaluated trait (s).
-$Response Variable response obtained for the row corresponding to line and environment.}
+\code{$Line} is the Line or genotype identifier, and the name of this column could change.
+\code{$Env} is the name of the evaluated environment (s).
+\code{$Trait} is the name of the evaluated trait (s).
+\code{$Response} Variable response obtained for the row corresponding to line and environment.}
 
 \item{NPartitions}{\code{integer} Number of Partitions for the Cross-Validation. Is 10 by default.}
 
-\item{PTesting}{\code{Double} Porcentage of Testing for the Cross-Validation. Is 0.35 by default.}
+\item{PTesting}{\code{Double} Percentage of Testing for the Cross-Validation. Is 0.35 by default.}
 
-\item{Set_seed}{\code{integer} Number of seed for replicable research. Is NULL by default.}
+\item{Set_seed}{\code{integer} Number of seed for reproducible research. Is NULL by default.}
 }
 \value{
-\code{List} A list object with lenght of \code{NPartitions}, every indice has a \code{matrix} \eqn{n \times x}, where \eqn{n} is the number of \code{NLines} and \eqn{x} is the number of  \code{NEnv} \eqn{\times} \code{NTraits}. The values inside is 1 for training and 2 for testing.
+\code{List} A list object with length of \code{NPartitions}, every index has a \code{matrix} \eqn{n \times x}, where \eqn{n} is the number of \code{NLines} and \eqn{x} is the number of  \code{NEnv} \eqn{\times} \code{NTraits}. The values inside is 1 for training and 2 for testing.
 }
 \description{
 This method consists of randomly dividing the training data set and the test data set.
