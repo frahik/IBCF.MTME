@@ -26,7 +26,6 @@ IBCF <- function(object, dec = 4) {
 
   nIL <- ncol(object$DataSet) - 1
 
-  ##########Saving the averages of Pearson corr and MSEP###########
   post_cor <- matrix(0, ncol = 1, nrow = nIL)
   post_cor_2 <- matrix(0, ncol = 1, nrow = nIL)
   post_MSEP <- matrix(0, ncol = 1, nrow = nIL)
@@ -59,8 +58,6 @@ IBCF <- function(object, dec = 4) {
     Means_trn <- apply(Data.trn[, -c(1)], 2, mean, na.rm = T)
     SDs_trn <- apply(Data.trn[, -c(1)], 2, sd, na.rm = T)
 
-    # Mean_and_SD <- data.frame(cbind(Means_trn, SDs_trn))
-
     Scaled_Col <- scale(Data.trn[, -c(1)])
 
     Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = T)
@@ -92,10 +89,8 @@ IBCF <- function(object, dec = 4) {
     All.Pred <- data.matrix(ratings[,-1])
 
     if (any(is.na(SDs_trn_Row))) {
-      ## cambiar por all.Pred solo si ocurre error
       All.Pred_O <- sapply(1:ncol(All.Pred), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
     } else {
-      ## Si ocurre error, este se evita.
       All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
       All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
     }
@@ -112,8 +107,6 @@ IBCF <- function(object, dec = 4) {
     Cor_all_tst <- cor(Y_all_tst[,1:nIL], Y_all_tst[,(nIL + 1):(2*nIL)])
 
     Dif_Obs_pred <- Y_all_tst[,1:nIL] - Y_all_tst[,(nIL + 1):(2*nIL)]
-
-    # Dif_Obs_pred2 <- Dif_Obs_pred^2
 
     MSEP <- apply(Dif_Obs_pred^2, 2, mean)
     Cor_vec <- diag(Cor_all_tst)
