@@ -1,9 +1,12 @@
 Package: IBCF.MTME
 Title: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data
 Version: 1.1-2
+Date: 2018-02-14
 Authors@R: c(person("Francisco Javier", "Luna-Vazquez", email = "frahik@gmail.com", role = c("aut", "cre")),
-             person("Osval Antonio", "Montesinos-Lopez", email= "oamontes1@ucol.mx", role = c("aut", "res"))
-             )
+             person("Osval Antonio", "Montesinos-Lopez", email= "oamontes1@ucol.mx", role = c("aut", "res")),
+             person("Abelardo", "Montesinos-Lopez", role = "aut"),
+             person("Jose", "Crossa", role = "aut"))
+Maintainer: Francisco Javier Luna-Vazquez <frahik@gmail.com>
 Description: This package was developed to implement the Item based collaborative filtering (IBCF) method for continues phenotypes in the context of plant breeding where data are collected for various traits that were studied in various environments. 
 Depends: 
   R (>= 3.0.0)
@@ -31,4 +34,3 @@ Suggests:
   testthat,
   knitr,
   rmarkdown
-VignetteBuilder: knitr
