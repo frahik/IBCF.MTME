@@ -205,6 +205,11 @@ Citation
 
 How to cite the package... Coming soon.
 
+Issues
+------
+
+Feel free to report new issues in this link [Issues](https://github.com/frahik/IBCF.MTME/issues/new)
+
 Authors
 -------
 
