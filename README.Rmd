@@ -1,9 +1,9 @@
 ---
 title: "IBCF.MTME"
-author: "Francisco Javier Luna-Vázquez"
-date: "`r format(Sys.Date())`"
+date: "Last README update: `r format(Sys.Date())`"
 output: github_document
 ---
+
 
 Item Based Collaborative Filterign For Multi-trait and Multi-environment Data in R.
 
@@ -20,10 +20,103 @@ devtools::install_github('frahik/IBCF.MTME')
 
 ### Quick use 
 
-#### Load data
+### Load the package
+```{r}
+library(IBCF.MTME)
+```
+
+### Cross-validation IBCF
+
+#### Load example data
+```{r CVModel}
+library(BGLR)
+data(wheat)
+```
+
+#### Get DataSet in Tidy data form
+```{r}
+pheno <- data.frame(ID = gl(n = 599, k = 1, length = 599*4),
+                    Response = as.vector(wheat.Y),
+                    Env = paste0('Env', gl(n = 4, k = 599)))
+
+head(pheno)
+```
+
+#### Generate 10 partitions to do cross-validation
+```{r}
+CrossV <- CV.RandomPart(pheno, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
+```
+
+#### Fitting the model
+```{r}
+pm <- IBCF(CrossV)
+```
+
+#### Show some results
+```{r}
+summary(pm)
+```
+
+```{r}
+par(mai = c(2, 1, 1, 1))
+plot(pm, select = 'Pearson')
+plot(pm, select = 'MSEP')
+```
+
+
+
+
+### IBCF.Years Function
+
+```{r YearsData, echo = FALSE, warning = FALSE}
+library(mvtnorm)
+library(IBCF.MTME)
+set.seed(2)
+A <- matrix(0.65, ncol = 12, nrow = 12)
+diag(A) <- 1
+Sdv <- diag(c(0.9^0.5,0.8^0.5,0.9^0.5,0.8^0.5,0.86^0.5,0.7^0.5,0.9^0.5,0.8^0.5,0.9^0.5,0.7^0.5,0.7^0.5,0.85^0.5))
+
+Sigma <- Sdv %*% A %*% Sdv
+No.Lines <- 80
+Z <- rmvnorm(No.Lines,mean = c(15, 15.5, 16, 15.5, 17, 16.5, 16.0, 17, 16.6, 18, 16.3, 18), sigma = Sigma)
+Years <- c(rep(2014,20), rep(2015,20), rep(2016,20), rep(2017,20))
+Gids <- c(1:No.Lines)
+
+Data.Example <- data.frame(cbind(Years,Gids,Z))
+colnames(Data.Example) <- c("Years","Gids","Trait1","Trait2","Trait3","Trait4","Trait5","Trait6","Trait7","Trait8","Trait9","Trait10","Trait11","Trait12")
+Data.Example <- getTidyForm(Data.Example, onlyTrait = T)
+save(Data.Example, file = 'DataExample.RData')
+```
+
+#### Loading your data
+```{r}
+load('DataExample.RData')
+head(Data.Example)
+```
+
+#### Transforming the data from Tidy data to matrix form
+
+```{r}
+Data.Example <- getMatrixForm(Data.Example, onlyTrait = TRUE)
+head(Data.Example)
+```
+
+#### Adjust the model
+```{r Years}
+pm <- IBCF.Years(Data.Example, colYears = 1, Years.testing = c('2014', '2015', '2016'), Traits.testing = c('Trait1', 'Trait2', 'Trait3', 'Trait4', "Trait5"))
+```
+#### Show some results
+```{r}
+summary(pm)
+
+par(mai = c(3, 1, 1, 1))
+barplot(pm, las = 2)
+barplot(pm, select = 'MSEP', las = 2)
+```
+
+#### Load data from the package to do some test
 
 ```{r loadData}
-rm(list = ls())
 library(IBCF.MTME)
 data('Wheat_IBCF')
 
@@ -36,47 +129,10 @@ data('Year_IBCF')
 head(Year_IBCF)
 ```
 
-### Cross-validation IBCF
-
-```{r CVModel}
-CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
-
-pm <- IBCF(CrossV)
-summary(pm)
-
-par(mai = c(2, 1, 1, 1))
-plot(pm, select = 'Pearson')
-plot(pm, select = 'MSEP')
-```
-
-### IBCF.Years Function
-```{r Years}
-data('Year_IBCF')
-DataSet <- getMatrixForm(Year_IBCF, withYears = T)
-
-pm4 <- IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
-summary(pm4)
-
-barplot(pm4, select = 'Pearson')
-barplot(pm4, select = 'MSEP')
-```
-
-### Transform TidyData to Matrix and rollback
-
-```{r MatrixAndTidy}
-data('Wheat_IBCF')
-
-M <- getMatrixForm(Wheat_IBCF)
-dim(M)
-
-Tidy <- getTidyForm(M)
-dim(Tidy)
-```
-
-
 ## Citation
 
 How to cite the package...
+Coming soon.
 
 ## Authors
 
