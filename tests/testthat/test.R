@@ -55,9 +55,10 @@ test_that('IBCF function', {
 
 test_that('IBCF function without Trait', {
   data('Wheat_IBCF')
-  data <- Wheat_IBCF[,c(1,3,4)]
+  data <- Wheat_IBCF[which(Wheat_IBCF$Trait == 'DH'), ]
+  data <- data[,c(1,3,4)]
 
-  CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
+  CrossV <- CV.RandomPart(data, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
   pm <- IBCF(CrossV)
   expect_is(pm, 'IBCF')
   expect_output(str(pm), 'List of 3')
@@ -67,9 +68,10 @@ test_that('IBCF function without Trait', {
 
 test_that('IBCF function without Env', {
   data('Wheat_IBCF')
-  data <- Wheat_IBCF[,c(1,2,4)]
+  data <- Wheat_IBCF[which(Wheat_IBCF$Env == 'Bed5IR'), ]
+  data <- data[,c(1,2,4)]
 
-  CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
+  CrossV <- CV.RandomPart(data, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
   pm <- IBCF(CrossV)
   expect_is(pm, 'IBCF')
   expect_output(str(pm), 'List of 3')
