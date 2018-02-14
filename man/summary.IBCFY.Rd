@@ -7,7 +7,7 @@
 \method{summary}{IBCFY}(object, ...)
 }
 \arguments{
-\item{object}{\code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Years}
+\item{object}{\code{IBCFY object} IBCFY object, result of use the IBCF.Years() function}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

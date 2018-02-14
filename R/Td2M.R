@@ -1,6 +1,10 @@
-#' TidyData to Matrix
+#' Tidy data format to Matrix format
 #'
-#' @param Tidy_DataSet Tidy_DataSet
+#' @param Tidy_DataSet \code{data.frame} object that contains 4 columns:
+#' \code{$Line}: Line or genotype identifier, and the name of this column could change.
+#' \code{$Env}: Name of the evaluated environment (s).
+#' \code{$Trait}: Name of the evaluated trait (s).
+#' \code{$Response}: Variable response obtained for the row corresponding to line and environment.
 #' @param onlyTrait \code{logical} by default is \code{FALSE}, if is \code{TRUE} only the column \code{$Trait} is transformed.
 #'
 #' @return A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.
@@ -40,9 +44,9 @@ getMatrixForm <- function(Tidy_DataSet, onlyTrait = FALSE){
   return(out)
 }
 
-#' Matrix to TidyData
+#' Matrix format to Tidy data format
 #'
-#' @param Matrix_DataSet A data.frame object with the response values divided in \eqn{n} enviroments or traits columns
+#' @param Matrix_DataSet A data.frame object with the response values divided in \eqn{n} environments or traits columns
 #' @param onlyTrait \code{logical} by default is \code{FALSE}, if is \code{TRUE} only is considered the \code{$Trait} column.
 #'
 #' @return A \code{data.frame} object with the \code{$Response} divided by \code{$Traits} columns.

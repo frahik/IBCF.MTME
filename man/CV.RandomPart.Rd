@@ -7,7 +7,11 @@
 CV.RandomPart(DataSet, NPartitions = 10, PTesting = 0.35, Set_seed = NULL)
 }
 \arguments{
-\item{DataSet}{\code{data.frame} Number of Lines in the DataSet. By default are 10 Lines.}
+\item{DataSet}{\code{data.frame} The data set object is a data.frame object that contains 4 columns in the Tidy data format:
+$Line is the Line or genotype identifier, and the name of this column could change.
+$Env is the name of the evaluated environment (s).
+$Trait is the name of the evaluated trait (s).
+$Response Variable response obtained for the row corresponding to line and environment.}
 
 \item{NPartitions}{\code{integer} Number of Partitions for the Cross-Validation. Is 10 by default.}
 

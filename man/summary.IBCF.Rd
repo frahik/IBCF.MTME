@@ -7,7 +7,7 @@
 \method{summary}{IBCF}(object, ...)
 }
 \arguments{
-\item{object}{\code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF}
+\item{object}{\code{IBCF object} IBCF object, result of use the IBCF() function}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

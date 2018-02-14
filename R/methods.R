@@ -2,7 +2,7 @@
 #'
 #' @description Summary of IBCF object
 #'
-#' @param object \code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF
+#' @param object \code{IBCF object} IBCF object, result of use the IBCF() function
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @export
@@ -16,7 +16,7 @@ summary.IBCF <- function(object,...){
 #'
 #' @description Summary of IBCFY object
 #'
-#' @param object \code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Years
+#' @param object \code{IBCFY object} IBCFY object, result of use the IBCF.Years() function
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @export
@@ -28,9 +28,9 @@ summary.IBCFY <- function(object,...){
 
 #' @title Plot IBCF graph
 #'
-#' @description Graphs from IBCF object
+#' @description Plot from IBCF object
 #'
-#' @param x \code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF()
+#' @param x \code{IBCF object} IBCF object, result of use the IBCF() function
 #' @param select \code{character} By default ('Pearson'), plot the Pearson Correlations of the IBCF Object, else ('MSEP'), plot the MSEP of the IBCF Object.
 #' @param ... Further arguments passed to or from other methods.
 #'
@@ -63,9 +63,9 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
 
 #' @title barplot.IBCFY
 #'
-#' @description Solo es una prueba
+#' @description Barplot of the results from IBCFY object
 #'
-#' @param height \code{IBCFY object} Objeto IBCFY, resultado de ejecutar IBCF.Year()
+#' @param height \code{IBCFY object} IBCFY object, result of use the IBCF.Years() function
 #' @param select \code{character} By default ('Pearson'), plot the Pearson Correlations of the IBCF Object, else ('MSEP'), plot the MSEP of the IBCF Object.
 #' @param ... Further arguments passed to or from other methods.
 #'

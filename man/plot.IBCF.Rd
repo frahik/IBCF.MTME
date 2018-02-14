@@ -7,12 +7,12 @@
 \method{plot}{IBCF}(x, select = "Pearson", ...)
 }
 \arguments{
-\item{x}{\code{IBCF object} Objeto IBCF, resultado de ejecutar IBCF()}
+\item{x}{\code{IBCF object} IBCF object, result of use the IBCF() function}
 
 \item{select}{\code{character} By default ('Pearson'), plot the Pearson Correlations of the IBCF Object, else ('MSEP'), plot the MSEP of the IBCF Object.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-Graphs from IBCF object
+Plot from IBCF object
 }

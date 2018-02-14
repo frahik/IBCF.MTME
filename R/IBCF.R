@@ -1,5 +1,5 @@
-#' @title IBCF: Item Based Collaborative Filterign
-#' @description Item Based Collaborative Filterign for multi-trait and multi-environment data.
+#' @title IBCF: Item Based Collaborative Filtering
+#' @description Item Based Collaborative Filtering for multi-trait and multi-environment data.
 #'
 #' @param object \code{list} CrossValidation object, is obtained from CV.RandomPartition function.
 #' @param dec \code{integer} Number of decimals to print in the results.

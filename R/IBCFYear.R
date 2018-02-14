@@ -1,8 +1,8 @@
 #' @title IBCF.Years
 #' @description Item Based Collaborative Filterign for Years data
 #'
-#' @param DataSet \code{data.frame} A dataSet in Matrix Form.
-#' @param colYears \code{string or integer} A name or the position of the 'Years' column just in case that is´t the first column.
+#' @param DataSet \code{data.frame} A data set in Matrix Form.
+#' @param colYears \code{string or integer} A name or the position of the 'Years' column just in case that is't the first column.
 #' @param Years.testing \code{vector} A vector with the names of the years to use in test.
 #' @param Traits.testing \code{vector} A vector with the names of the traits to use in test.
 #' @param dec \code{integer} Number of decimals to print in the results.
@@ -11,7 +11,7 @@
 #' \item{Year.testing}{\code{vector} a vector with the Years used for the testing data}
 #' \item{Traits.testing}{\code{vector} a vector with the Traits used for the testing data}
 #' \item{Data_Obs_Pred}{\code{data.frame} Contains the values observed and predicted (the predicted values has '.1' after the name)}
-#' \item{predictions_Summary}{\code{data.frame} Contains the summary of the correlation of the predictions and de mean squared error of the predictions (MSEP)}
+#' \item{predictions_Summary}{\code{data.frame} Contains the summary of the correlation of the predictions and the mean squared error of the predictions (MSEP)}
 #'
 #' @examples
 #' \dontrun{

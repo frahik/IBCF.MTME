@@ -1,15 +1,19 @@
-#' @title Cross-Validation with Random Partions
+#' @title Cross-Validation with Random Partitions
 #'
 #' @description This method consists of randomly dividing the training data set and the test data set.
 #' For each division, the approximation function is adjusted from the training data and calculates the output values for the test data set.
 #' The result corresponds to the arithmetic mean of the values obtained for the different divisions.
 #'
-#' @param DataSet \code{data.frame} Number of Lines in the DataSet. By default are 10 Lines.
+#' @param DataSet \code{data.frame} The data set object is a data.frame object that contains 4 columns in the Tidy data format:
+#' \code{$Line} is the Line or genotype identifier, and the name of this column could change.
+#' \code{$Env} is the name of the evaluated environment (s).
+#' \code{$Trait} is the name of the evaluated trait (s).
+#' \code{$Response} Variable response obtained for the row corresponding to line and environment.
 #' @param NPartitions \code{integer} Number of Partitions for the Cross-Validation. Is 10 by default.
-#' @param PTesting \code{Double} Porcentage of Testing for the Cross-Validation. Is 0.35 by default.
-#' @param Set_seed \code{integer} Number of seed for replicable research. Is NULL by default.
+#' @param PTesting \code{Double} Percentage of Testing for the Cross-Validation. Is 0.35 by default.
+#' @param Set_seed \code{integer} Number of seed for reproducible research. Is NULL by default.
 #'
-#' @return \code{List} A list object with lenght of \code{NPartitions}, every indice has a \code{matrix} \eqn{n \times x}, where \eqn{n} is the number of \code{NLines} and \eqn{x} is the number of  \code{NEnv} \eqn{\times} \code{NTraits}. The values inside is 1 for training and 2 for testing.
+#' @return \code{List} A list object with length of \code{NPartitions}, every index has a \code{matrix} \eqn{n \times x}, where \eqn{n} is the number of \code{NLines} and \eqn{x} is the number of  \code{NEnv} \eqn{\times} \code{NTraits}. The values inside is 1 for training and 2 for testing.
 #'
 #' @examples
 #' \dontrun{
