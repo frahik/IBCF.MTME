@@ -208,6 +208,7 @@ How to cite the package... Coming soon.
 Authors
 -------
 
-Francisco Javier Luna-Vázquez (Author, Maintainer)
-
-Osval Antonio Montesinos-López (Author)
+-   Francisco Javier Luna-Vázquez (Author, Maintainer)
+-   Osval Antonio Montesinos-López (Author)
+-   Abelardo Montesinos-López (Author)
+-   José Crossa (Author)
