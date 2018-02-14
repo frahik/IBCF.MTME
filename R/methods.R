@@ -77,12 +77,12 @@ barplot.IBCFY <- function(height, select = 'Pearson', ...){
 
   results <- height$predictions_Summary
   vector <- as.numeric(paste(results[, select]))
-  names(vector) <- names(results[, select])
+  names(vector) <- results[, 1]
 
   if (select == 'Pearson')
     select <- 'Pearson Correlation'
 
-  barplot(vector, ylab = select, las = 1)
+  barplot(vector, ylab = select, ...)
 }
 
 
