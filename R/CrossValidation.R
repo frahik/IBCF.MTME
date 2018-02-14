@@ -1,5 +1,9 @@
 #' @title Cross-Validation with Random Partions
 #'
+#' @description This method consists of randomly dividing the training data set and the test data set.
+#' For each division, the approximation function is adjusted from the training data and calculates the output values for the test data set.
+#' The result corresponds to the arithmetic mean of the values obtained for the different divisions.
+#'
 #' @param DataSet \code{data.frame} Number of Lines in the DataSet. By default are 10 Lines.
 #' @param NPartitions \code{integer} Number of Partitions for the Cross-Validation. Is 10 by default.
 #' @param PTesting \code{Double} Porcentage of Testing for the Cross-Validation. Is 0.35 by default.

@@ -6,7 +6,8 @@
 #'
 #' @return A list with the next components
 #' \item{NPartitions}{\code{integer} Number of partitions used for testing data}
-#' \item{Summary_predictions}{\code{data.frame} A data.frame with the results of the test}
+#' \item{predictions_Summary}{\code{data.frame} A data.frame with the results of the test}
+#' \item{Predictions}{\code{list} A list with the predicted results for each partition}
 #'
 #' @export
 #'

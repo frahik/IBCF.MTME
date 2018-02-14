@@ -18,6 +18,11 @@ CV.RandomPart(DataSet, NPartitions = 10, PTesting = 0.35, Set_seed = NULL)
 \value{
 \code{List} A list object with lenght of \code{NPartitions}, every indice has a \code{matrix} \eqn{n \times x}, where \eqn{n} is the number of \code{NLines} and \eqn{x} is the number of  \code{NEnv} \eqn{\times} \code{NTraits}. The values inside is 1 for training and 2 for testing.
 }
+\description{
+This method consists of randomly dividing the training data set and the test data set.
+For each division, the approximation function is adjusted from the training data and calculates the output values for the test data set.
+The result corresponds to the arithmetic mean of the values obtained for the different divisions.
+}
 \examples{
 \dontrun{
   library(IBCF.MTME)

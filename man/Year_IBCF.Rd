@@ -5,15 +5,30 @@
 \alias{Year_IBCF}
 \title{Year_IBCF Data}
 \format{a \code{TidyData} format, 750 row per 4 columns.}
-\source{
-Not yet
-}
 \usage{
 data(Year_IBCF)
 }
 \description{
-This data needs a description
+Dataset based on simulated data with the next code:
+\dontrun{
+set.seed(2)
+A <- matrix(0.65,ncol=12,nrow=12)
+diag(A) <- 1
+Sdv <- diag(c(0.9^0.5,0.8^0.5,0.9^0.5,0.8^0.5,0.86^0.5,0.7^0.5,0.9^0.5,0.8^0.5,0.9^0.5,0.7^0.5,0.7^0.5,0.85^0.5))
+
+Sigma <- Sdv%*%A%*%Sdv
+No.Lines <- 60
+Z <- rmvnorm(No.Lines,mean=c(5,5.5,6,5.5,7,6.5,6.0,7,6.6,8,6.3,8),sigma=Sigma)
+Years <- c(rep(2014,20),rep(2015,20),rep(2016,20))
+Gids <- c(1:No.Lines)
+
+Data.Final <- data.frame(cbind(Years,Gids,Z))
+
+colnames(Data.Final) <- c("Years","Gids","T1","T2","T3","T4","T5","T6","T7","T8","T9","T10","T11","T12")
+head(Data.Final)
+Year_IBCF <- getTidyForm(Data.Final, onlyTrait = T)
+}
 }
 \author{
-Not yet
+Montesinos-López, O. A.
 }
