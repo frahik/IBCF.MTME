@@ -10,7 +10,7 @@ data(Year_IBCF)
 }
 \description{
 Dataset based on simulated data with the next code:
-\dontrun{
+\code{
 set.seed(2)
 A <- matrix(0.65,ncol=12,nrow=12)
 diag(A) <- 1
