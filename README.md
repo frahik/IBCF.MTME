@@ -1,8 +1,19 @@
 IBCF.MTME
 ================
-Last README update: 2018-02-14
+Last README update: 2018-02-19
 
 Item Based Collaborative Filterign For Multi-trait and Multi-environment Data in R.
+
+New in this dev version
+-----------------------
+
+-   Fixed important issue from `IBCF()$predictions_Summary`, now the correlation only uses the predicted data.
+-   Now `IBCF()` and `IBCF.Years()` functions shows in `$predictions` all the values predicted and not only the test predictions.
+-   Now `IBCF()` function shows in `$observed` all the response values from the DataSet.
+-   Now `IBCF.Years()` function shows in `$observed` the response values for all the years from the Traits selected in `Traits.testing`.
+-   Now `CV.RandomPart()` shows the lenght in every partition in `$CrossValidation_length`.
+
+See the last updates in [NEWS](NEWS.md).
 
 Instructions for proper implementation
 --------------------------------------
@@ -70,23 +81,23 @@ summary(pm)
 ```
 
     ##   Trait_Env Pearson SE_Cor   MSEP SE_MSEP
-    ## 1     _Env1  0.7349 0.0075 0.5319  0.0155
-    ## 2     _Env2  0.9044 0.0033 0.1947  0.0074
-    ## 3     _Env3  0.7757 0.0096 0.4686  0.0199
-    ## 4     _Env4  0.8280 0.0090 0.3212  0.0151
+    ## 1     _Env1 -0.1307 0.0230 1.9010  0.0452
+    ## 2     _Env2  0.6859 0.0092 0.5454  0.0118
+    ## 3     _Env3  0.6116 0.0164 0.6284  0.0234
+    ## 4     _Env4  0.3068 0.0257 1.0640  0.0495
 
 ``` r
 par(mai = c(2, 1, 1, 1))
 plot(pm, select = 'Pearson')
 ```
 
-![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-6-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ``` r
 plot(pm, select = 'MSEP')
 ```
 
-![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-6-2.png)
+![](README_files/figure-markdown_github/unnamed-chunk-6-2.png)
 
 ### IBCF.Years Function
 
@@ -140,34 +151,34 @@ summary(pm)
 ```
 
     ##              Year_Trait Pearson   MSEP
-    ## 2014_Trait1 2014_Trait1  0.5713 1.0727
-    ## 2014_Trait2 2014_Trait2  0.1332 0.7386
-    ## 2014_Trait3 2014_Trait3  0.5846 0.4731
-    ## 2014_Trait4 2014_Trait4  0.5770 0.5368
-    ## 2014_Trait5 2014_Trait5  0.6969 0.4196
-    ## 2015_Trait1 2015_Trait1  0.6776 1.0086
-    ## 2015_Trait2 2015_Trait2  0.7127 0.5186
-    ## 2015_Trait3 2015_Trait3  0.8109 0.3643
-    ## 2015_Trait4 2015_Trait4  0.7731 0.6150
-    ## 2015_Trait5 2015_Trait5  0.6907 0.7784
-    ## 2016_Trait1 2016_Trait1  0.5483 1.1167
-    ## 2016_Trait2 2016_Trait2  0.7043 0.4959
-    ## 2016_Trait3 2016_Trait3  0.6086 0.6153
-    ## 2016_Trait4 2016_Trait4  0.8342 0.3531
-    ## 2016_Trait5 2016_Trait5  0.5124 1.0643
+    ## 2014_Trait1 2014_Trait1  0.7549 0.4836
+    ## 2014_Trait2 2014_Trait2  0.1562 0.7769
+    ## 2014_Trait3 2014_Trait3  0.6130 0.4164
+    ## 2014_Trait4 2014_Trait4  0.5208 0.6821
+    ## 2014_Trait5 2014_Trait5  0.7587 0.2408
+    ## 2015_Trait1 2015_Trait1  0.8432 0.2987
+    ## 2015_Trait2 2015_Trait2  0.6792 0.5828
+    ## 2015_Trait3 2015_Trait3  0.7944 0.4416
+    ## 2015_Trait4 2015_Trait4  0.7394 0.5425
+    ## 2015_Trait5 2015_Trait5  0.7650 0.4739
+    ## 2016_Trait1 2016_Trait1  0.7690 0.3517
+    ## 2016_Trait2 2016_Trait2  0.7753 0.3818
+    ## 2016_Trait3 2016_Trait3  0.6763 0.5527
+    ## 2016_Trait4 2016_Trait4  0.8157 0.4076
+    ## 2016_Trait5 2016_Trait5  0.8533 0.2779
 
 ``` r
 par(mai = c(3, 1, 1, 1))
 barplot(pm, las = 2)
 ```
 
-![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 ``` r
 barplot(pm, select = 'MSEP', las = 2)
 ```
 
-![](README_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-2.png)
+![](README_files/figure-markdown_github/unnamed-chunk-9-2.png)
 
 #### Load data from the package to do some test
 
