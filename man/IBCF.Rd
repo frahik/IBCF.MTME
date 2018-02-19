@@ -2,7 +2,7 @@
 % Please edit documentation in R/IBCF.R
 \name{IBCF}
 \alias{IBCF}
-\title{IBCF: Item Based Collaborative Filtering}
+\title{IBCF}
 \usage{
 IBCF(object, dec = 4)
 }

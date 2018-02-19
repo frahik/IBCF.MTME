@@ -4,7 +4,8 @@
 \alias{CV.RandomPart}
 \title{Cross-Validation with Random Partitions}
 \usage{
-CV.RandomPart(DataSet, NPartitions = 10, PTesting = 0.35, Set_seed = NULL)
+CV.RandomPart(DataSet, NPartitions = 10, PTesting = 0.35,
+  Traits.testing = NULL, Set_seed = NULL)
 }
 \arguments{
 \item{DataSet}{\code{data.frame} The data set object is a data.frame object that contains 4 columns in the Tidy data format:
@@ -16,6 +17,8 @@ CV.RandomPart(DataSet, NPartitions = 10, PTesting = 0.35, Set_seed = NULL)
 \item{NPartitions}{\code{integer} Number of Partitions for the Cross-Validation. Is 10 by default.}
 
 \item{PTesting}{\code{Double} Percentage of Testing for the Cross-Validation. Is 0.35 by default.}
+
+\item{Traits.testing}{\code{character} By default is null and use all the traits to fit the model, else only part of the traits specified be used to fit the model.}
 
 \item{Set_seed}{\code{integer} Number of seed for reproducible research. Is NULL by default.}
 }
@@ -34,7 +37,11 @@ The result corresponds to the arithmetic mean of the values obtained for the dif
 
   CV.RandomPart(Wheat_IBCF)
   CV.RandomPart(Wheat_IBCF, NPartitions = 10)
+  CV.RandomPart(Wheat_IBCF, Traits.testing = 'DH')
   CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35)
+  CV.RandomPart(Wheat_IBCF, NPartitions = 10, Traits.testing = 'DH')
   CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35, Set_seed = 5)
+  CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35, Traits.testing = 'DH')
+  CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35, Traits.testing = 'DH', Set_seed = 5 )
 }
 }
