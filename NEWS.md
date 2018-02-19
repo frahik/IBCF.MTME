@@ -1,4 +1,4 @@
-IBCF.MTME v1.2-1 (Release date: 2018-02-19)
+IBCF.MTME v1.2 (Release date: 2018-02-19)
 ==============
 
 Changes:
