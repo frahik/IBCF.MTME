@@ -11,6 +11,7 @@
 #' \code{$Response} Variable response obtained for the row corresponding to line and environment.
 #' @param NPartitions \code{integer} Number of Partitions for the Cross-Validation. Is 10 by default.
 #' @param PTesting \code{Double} Percentage of Testing for the Cross-Validation. Is 0.35 by default.
+#' @param Traits.testing \code{character} By default is null and use all the traits to fit the model, else only part of the traits specified be used to fit the model.
 #' @param Set_seed \code{integer} Number of seed for reproducible research. Is NULL by default.
 #'
 #' @return \code{List} A list object with length of \code{NPartitions}, every index has a \code{matrix} \eqn{n \times x}, where \eqn{n} is the number of \code{NLines} and \eqn{x} is the number of  \code{NEnv} \eqn{\times} \code{NTraits}. The values inside is 1 for training and 2 for testing.
@@ -22,11 +23,15 @@
 #'
 #'   CV.RandomPart(Wheat_IBCF)
 #'   CV.RandomPart(Wheat_IBCF, NPartitions = 10)
+#'   CV.RandomPart(Wheat_IBCF, Traits.testing = 'DH')
 #'   CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35)
+#'   CV.RandomPart(Wheat_IBCF, NPartitions = 10, Traits.testing = 'DH')
 #'   CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35, Set_seed = 5)
+#'   CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35, Traits.testing = 'DH')
+#'   CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = .35, Traits.testing = 'DH', Set_seed = 5 )
 #' }
 #' @export
-CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = NULL) {
+CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Traits.testing = NULL, Set_seed = NULL) {
 
   if (!is.null(Set_seed)) {
     set.seed(Set_seed)
@@ -43,18 +48,15 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 
   NLine <- dim(new_Data)[1]
 
   if (length(unique(DataSet$Env)) == 1 ) {
-    No_Env_I <- length(unique(DataSet$Env))
     NEnv <- length(unique(DataSet$Trait))
-    NTraits <- No_Env_I
-    Trait <- unique(DataSet$Env)
-    Env <- unique(DataSet$Trait)
+    NTraits <- length(unique(DataSet$Env))
   } else {
     NEnv <- length(unique(DataSet$Env))
     NTraits <- length(unique(DataSet$Trait))
-    Trait <- unique(DataSet$Trait)
-    Env <- unique(DataSet$Env)
   }
 
+  Trait <- unique(DataSet$Trait)
+  Env <- unique(DataSet$Env)
 
   p_list <- vector('list', NPartitions)
   names(p_list) <- paste0('p', 1:NPartitions)
@@ -77,7 +79,8 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 
       indexNA <- rep(a0,nRep)
 
       if (length(remain) > 0) {
-        a1 <- floor(length(indexNA)/nTST)*nTST;a2 <- nNA - a1 - length(remain)
+        a1 <- floor(length(indexNA)/nTST)*nTST
+        a2 <- nNA - a1 - length(remain)
         bb <- sample(a0[!a0 %in% remain], a2, replace = FALSE)
         noInIndexNA <- c(rep(a0, nRep - 1), a0[!a0 %in% bb])
         indexNA <- c(noInIndexNA,bb,remain)
@@ -96,8 +99,22 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 
     }
 
     A <- matrix(rep(1, NTraits), ncol = NTraits)
-    B <- kronecker(A, yNA)
-    p_list[[paste0('p',i)]] <- B
+    B1 <- kronecker(A, yNA)
+
+    Names_MFormat <- colnames(new_Data[, -1])  # FORMATO MATRIZ
+    colnames(B1) <- Names_MFormat
+
+    if (!is.null(Traits.testing)) {
+      Traits_Selec_F <- c()
+      for (r in 1:length(Traits.testing)) {
+        Traits_Selec <- which(grepl(Traits.testing[r], Names_MFormat) == T)
+        Traits_Selec_F <- c(Traits_Selec_F,Traits_Selec)
+      }
+
+      B1[, -c(Traits_Selec_F)] = 1
+    }
+
+    p_list[[paste('p', i, sep = '')]] = B1
   }
 
 
@@ -112,5 +129,3 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Set_seed = 
   class(out) <- 'CrossValidation'
   return(out)
 }
-
-
