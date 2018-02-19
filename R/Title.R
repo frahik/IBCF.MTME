@@ -15,7 +15,7 @@ rec_itm_for_geno <- function(geno_no, item_sim, ratings)  {
       temp_sum <- temp_sum + abs(df[which(names(df) == rated_items[i])])
     }
 
-    weight_mat <- df * ratings[geno_no,2:(length(genoRatings))]
+    weight_mat <- df * ratings[geno_no,]
 
     non_rated_pred_score <- c(non_rated_pred_score,rowSums(weight_mat, na.rm = T)/temp_sum)
   }
