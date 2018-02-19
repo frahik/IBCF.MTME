@@ -91,6 +91,7 @@ IBCF <- function(object, dec = 4) {
 
     All.Pred <- data.matrix(ratings[,-1])
 
+
     if (any(is.na(SDs_trn_Row))) {
       All.Pred_O <- sapply(1:ncol(All.Pred), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
     } else {
@@ -134,6 +135,7 @@ IBCF <- function(object, dec = 4) {
   }
 
   Y_avr <- Y_avr/Ind_all
+  Yhat_Obs_pred <- data.frame(object$DataSet, Y_avr)
 
   SD_Cor <- sqrt(post_cor_2 - (post_cor^2))
   SD_MSEP <- sqrt(post_MSEP_2 - (post_MSEP^2))
@@ -152,7 +154,8 @@ IBCF <- function(object, dec = 4) {
               predictions_Summary = Ave_predictions,
               observed = getTidyForm(object$DataSet)$Response,
               yHat = Y_avr,
-              predicted_Partition = predicted)
+              predicted_Partition = predicted,
+              Data.Obs_Pred = Yhat_Obs_pred)
   class(out) <- 'IBCF'
   return(out)
 }

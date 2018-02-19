@@ -91,6 +91,7 @@ IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing
 
   Data.Obs <- getTidyForm(DataSet[, c(1, 2, pos.Traits.testing)], onlyTrait = T)$Response
   Data.Pred <- getTidyForm(All.Pred_O[, c(1, 2, pos.Traits.testing)], onlyTrait = T)$Response
+  Data.Obs_Pred <- data.frame(DataSet[pos.Years.testing, c(1, 2, pos.Traits.testing)], All.Pred_O[pos.Years.testing, pos.Traits.testing])
   Pearson <- c()
   MSEP <- c()
   Year_Trait <- c()
@@ -131,7 +132,9 @@ IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing
               Traits.testing = Traits.testing,
               predictions_Summary = Summary_predictions,
               observed = Data.Obs,
-              predicted = Data.Pred)
+              predicted = Data.Pred,
+              Data.Obs_Pred = Data.Obs_Pred
+  )
   class(out) <- 'IBCFY'
   return(out)
 }
