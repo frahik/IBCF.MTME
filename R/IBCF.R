@@ -1,4 +1,4 @@
-#' @title IBCF: Item Based Collaborative Filtering
+#' @title IBCF
 #' @description Item Based Collaborative Filtering for multi-trait and multi-environment data.
 #'
 #' @param object \code{list} CrossValidation object, is obtained from CV.RandomPartition function.
@@ -22,7 +22,7 @@
 #' }
 #'
 IBCF <- function(object, dec = 4) {
-  if (!inherits(object, "CrossValidation")) stop("This function only works for objects of class 'CrossValidation'")
+  if (!inherits(object, 'CrossValidation')) stop("This function only works for objects of class 'CrossValidation'")
 
   nIL <- ncol(object$DataSet) - 1
 
@@ -30,6 +30,8 @@ IBCF <- function(object, dec = 4) {
   post_cor_2 <- matrix(0, ncol = 1, nrow = nIL)
   post_MSEP <- matrix(0, ncol = 1, nrow = nIL)
   post_MSEP_2 <- matrix(0, ncol = 1, nrow = nIL)
+  Y_avr <- matrix(0, ncol = nIL, nrow = nrow(object$DataSet))
+  Ind_all <- Y_avr
   nSums <- 0
 
   NPartitions <- length(object$CrossValidation_list)
@@ -42,12 +44,13 @@ IBCF <- function(object, dec = 4) {
     Part <- object$CrossValidation_list[[j]]
 
     pos.NA <- which(Part == 2, arr.ind = T)
+    pos.NA[, 2] <- c(pos.NA[, 2]) + 1
+    pos.No_NA <- which(Part == 1, arr.ind = T)
+    # pos.No_NA[, 2] <- c(pos.No_NA[, 2])
 
     if (length(pos.NA) == 0) {
       stop('An error ocurred with the CrossValidation data')
     }
-
-    pos.NA[, 2] <- c(pos.NA[, 2]) + 1
 
     Data.trn <- object$DataSet
 
@@ -83,7 +86,7 @@ IBCF <- function(object, dec = 4) {
 
     for (i in 1:length(rows.Na)) {
       pos <- rows.Na[i]
-      ratings[pos, c(2:ncol(ratings))] <- c(rec_itm_for_geno(pos, item_sim, ratings[,2:(ncol(ratings))]))
+      ratings[pos, 2:ncol(ratings)] <- rec_itm_for_geno(pos, item_sim, ratings[,2:ncol(ratings)])
     }
 
     All.Pred <- data.matrix(ratings[,-1])
@@ -96,20 +99,29 @@ IBCF <- function(object, dec = 4) {
     }
 
     colnames(All.Pred_O) <- colnames(Data.trn_scaled[,-c(1)])
-    All.Pred_O_tst <- All.Pred_O[rows.Na,]
+    All.Pred_O[pos.No_NA] <- NA
+    All.Pred_O_tst <- All.Pred_O[rows.Na, ]
 
-    predicted[[paste0('Partition', j)]] <- All.Pred_O_tst
+    predicted[[paste0('Partition', j)]] <- c(All.Pred_O)
 
-    DataSet_tst <- object$DataSet[rows.Na, -c(1)]
+    DataSet_tst <- object$DataSet[, -1]
+    DataSet_tst[pos.No_NA] <- NA
+    DataSet_tst <- DataSet_tst[rows.Na, ]
 
     Y_all_tst <- cbind(DataSet_tst, All.Pred_O_tst)
 
-    Cor_all_tst <- cor(Y_all_tst[,1:nIL], Y_all_tst[,(nIL + 1):(2*nIL)])
+    Cor_all_tst <- cor(Y_all_tst[,1:nIL], Y_all_tst[,(nIL + 1):(2*nIL)] , use = "pairwise.complete.obs")
 
     Dif_Obs_pred <- Y_all_tst[,1:nIL] - Y_all_tst[,(nIL + 1):(2*nIL)]
 
-    MSEP <- apply(Dif_Obs_pred^2, 2, mean)
+    MSEP <- apply(Dif_Obs_pred^2, 2, mean, na.rm = T)
     Cor_vec <- diag(Cor_all_tst)
+    YYY <- All.Pred_O
+    Ind <-  is.na(YYY)
+    YYY[Ind] <- 0
+    Y_avr <- Y_avr + YYY
+    Ind <-  !(Ind)
+    Ind_all <- Ind_all + Ind
 
     nSums <- nSums + 1
 
@@ -121,13 +133,15 @@ IBCF <- function(object, dec = 4) {
     post_MSEP_2 <- post_MSEP_2*k + (MSEP^2)/nSums
   }
 
+  Y_avr <- Y_avr/Ind_all
+
   SD_Cor <- sqrt(post_cor_2 - (post_cor^2))
   SD_MSEP <- sqrt(post_MSEP_2 - (post_MSEP^2))
 
-  Ave_predictions[,2] <- round(post_cor, digits = dec)
-  Ave_predictions[,3] <- round(SD_Cor/sqrt(NPartitions), digits = dec)
-  Ave_predictions[,4] <- round(post_MSEP, digits = dec)
-  Ave_predictions[,5] <- round(SD_MSEP/sqrt(NPartitions), digits = dec)
+  Ave_predictions[, 2] <- round(post_cor, digits = dec)
+  Ave_predictions[, 3] <- round(SD_Cor/sqrt(NPartitions), digits = dec)
+  Ave_predictions[, 4] <- round(post_MSEP, digits = dec)
+  Ave_predictions[, 5] <- round(SD_MSEP/sqrt(NPartitions), digits = dec)
 
   Ave_predictions <- data.frame(Ave_predictions)
   colnames(Ave_predictions) <- c('Trait_Env', 'Pearson', 'SE_Cor', 'MSEP', 'SE_MSEP')
@@ -136,7 +150,9 @@ IBCF <- function(object, dec = 4) {
 
   out <- list(NPartitions = NPartitions,
               predictions_Summary = Ave_predictions,
-              Predictions = predicted)
+              observed = getTidyForm(object$DataSet)$Response,
+              yHat = Y_avr,
+              predicted_Partition = predicted)
   class(out) <- 'IBCF'
   return(out)
 }
