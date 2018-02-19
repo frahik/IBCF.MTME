@@ -57,7 +57,7 @@ test_that('IBCF Test - With RP for 3 Envs, 4 Traits', {
   pm <- IBCF(CrossV)
 
   expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 5')
+  expect_output(str(pm), 'List of 6')
 
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
@@ -82,7 +82,7 @@ test_that('IBCF Test - With RP for 3 Envs selecting 2 envs for traits', {
   pm <- IBCF(CrossV)
 
   expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 5')
+  expect_output(str(pm), 'List of 6')
 
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
@@ -111,7 +111,7 @@ test_that('IBCF Test - With RP for 3 Envs without Traits', {
 
 
   expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 5')
+  expect_output(str(pm), 'List of 6')
 
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
@@ -138,7 +138,7 @@ test_that('IBCF Test - With RP for 4 Traits without Env', {
   pm <- IBCF(CrossV)
 
   expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 5')
+  expect_output(str(pm), 'List of 6')
 
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
@@ -164,7 +164,7 @@ test_that('IBCFY function', {
   pm <- IBCF.Years(DataSet, colYears = 'Years' , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
 
   expect_is(pm, 'IBCFY')
-  expect_output(str(pm), 'List of 5')
+  expect_output(str(pm), 'List of 6')
 
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
@@ -187,7 +187,7 @@ test_that('IBCFY function one Trait for test', {
   pm <- IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5'))
 
   expect_is(pm, 'IBCFY')
-  expect_output(str(pm), 'List of 5')
+  expect_output(str(pm), 'List of 6')
 
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
@@ -210,7 +210,7 @@ test_that('IBCFY function for one year and one trait', {
   pm <- IBCF.Years(DataSet , Years.testing = c('2015'), Traits.testing = c('T5'))
 
   expect_is(pm, 'IBCFY')
-  expect_output(str(pm), 'List of 5')
+  expect_output(str(pm), 'List of 6')
 
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
@@ -233,7 +233,7 @@ test_that('IBCFY function with Wheat_IBCF Training', {
   pm <- IBCF.Years(DataSet, colYears = "Env", Years.testing = 'Drip', Traits.testing = c('DH','GY'))
 
   expect_is(pm, 'IBCFY')
-  expect_output(str(pm), 'List of 5')
+  expect_output(str(pm), 'List of 6')
 
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
