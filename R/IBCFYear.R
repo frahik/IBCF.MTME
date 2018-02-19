@@ -24,6 +24,7 @@
 #'
 #' @export
 IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing = '', dec = 4) {
+  DataSet[, colYears] <- as.character(DataSet[, colYears]) #No factors admited
   No.Years <- length(unique(DataSet[, colYears]))
   No.Years.testing <- length(Years.testing)
   No.Traits <- length(colnames(DataSet)) - 2
@@ -85,21 +86,20 @@ IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing
     All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
   }
 
-  colnames(All.Pred_O) <- colnames(Data.trn_scaled[,-1])
+  All.Pred_O <- data.frame(DataSet[, c(1,2)], All.Pred_O)
+  colnames(All.Pred_O) <- c(colnames(DataSet[, c(1,2)]), colnames(Data.trn_scaled[, -1]))
 
-  Data.Obs_Pred <- data.frame(DataSet[pos.Years.testing, c(1, 2, pos.Traits.testing)], All.Pred_O[pos.Years.testing, (pos.Traits.testing - 2)])
-
+  Data.Obs <- getTidyForm(DataSet[, c(1, 2, pos.Traits.testing)], onlyTrait = T)$Response
+  Data.Pred <- getTidyForm(All.Pred_O[, c(1, 2, pos.Traits.testing)], onlyTrait = T)$Response
   Pearson <- c()
   MSEP <- c()
   Year_Trait <- c()
 
-  DataSet_P <- DataSet[,-c(1,2)]
-
   for (q in 1:length(Years.testing)) {
     pos.Years_q <- which(c(DataSet[, colYears]) == Years.testing[q])
 
-    DataSet_tst <- DataSet_P[pos.Years_q, (pos.Traits.testing - 2)]
-    All.Pred_O_tst <- All.Pred_O[pos.Years_q, (pos.Traits.testing - 2)]
+    DataSet_tst <- DataSet[pos.Years_q, pos.Traits.testing]
+    All.Pred_O_tst <- All.Pred_O[pos.Years_q, pos.Traits.testing]
 
     Cor_all_tst <- cor(DataSet_tst,All.Pred_O_tst)
 
@@ -129,8 +129,9 @@ IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing
 
   out <- list(Years.testing = Years.testing,
               Traits.testing = Traits.testing,
-              Data_Obs_Pred = Data.Obs_Pred,
-              predictions_Summary = Summary_predictions)
+              predictions_Summary = Summary_predictions,
+              observed = Data.Obs,
+              predicted = Data.Pred)
   class(out) <- 'IBCFY'
   return(out)
 }
