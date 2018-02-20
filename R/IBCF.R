@@ -147,8 +147,11 @@ IBCF <- function(object, dec = 4) {
 
   Ave_predictions <- data.frame(Ave_predictions)
   colnames(Ave_predictions) <- c('Trait_Env', 'Pearson', 'SE_Cor', 'MSEP', 'SE_MSEP')
-
   Ave_predictions$Trait_Env <- colnames(object$DataSet[,-c(1)])
+
+  if (any(is.na(Ave_predictions[, 2]))) {
+    Ave_predictions <- Ave_predictions[which(!is.na(Ave_predictions[, 2])),]
+  }
 
   out <- list(NPartitions = NPartitions,
               predictions_Summary = Ave_predictions,
