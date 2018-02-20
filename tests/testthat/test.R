@@ -31,7 +31,7 @@ test_that('Crossvalidation.RP function', {
   expect_equal(CrossV1, CrossV2)
   expect_equal(CrossV1, CrossV3)
 
-  expect_output(str(CrossV1), 'List of 5')
+  expect_output(str(CrossV1), 'List of 6')
   expect_is(CrossV1, 'CrossValidation')
 
   expect_output(str(CrossV1$DataSet), '250 obs. of  13 variables')
@@ -87,7 +87,7 @@ test_that('IBCF Test - With RP for 3 Envs selecting 2 envs for traits', {
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
 
-  expect_true(any(is.na(pm$predictions_Summary)))
+  expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
   expect_is(pm$predictions_Summary[1, 1], 'character')
   expect_is(pm$predictions_Summary[1, 2], 'numeric')
