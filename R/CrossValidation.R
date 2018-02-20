@@ -122,6 +122,7 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Traits.test
     DataSet = new_Data,
     CrossValidation_list = p_list,
     Environments = Env,
+    Traits.testing = Traits.testing,
     Traits = Trait,
     Observations = NLine
   )

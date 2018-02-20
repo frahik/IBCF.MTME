@@ -102,15 +102,15 @@ IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing
     DataSet_tst <- DataSet[pos.Years_q, pos.Traits.testing]
     All.Pred_O_tst <- All.Pred_O[pos.Years_q, pos.Traits.testing]
 
-    Cor_all_tst <- cor(DataSet_tst,All.Pred_O_tst)
+    Cor_all_tst <- cor(DataSet_tst,All.Pred_O_tst, use = "pairwise.complete.obs")
 
     Dif_Obs_pred <- DataSet_tst - All.Pred_O_tst
     Dif_Obs_pred2 <- Dif_Obs_pred^2
 
     MSEP_vec = tryCatch({
-      apply(Dif_Obs_pred2, 2, mean)
+      apply(Dif_Obs_pred2, 2, mean, na.rm = T)
     }, error = function(e) {
-      mean(Dif_Obs_pred2)
+      mean(Dif_Obs_pred2, na.rm = T)
     })
 
     if (length(Cor_all_tst)[1] == 1) {
