@@ -91,8 +91,9 @@ IBCF.Years <- function(DataSet, colYears = 1, Years.testing = '', Traits.testing
 
   Data.Obs <- getTidyForm(DataSet[, c(1, 2, pos.Traits.testing)], onlyTrait = T)$Response
   Data.Pred <- getTidyForm(All.Pred_O[, c(1, 2, pos.Traits.testing)], onlyTrait = T)$Response
-  Data.Obs_Pred <- data.frame(DataSet[pos.Years.testing, c(1, 2, pos.Traits.testing)], All.Pred_O[pos.Years.testing, pos.Traits.testing])
-  colnames(Data.Obs_Pred) <- c(colnames(DataSet)[ c(1, 2, pos.Traits.testing)], colnames(All.Pred_O)[pos.Traits.testing])
+  Data.Obs_Pred <- data.frame(DataSet[pos.Years.testing, c(1, 2, pos.Traits.testing)],
+                              All.Pred_O[pos.Years.testing, pos.Traits.testing])
+  colnames(Data.Obs_Pred) <- c(colnames(DataSet)[ c(1, 2, pos.Traits.testing)], paste0(colnames(All.Pred_O)[pos.Traits.testing],'.1'))
   Pearson <- c()
   MSEP <- c()
   Year_Trait <- c()
