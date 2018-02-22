@@ -47,7 +47,7 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
 
   if (select == "Pearson") {
     results$SE <- results$SE_Cor * 1.96
-    ylab <- 'Pearson Correlation'
+    ylab <- "Pearson's Correlation"
   } else if (select == "MSEP") {
     results$SE <- results$SE_MSEP * 1.96
     ylab <- select
