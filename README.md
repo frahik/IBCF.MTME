@@ -2,7 +2,7 @@ IBCF.MTME
 ================
 Last README update: 2018-02-22
 
-Item Based Collaborative Filterign For Multi-trait and Multi-environment Data in R. [![CRAN Status](http://www.r-pkg.org/badges/version/IBCF.MTME "CRAN Page")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page") [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg "LGPL, Version 2.0")](https://www.gnu.org/licenses/lgpl-3.0 "LGPL, Version 2.0") [![Project Status: Active](http://www.repostatus.org/badges/latest/active.svg "status")](http://www.repostatus.org/#active "status - active") [![Downloads](http://cranlogs.r-pkg.org/badges/IBCF.MTME) "IBCF.MTME cranlogs")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page") [![Release](http://www.r-pkg.org/badges/version-ago/IBCF.MTME "IBCF.MTME release")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page")
+Item Based Collaborative Filterign For Multi-trait and Multi-environment Data in R. [![CRAN Status](http://www.r-pkg.org/badges/version/IBCF.MTME "CRAN Page")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page") [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg "LGPL, Version 2.0")](https://www.gnu.org/licenses/lgpl-3.0 "LGPL, Version 2.0") [![Project Status: Active](http://www.repostatus.org/badges/latest/active.svg "status")](http://www.repostatus.org/#active "status - active") [![Downloads](http://cranlogs.r-pkg.org/badges/IBCF.MTME "IBCF.MTME cranlogs")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page") [![Release](http://www.r-pkg.org/badges/version-ago/IBCF.MTME "IBCF.MTME release")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page")
 
 New in this dev version
 -----------------------

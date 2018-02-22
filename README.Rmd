@@ -167,7 +167,7 @@ Feel free to report new issues in this link [Issues](https://github.com/frahik/I
 [cran-badge]: http://www.r-pkg.org/badges/version/IBCF.MTME "CRAN Page"
 [LGPL-badge]: https://img.shields.io/badge/License-LGPL%20v3-blue.svg "LGPL, Version 2.0"
 [status-bagde]: http://www.repostatus.org/badges/latest/active.svg "status"
-[downloads-badge]: http://cranlogs.r-pkg.org/badges/IBCF.MTME) "IBCF.MTME cranlogs"
+[downloads-badge]: http://cranlogs.r-pkg.org/badges/IBCF.MTME "IBCF.MTME cranlogs"
 [release-badge]: http://www.r-pkg.org/badges/version-ago/IBCF.MTME "IBCF.MTME release"
 [cran]: https://cran.r-project.org/package=IBCF.MTME "CRAN Page"
 [LGPL]: https://www.gnu.org/licenses/lgpl-3.0 "LGPL, Version 2.0"
