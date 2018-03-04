@@ -1,56 +1,146 @@
-IBCF.MTME
-================
-Last README update: 2018-02-22
 
-Item Based Collaborative Filterign For Multi-trait and Multi-environment Data in R.
+<p align="center">
 
-[![CRAN Status](http://www.r-pkg.org/badges/version/IBCF.MTME "CRAN Page")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page") [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg "LGPL, Version 2.0")](https://www.gnu.org/licenses/lgpl-3.0 "LGPL, Version 2.0") [![Project Status: Active](http://www.repostatus.org/badges/latest/active.svg "status")](http://www.repostatus.org/#active "status - active") [![Downloads](http://cranlogs.r-pkg.org/badges/IBCF.MTME "IBCF.MTME cranlogs")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page") [![Release](http://www.r-pkg.org/badges/version-ago/IBCF.MTME "IBCF.MTME release")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page")
+<a href="https://github.com/frahik/GFR">
+<img src="Logo.png" alt="Genomic Functional Regression Logo"/> </a>
 
-New in this dev version
------------------------
+<h4 align="center">
 
--   Fixed important issue from `IBCF()$predictions_Summary`, now the correlation only uses the predicted testing data.
--   Now `IBCF()` function show `$yHat` that is an average of the prediction values of every partition.
--   Now `IBCF()` function shows in `$predicted_Partition` all the partitions values predicted (before was `$Predictions` and was changed to not confuse with `$yHat`).
--   Now `IBCF()` function shows in `$observed` all the response values from the DataSet.
--   Now `IBCF()` function shows in `$Data.Obs_Pred` all the response and predicted values from the DataSet.
--   Now `IBCF.Years()` function shows in `$predicted` all the values predicted.
--   Now `IBCF.Years()` function shows in `$observed` the response values for all the years from the Traits selected in `Traits.testing`.
--   Now `CV.RandomPart()` shows the lenght in every partition in `$CrossValidation_length`.
--   Now `CV.RandomPart()` admits `Traits.testing` to only use a `PTesting` percentage defined of the traits specified in the parameter to be used to fit the model.
+**I**tem **B**ased **C**ollaborative **F**ilterign For
+**M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R -
+Development version 1.2 - rev 5.
+
+</h4>
+
+<h4 align="center">
+
+\[Last README update: 2018-03-03\]
+
+</h4>
+
+<p align="center">
+
+[![Release](http://www.r-pkg.org/badges/version-ago/IBCF.MTME
+"IBCF.MTME release")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page")
+[![License: LGPL
+v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg
+"LGPL, Version 2.0")](https://www.gnu.org/licenses/lgpl-3.0 "LGPL, Version 2.0")
+[![Project Status:
+Active](http://www.repostatus.org/badges/latest/active.svg
+"status")](http://www.repostatus.org/#active "status - active")
+[![Downloads](http://cranlogs.r-pkg.org/badges/IBCF.MTME
+"IBCF.MTME cranlogs")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page")
+
+</p>
+
+</p>
+
+# Table of contents
+
+  - [NEWS](#news)
+  - [instructions](#instructions)
+      - [Installation](#install)
+      - [Load the package](#package)
+      - [Example of Cross-validation with IBCF.MTME and external
+        data](#example1)
+          - [Load external data](#external-data)
+          - [Generate a data set in tidy data](#generate-tidydata)
+          - [Generate a Cross-validation](#generate-crossvalidation)
+          - [Fitting the predictive model](#fit-model)
+          - [Show some results](#results)
+      - [Example of Years prediction with IBCF.Years
+        Function](#example2)
+          - [Loading your data](#external-data2)
+          - [Transforming the data from Tidy data to matrix
+            form](#generate-matrixform)
+          - [Adjust the model](#adjust-model)
+          - [Show some results](#results)
+      - [Load available data from the package](#load-data)
+  - [How to cite this package](#cite)
+  - [Contributions](#contributions)
+  - [Authors](#authors)
+
+<h2 id="news">
+
+News of this version (1.2)
+
+</h2>
+
+  - Fixed important issue from `IBCF()$predictions_Summary`, now the
+    correlation only uses the predicted testing data.
+  - Now `IBCF()` function show `$yHat` that is an average of the
+    prediction values of every partition.
+  - Now `IBCF()` function shows in `$predicted_Partition` all the
+    partitions values predicted (before was `$Predictions` and was
+    changed to not confuse with `$yHat`).
+  - Now `IBCF()` function shows in `$observed` all the response values
+    from the DataSet.
+  - Now `IBCF()` function shows in `$Data.Obs_Pred` all the response and
+    predicted values from the DataSet.
+  - Now `IBCF.Years()` function shows in `$predicted` all the values
+    predicted.
+  - Now `IBCF.Years()` function shows in `$observed` the response values
+    for all the years from the Traits selected in `Traits.testing`.
+  - Now `CV.RandomPart()` shows the lenght in every partition in
+    `$CrossValidation_length`.
+  - Now `CV.RandomPart()` admits `Traits.testing` to only use a
+    `PTesting` percentage defined of the traits specified in the
+    parameter to be used to fit the model.
 
 See the last updates in [NEWS](NEWS.md).
 
+<h2 id="instructions">
+
 Instructions for proper implementation
---------------------------------------
 
-### Installation
+</h2>
 
-To complete installation of dev version of IBCF.MTME from GitHub, you must have previously installed the devtools package.
+<h3 id="install">
+
+Installation
+
+</h3>
+
+To complete installation of dev version of IBCF.MTME from GitHub, you
+must have previously installed the devtools package.
 
 ``` r
 install.packages('devtools')
 devtools::install_github('frahik/IBCF.MTME')
 ```
 
-### Quick use
+<h3 id="package">
 
-### Load the package
+Load the package
+
+</h3>
 
 ``` r
 library(IBCF.MTME)
 ```
 
-### Cross-validation IBCF
+<h3 id="example1">
 
-#### Load example data
+Example of Cross-validation with IBCF.MTME
+
+</h3>
+
+<h4 id="external-data">
+
+Load available data from other package
+
+</h4>
 
 ``` r
 library(BGLR)
 data(wheat)
 ```
 
-#### Get DataSet in Tidy data form
+<h4 id="generate-tidydata">
+
+Generate a new data set in tidy data form
+
+</h4>
 
 ``` r
 pheno <- data.frame(ID = gl(n = 599, k = 1, length = 599*4),
@@ -68,19 +158,32 @@ head(pheno)
     ## 5  5  0.9983176 Env1
     ## 6  6  2.3360969 Env1
 
-#### Generate 10 partitions to do cross-validation
+<h4 id="generate-crossvalidation">
+
+Generate 10 partitions to do
+cross-validation
+
+</h4>
 
 ``` r
 CrossV <- CV.RandomPart(pheno, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
 ```
 
-#### Fitting the model
+<h4 id="fit-model">
+
+Fitting the predictive model
+
+</h4>
 
 ``` r
 pm <- IBCF(CrossV)
 ```
 
-#### Show some results
+<h4 id="results">
+
+Show some results
+
+</h4>
 
 ``` r
 summary(pm)
@@ -97,17 +200,25 @@ par(mai = c(2, 1, 1, 1))
 plot(pm, select = 'Pearson')
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 plot(pm, select = 'MSEP')
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-6-2.png)
+![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
-### IBCF.Years Function
+<h3 id="example2">
 
-#### Loading your data
+Example of Years prediction with IBCF.Years Function
+
+</h3>
+
+<h4 id="external-data2">
+
+Loading your data
+
+</h4>
 
 ``` r
 load('DataExample.RData')
@@ -122,7 +233,11 @@ head(Data.Example)
     ## 5  2014    5 Trait1 15.01838
     ## 6  2014    6 Trait1 13.19616
 
-#### Transforming the data from Tidy data to matrix form
+<h4 id="generate-matrixform">
+
+Transforming the data from Tidy data to matrix form
+
+</h4>
 
 ``` r
 Data.Example <- getMatrixForm(Data.Example, onlyTrait = TRUE)
@@ -144,13 +259,22 @@ head(Data.Example)
     ## 5 16.70963 16.81113 17.24170 15.53379 16.07600 16.54047
     ## 6 14.82150 16.49238 15.37325 14.07796 15.98419 15.84705
 
-#### Adjust the model
+<h4 id="adjust-model">
+
+Adjust the
+model
+
+</h4>
 
 ``` r
 pm <- IBCF.Years(Data.Example, colYears = 1, Years.testing = c('2014', '2015', '2016'), Traits.testing = c('Trait1', 'Trait2', 'Trait3', 'Trait4', "Trait5"))
 ```
 
-#### Show some results
+<h4 id="results2">
+
+Show some results
+
+</h4>
 
 ``` r
 summary(pm)
@@ -178,15 +302,21 @@ par(mai = c(3, 1, 1, 1))
 barplot(pm, las = 2)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 barplot(pm, select = 'MSEP', las = 2)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-9-2.png)
+![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
-#### Load data from the package to do some test
+<h4 id="load-data">
+
+Load available data from the package
+
+</h4>
+
+You can use the data sets in the package to test the functions
 
 ``` r
 library(IBCF.MTME)
@@ -217,20 +347,61 @@ head(Year_IBCF)
     ## 5  2014    5    T1 5.018380
     ## 6  2014    6    T1 3.196160
 
+<h2 id="cite">
+
 Citation
---------
 
-How to cite the package... Coming soon.
+</h2>
 
-Issues
-------
+First option, by the article paper
 
-Feel free to report new issues in this link [Issues](https://github.com/frahik/IBCF.MTME/issues/new)
+(Comming soon)
+
+Second option, by the manual package
+
+``` r
+citation('IBCF.MTME')
+```
+
+    ## 
+    ## To cite package 'IBCF.MTME' in publications use:
+    ## 
+    ##   Francisco Javier Luna-Vazquez, Osval Antonio Montesinos-Lopez,
+    ##   Abelardo Montesinos-Lopez and Jose Crossa (2018). IBCF.MTME:
+    ##   Item Based Collaborative Filtering for Multi-Trait and
+    ##   Multi-Environment Data. R package version 1.2-5.
+    ##   https://CRAN.R-project.org/package=IBCF.MTME
+    ## 
+    ## A BibTeX entry for LaTeX users is
+    ## 
+    ##   @Manual{,
+    ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and
+    ## Multi-Environment Data},
+    ##     author = {Francisco Javier Luna-Vazquez and Osval Antonio Montesinos-Lopez and Abelardo Montesinos-Lopez and Jose Crossa},
+    ##     year = {2018},
+    ##     note = {R package version 1.2-5},
+    ##     url = {https://CRAN.R-project.org/package=IBCF.MTME},
+    ##   }
+
+<h2 id="contributions">
+
+Contributions
+
+</h2>
+
+If you have any suggestions or feedback, I would love to hear about it.
+Feel free to report new issues in [this
+link](https://github.com/frahik/IBCF.MTME/issues/new), also if you want
+to request a feature/report a bug, or make a pull request if you can
+contribute.
+
+<h2 id="authors">
 
 Authors
--------
 
--   Francisco Javier Luna-Vázquez (Author, Maintainer)
--   Osval Antonio Montesinos-López (Author)
--   Abelardo Montesinos-López (Author)
--   José Crossa (Author)
+</h2>
+
+  - Francisco Javier Luna-Vázquez (Author, Maintainer)
+  - Osval Antonio Montesinos-López (Author)
+  - Abelardo Montesinos-López (Author)
+  - José Crossa (Author)
