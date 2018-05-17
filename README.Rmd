@@ -3,26 +3,32 @@ output: github_document
 ---
 
 <p align="center">
-  <a href="https://github.com/frahik/GFR">
-    <img src="Logo.png" alt="Genomic Functional Regression Logo"/>
+  <a href="https://github.com/frahik/IBCF.MTME">
+    <img src="Logo.png" alt="IBCF.MTME Logo"/>
   </a>
   <h4 align="center">
-    **I**tem **B**ased **C**ollaborative **F**ilterign For **M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R  - Development version 1.2 - rev 5.
+    **I**tem **B**ased **C**ollaborative **F**ilterign For **M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R  - Development version `r packageVersion('IBCF.MTME')`.
   </h4>
   <h4 align="center">
     [Last README update: `r format(Sys.Date())`]
   </h4>
+  
   <p align="center">
-    [![Release][release-badge]][cran]
-    [![License: LGPL v3][LGPL-badge]][LGPL]
-    [![Project Status: Active][status-bagde]][status]
-    [![Downloads][downloads-badge]][cran]
+  <a href="https://www.gnu.org/licenses/lgpl-3.0">
+    <img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0">
+  </a> <a href="http://www.repostatus.org/#active">
+    <img src="http://www.repostatus.org/badges/latest/active.svg" alt="Status of the Repo: Active">
+  </a> <a href="">
+    <img src="http://cranlogs.r-pkg.org/badges/IBCF.MTME" alt="Dowloads from the CRAN">
+  </a> <a href="https://cran.r-project.org/package=IBCF.MTME">
+    <img src="http://www.r-pkg.org/badges/version-ago/IBCF.MTME" alt="CRAN">
+  </a>
   </p>
 </p>
 
-# Table of contents
+# Table Of Contents
   - [NEWS](#news)
-  - [instructions](#instructions)
+  - [Instructions](#instructions)
     - [Installation](#install)
     - [Load the package](#package)
     - [Example of Cross-validation with IBCF.MTME and external data](#example1)
@@ -42,7 +48,7 @@ output: github_document
   - [Authors](#authors)
 
 <h2 id="news">
-  News of this version (1.2)
+  News of this version (`r packageVersion('IBCF.MTME')`)
 </h2>
   * Fixed important issue from `IBCF()$predictions_Summary`, now the correlation only uses the predicted testing data.
   * Now `IBCF()` function show `$yHat` that is an average of the prediction values of every partition.
@@ -60,15 +66,27 @@ See the last updates in [NEWS](NEWS.md).
   Instructions for proper implementation
 </h2>
 
+<p align="center">
+  <a href="https://github.com/frahik/IBCF.MTME">
+    <img src="IBCF_HowAnalyzeYourData.png" alt="IBCF.MTME Logo"/>
+  </a>
+</p>
+
 <h3 id="install">
   Installation
 </h3>
 
-To complete installation of dev version of IBCF.MTME from GitHub, you must have previously installed the devtools package.
+To complete installation of dev version of the package `IBCF.MTME` from GitHub, you must have previously installed the devtools package.
 
 ```{r installation, eval = FALSE}
 install.packages('devtools')
 devtools::install_github('frahik/IBCF.MTME')
+```
+
+If you want to use the stable version of `IBCF.MTME` package, install it from CRAN.
+
+```{r, eval=FALSE}
+install.packages('BGGE')
 ```
 
 <h3 id="package">
@@ -115,6 +133,7 @@ CrossV <- CV.RandomPart(pheno, NPartitions = 10, PTesting = 0.25, Set_seed = 123
 <h4 id="fit-model">
   Fitting the predictive model
 </h4>
+
 ```{r}
 pm <- IBCF(CrossV)
 ```
@@ -181,7 +200,8 @@ head(Data.Example)
 </h4>
 
 ```{r Years}
-pm <- IBCF.Years(Data.Example, colYears = 1, Years.testing = c('2014', '2015', '2016'), Traits.testing = c('Trait1', 'Trait2', 'Trait3', 'Trait4', "Trait5"))
+pm <- IBCF.Years(Data.Example, colYears = 1, Years.testing = c('2014', '2015', '2016'),
+                 Traits.testing = c('Trait1', 'Trait2', 'Trait3', 'Trait4', "Trait5"))
 ```
 
 <h4 id="results2">
@@ -199,6 +219,7 @@ barplot(pm, select = 'MSEP', las = 2)
 <h4 id="load-data">
   Load available data from the package
 </h4>
+
 You can use the data sets in the package to test the functions
 ```{r loadData}
 library(IBCF.MTME)
@@ -235,16 +256,9 @@ If you have any suggestions or feedback, I would love to hear about it. Feel fre
 <h2 id="authors">
   Authors
 </h2>
+
  - Francisco Javier Luna-Vázquez (Author, Maintainer)
  - Osval Antonio Montesinos-López (Author)
  - Abelardo Montesinos-López (Author)
  - José Crossa (Author)
-
-
-[LGPL-badge]: https://img.shields.io/badge/License-LGPL%20v3-blue.svg "LGPL, Version 2.0"
-[status-bagde]: http://www.repostatus.org/badges/latest/active.svg "status"
-[downloads-badge]: http://cranlogs.r-pkg.org/badges/IBCF.MTME "IBCF.MTME cranlogs"
-[release-badge]: http://www.r-pkg.org/badges/version-ago/IBCF.MTME "IBCF.MTME release"
-[cran]: https://cran.r-project.org/package=IBCF.MTME "CRAN Page"
-[LGPL]: https://www.gnu.org/licenses/lgpl-3.0 "LGPL, Version 2.0"
-[status]: http://www.repostatus.org/#active "status - active"
+ 

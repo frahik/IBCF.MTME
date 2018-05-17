@@ -1,44 +1,43 @@
 
 <p align="center">
 
-<a href="https://github.com/frahik/GFR">
-<img src="Logo.png" alt="Genomic Functional Regression Logo"/> </a>
+<a href="https://github.com/frahik/IBCF.MTME">
+<img src="Logo.png" alt="IBCF.MTME Logo"/> </a>
 
 <h4 align="center">
 
 **I**tem **B**ased **C**ollaborative **F**ilterign For
 **M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R -
-Development version 1.2 - rev 5.
+Development version 1.2.5.
 
 </h4>
 
 <h4 align="center">
 
-\[Last README update: 2018-03-03\]
+\[Last README update: 2018-05-16\]
 
 </h4>
 
 <p align="center">
 
-[![Release](http://www.r-pkg.org/badges/version-ago/IBCF.MTME
-"IBCF.MTME release")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page")
-[![License: LGPL
-v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg
-"LGPL, Version 2.0")](https://www.gnu.org/licenses/lgpl-3.0 "LGPL, Version 2.0")
-[![Project Status:
-Active](http://www.repostatus.org/badges/latest/active.svg
-"status")](http://www.repostatus.org/#active "status - active")
-[![Downloads](http://cranlogs.r-pkg.org/badges/IBCF.MTME
-"IBCF.MTME cranlogs")](https://cran.r-project.org/package=IBCF.MTME "CRAN Page")
+<a href="https://www.gnu.org/licenses/lgpl-3.0">
+<img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0">
+</a> <a href="http://www.repostatus.org/#active">
+<img src="http://www.repostatus.org/badges/latest/active.svg" alt="Status of the Repo: Active">
+</a> <a href="">
+<img src="http://cranlogs.r-pkg.org/badges/IBCF.MTME" alt="Dowloads from the CRAN">
+</a> <a href="https://cran.r-project.org/package=IBCF.MTME">
+<img src="http://www.r-pkg.org/badges/version-ago/IBCF.MTME" alt="CRAN">
+</a>
 
 </p>
 
 </p>
 
-# Table of contents
+# Table Of Contents
 
   - [NEWS](#news)
-  - [instructions](#instructions)
+  - [Instructions](#instructions)
       - [Installation](#install)
       - [Load the package](#package)
       - [Example of Cross-validation with IBCF.MTME and external
@@ -62,7 +61,7 @@ Active](http://www.repostatus.org/badges/latest/active.svg
 
 <h2 id="news">
 
-News of this version (1.2)
+News of this version (1.2.5)
 
 </h2>
 
@@ -95,18 +94,32 @@ Instructions for proper implementation
 
 </h2>
 
+<p align="center">
+
+<a href="https://github.com/frahik/IBCF.MTME">
+<img src="IBCF_HowAnalyzeYourData.png" alt="IBCF.MTME Logo"/> </a>
+
+</p>
+
 <h3 id="install">
 
 Installation
 
 </h3>
 
-To complete installation of dev version of IBCF.MTME from GitHub, you
-must have previously installed the devtools package.
+To complete installation of dev version of the package `IBCF.MTME` from
+GitHub, you must have previously installed the devtools package.
 
 ``` r
 install.packages('devtools')
 devtools::install_github('frahik/IBCF.MTME')
+```
+
+If you want to use the stable version of `IBCF.MTME` package, install it
+from CRAN.
+
+``` r
+install.packages('BGGE')
 ```
 
 <h3 id="package">
@@ -200,13 +213,13 @@ par(mai = c(2, 1, 1, 1))
 plot(pm, select = 'Pearson')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 plot(pm, select = 'MSEP')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 <h3 id="example2">
 
@@ -267,7 +280,8 @@ model
 </h4>
 
 ``` r
-pm <- IBCF.Years(Data.Example, colYears = 1, Years.testing = c('2014', '2015', '2016'), Traits.testing = c('Trait1', 'Trait2', 'Trait3', 'Trait4', "Trait5"))
+pm <- IBCF.Years(Data.Example, colYears = 1, Years.testing = c('2014', '2015', '2016'),
+                 Traits.testing = c('Trait1', 'Trait2', 'Trait3', 'Trait4', "Trait5"))
 ```
 
 <h4 id="results2">
@@ -302,13 +316,13 @@ par(mai = c(3, 1, 1, 1))
 barplot(pm, las = 2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ``` r
 barplot(pm, select = 'MSEP', las = 2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
 
 <h4 id="load-data">
 
