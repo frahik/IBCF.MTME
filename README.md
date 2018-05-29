@@ -8,13 +8,13 @@
 
 **I**tem **B**ased **C**ollaborative **F**ilterign For
 **M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R -
-Development version 1.2.5.
+Development version 1.3.1.
 
 </h4>
 
 <h4 align="center">
 
-\[Last README update: 2018-05-16\]
+\[Last README update: 2018-05-28\]
 
 </h4>
 
@@ -61,30 +61,17 @@ Development version 1.2.5.
 
 <h2 id="news">
 
-News of this version (1.2.5)
+News of this version (1.3.1)
 
 </h2>
 
-  - Fixed important issue from `IBCF()$predictions_Summary`, now the
-    correlation only uses the predicted testing data.
-  - Now `IBCF()` function show `$yHat` that is an average of the
-    prediction values of every partition.
-  - Now `IBCF()` function shows in `$predicted_Partition` all the
-    partitions values predicted (before was `$Predictions` and was
-    changed to not confuse with `$yHat`).
-  - Now `IBCF()` function shows in `$observed` all the response values
-    from the DataSet.
-  - Now `IBCF()` function shows in `$Data.Obs_Pred` all the response and
-    predicted values from the DataSet.
-  - Now `IBCF.Years()` function shows in `$predicted` all the values
-    predicted.
-  - Now `IBCF.Years()` function shows in `$observed` the response values
-    for all the years from the Traits selected in `Traits.testing`.
-  - Now `CV.RandomPart()` shows the lenght in every partition in
-    `$CrossValidation_length`.
-  - Now `CV.RandomPart()` admits `Traits.testing` to only use a
-    `PTesting` percentage defined of the traits specified in the
-    parameter to be used to fit the model.
+  - New function is added `IBCF.Data()`, this function could help to
+    construct your dataset.
+  - `IBCF.Years()` now has `colID` parameter to select the identifiers
+    of the observations.
+  - `CV.RandomPart()` function it’s compatible with `IBCF.Data()`
+    objects.
+  - Fixed a minor bug caused by the sequence in a for cycle.
 
 See the last updates in [NEWS](NEWS.md).
 
@@ -383,18 +370,17 @@ citation('IBCF.MTME')
     ##   Francisco Javier Luna-Vazquez, Osval Antonio Montesinos-Lopez,
     ##   Abelardo Montesinos-Lopez and Jose Crossa (2018). IBCF.MTME:
     ##   Item Based Collaborative Filtering for Multi-Trait and
-    ##   Multi-Environment Data. R package version 1.2-5.
-    ##   https://CRAN.R-project.org/package=IBCF.MTME
+    ##   Multi-Environment Data. R package version 1.3-1.
+    ##   https://github.com/frahik/IBCF.MTME
     ## 
     ## A BibTeX entry for LaTeX users is
     ## 
     ##   @Manual{,
-    ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and
-    ## Multi-Environment Data},
+    ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data},
     ##     author = {Francisco Javier Luna-Vazquez and Osval Antonio Montesinos-Lopez and Abelardo Montesinos-Lopez and Jose Crossa},
     ##     year = {2018},
-    ##     note = {R package version 1.2-5},
-    ##     url = {https://CRAN.R-project.org/package=IBCF.MTME},
+    ##     note = {R package version 1.3-1},
+    ##     url = {https://github.com/frahik/IBCF.MTME},
     ##   }
 
 <h2 id="contributions">
