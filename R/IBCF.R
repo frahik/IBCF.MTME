@@ -40,7 +40,7 @@ IBCF <- function(object, dec = 4) {
   predicted <- vector('list', NPartitions)
   names(predicted) <- paste0('Partition', 1:NPartitions)
 
-  for (j in 1:NPartitions) {
+  for (j in seq_len(NPartitions)) {
     Part <- object$CrossValidation_list[[j]]
 
     pos.NA <- which(Part == 2, arr.ind = T)
@@ -84,7 +84,7 @@ IBCF <- function(object, dec = 4) {
 
     item_sim <- lsa::cosine(as.matrix((x)))
 
-    for (i in 1:length(rows.Na)) {
+    for (i in seq_len(length(rows.Na))) {
       pos <- rows.Na[i]
       ratings[pos, 2:ncol(ratings)] <- rec_itm_for_geno(pos, item_sim, ratings[,2:ncol(ratings)])
     }
