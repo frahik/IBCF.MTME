@@ -33,6 +33,12 @@
 #' @export
 CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Traits.testing = NULL, Set_seed = NULL) {
 
+  if (inherits(DataSet, 'IBCFData')) {
+    Dataset <- Dataset$TidyDataset
+    Dataset$Env <- DataSet$Environment
+    Dataset$Environment <- NULL
+  }
+
   if (!is.null(Set_seed)) {
     set.seed(Set_seed)
   }
