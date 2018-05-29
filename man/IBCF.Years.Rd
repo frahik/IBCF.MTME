@@ -4,13 +4,15 @@
 \alias{IBCF.Years}
 \title{IBCF.Years}
 \usage{
-IBCF.Years(DataSet, colYears = 1, Years.testing = "", Traits.testing = "",
-  dec = 4)
+IBCF.Years(DataSet, colYears = 1, colID = 2, Years.testing = "",
+  Traits.testing = "", dec = 4)
 }
 \arguments{
 \item{DataSet}{\code{data.frame} A data set in Matrix Form.}
 
 \item{colYears}{\code{string or integer} A name or the position of the 'Years' column just in case that is not the first column.}
+
+\item{colID}{\code{string or integer} A name or the position of the 'ID' column, just in case that is not the second column.}
 
 \item{Years.testing}{\code{vector} A vector with the names of the years to use in test.}
 
