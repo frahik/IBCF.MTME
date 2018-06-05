@@ -28,7 +28,11 @@
 #'
 #' @export
 #'
-IBCF.Data <- function(ID = '', Environment = '', Trait = '', Response = '', data = NULL, messages = TRUE, get = 'all') {
+IBCFData <- function(ID = '', Environment = '', Trait = '', Response = '', data = NULL, messages = TRUE, get = 'all') {
+
+  if (is.null(data)) {
+
+  }
 
   if (Response == '' || is.null(data[, Response])) {
     message('[X] ERROR: Response was not provided')
