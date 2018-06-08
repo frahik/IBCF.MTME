@@ -50,10 +50,8 @@ output: github_document
 <h2 id="news">
   News of this version (`r packageVersion('IBCF.MTME')`)
 </h2>
-  * New function is added `IBCF.Data()`, this function could help to construct your dataset.
   * `IBCF.Years()` now has `colID` parameter to select the identifiers of the observations.
-  * `CV.RandomPart()` function it's compatible with `IBCF.Data()` objects.
-  * Fixed a minor bug caused by the sequence in a for cycle.
+  * Fixed a bug caused by the sequence in a for cycle.
   
 
 See the last updates in [NEWS](NEWS.md).
