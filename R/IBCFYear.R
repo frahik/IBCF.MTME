@@ -25,13 +25,6 @@
 #'
 #' @export
 IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Traits.testing = '', dec = 4) {
-
-  if (inherits(DataSet, 'IBCFData')) {
-    DataSet <- DataSet$MatrixDataset
-    colYears <- 'Environment'
-    colID <- 'ID'
-  }
-
   DataSet[, colYears] <- as.character(DataSet[, colYears]) #No factors admited
   No.Years <- length(unique(DataSet[, colYears]))
   No.Years.testing <- length(Years.testing)
@@ -70,13 +63,13 @@ IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Tra
     Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, colID]), Scaled_Row)
   }
 
-  ratings <- within(Data.trn_scaled, rm(ID))
+  ratings <- within(Data.trn_scaled, rm('ID'))
 
   x <- ratings
   x[is.na(x)] <- 0
   item_sim <- lsa::cosine(as.matrix((x)))
 
-  Hyb.pred <- within(Data.trn_scaled, rm(ID))
+  Hyb.pred <- within(Data.trn_scaled, rm('ID'))
 
   for (i in seq_len(length(rows.Na))) {
     pos <- rows.Na[i]

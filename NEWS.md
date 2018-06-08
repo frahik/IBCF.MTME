@@ -1,3 +1,10 @@
+IBCF.MTME v1.3 (Release date: 2018-06-08)
+==============
+
+Changes:
+* `IBCF.Years()` now has `colID` parameter to select the identifiers of the observations.
+* Fixed a bug caused by the sequence in a for cycle.
+
 IBCF.MTME v1.2 (Release date: 2018-02-19)
 ==============
 
