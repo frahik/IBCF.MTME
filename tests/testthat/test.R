@@ -31,7 +31,7 @@ test_that('Crossvalidation.RP function', {
   expect_equal(CrossV1, CrossV2)
   expect_equal(CrossV1, CrossV3)
 
-  expect_output(str(CrossV1), 'List of 6')
+  expect_output(str(CrossV1), 'List of 7')
   expect_is(CrossV1, 'CrossValidation')
 
   expect_output(str(CrossV1$DataSet), '250 obs. of  13 variables')
@@ -57,16 +57,13 @@ test_that('IBCF Test - With RP for 3 Envs, 4 Traits', {
   pm <- IBCF(CrossV)
 
   expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 6')
+  expect_output(str(pm), 'List of 7')
 
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
 
   expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
-  expect_is(pm$predictions_Summary[1, 1], 'character')
-  expect_is(pm$predictions_Summary[1, 2], 'numeric')
-  expect_equal(pm$predictions_Summary, summary(pm))
 
   expect_false(any(is.null(pm$predicted_Partition)))
   expect_output(str(pm$predicted_Partition), 'List of 10')
@@ -82,16 +79,13 @@ test_that('IBCF Test - With RP for 3 Envs selecting 2 envs for traits', {
   pm <- IBCF(CrossV)
 
   expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 6')
+  expect_output(str(pm), 'List of 7')
 
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
 
   expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
-  expect_is(pm$predictions_Summary[1, 1], 'character')
-  expect_is(pm$predictions_Summary[1, 2], 'numeric')
-  expect_equal(pm$predictions_Summary, summary(pm))
 
   expect_false(any(is.null(pm$predicted_Partition)))
   expect_output(str(pm$predicted_Partition), 'List of 10')
@@ -109,18 +103,14 @@ test_that('IBCF Test - With RP for 3 Envs without Traits', {
   CrossV <- CV.RandomPart(data, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
   pm <- IBCF(CrossV)
 
-
   expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 6')
+  expect_output(str(pm), 'List of 7')
 
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
 
   expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
-  expect_is(pm$predictions_Summary[1, 1], 'character')
-  expect_is(pm$predictions_Summary[1, 2], 'numeric')
-  expect_equal(pm$predictions_Summary, summary(pm))
 
   expect_false(any(is.null(pm$predicted_Partition)))
   expect_output(str(pm$predicted_Partition), 'List of 10')
@@ -138,16 +128,13 @@ test_that('IBCF Test - With RP for 4 Traits without Env', {
   pm <- IBCF(CrossV)
 
   expect_is(pm, 'IBCF')
-  expect_output(str(pm), 'List of 6')
+  expect_output(str(pm), 'List of 7')
 
   expect_is(pm$NPartitions, 'integer')
   expect_length(pm$NPartitions, 1)
 
   expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
-  expect_is(pm$predictions_Summary[1, 1], 'character')
-  expect_is(pm$predictions_Summary[1, 2], 'numeric')
-  expect_equal(pm$predictions_Summary, summary(pm))
 
   expect_false(any(is.null(pm$predicted_Partition)))
   expect_output(str(pm$predicted_Partition), 'List of 10')
@@ -161,19 +148,16 @@ test_that('IBCFY function', {
   data('Year_IBCF')
   DataSet <- getMatrixForm(Year_IBCF, onlyTrait = T)
 
-  pm <- IBCF.Years(DataSet, colYears = 'Years' , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
+  pm <- IBCF.Years(DataSet, colYears = 'Years' , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'), dec = 4)
 
   expect_is(pm, 'IBCFY')
-  expect_output(str(pm), 'List of 6')
+  expect_output(str(pm), 'List of 7')
 
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
 
   expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
-  expect_is(pm$predictions_Summary[1, 1], 'factor')
-  expect_is(pm$predictions_Summary[1, 2], 'numeric')
-  expect_equal(pm$predictions_Summary, summary(pm))
 
   expect_false(any(is.null(pm$predicted)))
   expect_false(any(is.null(pm$observed)))
@@ -187,16 +171,13 @@ test_that('IBCFY function one Trait for test', {
   pm <- IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5'))
 
   expect_is(pm, 'IBCFY')
-  expect_output(str(pm), 'List of 6')
+  expect_output(str(pm), 'List of 7')
 
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
 
   expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
-  expect_is(pm$predictions_Summary[1, 1], 'factor')
-  expect_is(pm$predictions_Summary[1, 2], 'numeric')
-  expect_equal(pm$predictions_Summary, summary(pm))
 
   expect_false(any(is.null(pm$predicted)))
   expect_false(any(is.null(pm$observed)))
@@ -210,16 +191,13 @@ test_that('IBCFY function for one year and one trait', {
   pm <- IBCF.Years(DataSet , Years.testing = c('2015'), Traits.testing = c('T5'))
 
   expect_is(pm, 'IBCFY')
-  expect_output(str(pm), 'List of 6')
+  expect_output(str(pm), 'List of 7')
 
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
 
   expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
-  expect_is(pm$predictions_Summary[1, 1], 'factor')
-  expect_is(pm$predictions_Summary[1, 2], 'numeric')
-  expect_equal(pm$predictions_Summary, summary(pm))
 
   expect_false(any(is.null(pm$predicted)))
   expect_false(any(is.null(pm$observed)))
@@ -230,19 +208,16 @@ test_that('IBCFY function with Wheat_IBCF Training', {
   data('Wheat_IBCF')
 
   DataSet <- getMatrixForm(Wheat_IBCF, onlyTrait = T)
-  pm <- IBCF.Years(DataSet, colYears = "Env", Years.testing = 'Drip', Traits.testing = c('DH','GY'))
+  pm <- IBCF.Years(DataSet, colID = 1, colYears = "Env", Years.testing = 'Drip', Traits.testing = c('DH','GY'))
 
   expect_is(pm, 'IBCFY')
-  expect_output(str(pm), 'List of 6')
+  expect_output(str(pm), 'List of 7')
 
   expect_is(pm$Years.testing, 'character')
   expect_is(pm$Traits.testing, 'character')
 
   expect_false(any(is.na(pm$predictions_Summary)))
   expect_is(pm$predictions_Summary, 'data.frame')
-  expect_is(pm$predictions_Summary[1, 1], 'factor')
-  expect_is(pm$predictions_Summary[1, 2], 'numeric')
-  expect_equal(pm$predictions_Summary, summary(pm))
 
   expect_false(any(is.null(pm$predicted)))
   expect_false(any(is.null(pm$observed)))
