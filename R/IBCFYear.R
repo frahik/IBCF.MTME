@@ -12,7 +12,7 @@
 #' \item{Year.testing}{\code{vector} a vector with the Years used for the testing data}
 #' \item{Traits.testing}{\code{vector} a vector with the Traits used for the testing data}
 #' \item{Data_Obs_Pred}{\code{data.frame} Contains the values observed and predicted (the predicted values has '.1' after the name)}
-#' \item{predictions_Summary}{\code{data.frame} Contains the summary of the correlation of the predictions and the mean squared error of the predictions (MSEP)}
+#' \item{predictions_Summary}{\code{data.frame} Contains the summary of the correlation of the predictions and the MAAPE}
 #'
 #' @examples
 #' \dontrun{
@@ -25,6 +25,7 @@
 #'
 #' @export
 IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Traits.testing = '', dec = 4) {
+  time.init <- proc.time()[3]
   DataSet[, colYears] <- as.character(DataSet[, colYears]) #No factors admited
   No.Years <- length(unique(DataSet[, colYears]))
   No.Years.testing <- length(Years.testing)
@@ -90,53 +91,25 @@ IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Tra
   All.Pred_O <- data.frame(DataSet[, c(colYears, colID)], All.Pred_O)
     colnames(All.Pred_O) <- c(colnames(DataSet[, c(colYears, colID)]), colnames(Data.trn_scaled[, -1]))
 
-  Data.Obs <- getTidyForm(DataSet[, c(colYears, colID, pos.Traits.testing)], onlyTrait = T)$Response
-  Data.Pred <- getTidyForm(All.Pred_O[, c(colYears, colID, pos.Traits.testing)], onlyTrait = T)$Response
+  Data.Obs <- getTidyForm(DataSet[, c(colYears, colID, pos.Traits.testing)], onlyTrait = T)
+  Data.Pred <- getTidyForm(All.Pred_O[, c(colYears, colID, pos.Traits.testing)], onlyTrait = T)
   Data.Obs_Pred <- data.frame(DataSet[pos.Years.testing, c(colYears, colID, pos.Traits.testing)],
                               All.Pred_O[pos.Years.testing, pos.Traits.testing])
   colnames(Data.Obs_Pred) <- c(colnames(DataSet)[ c(colYears, colID, pos.Traits.testing)], paste0(colnames(All.Pred_O)[pos.Traits.testing],'.1'))
-  Pearson <- c()
-  MSEP <- c()
-  Year_Trait <- c()
 
-  for (q in seq_len(length(Years.testing))) {
-    pos.Years_q <- which(c(DataSet[, colYears]) == Years.testing[q])
-
-    DataSet_tst <- DataSet[pos.Years_q, pos.Traits.testing]
-    All.Pred_O_tst <- All.Pred_O[pos.Years_q, pos.Traits.testing]
-
-    Cor_all_tst <- cor(DataSet_tst, All.Pred_O_tst, use = "pairwise.complete.obs")
-
-    Dif_Obs_pred <- DataSet_tst - All.Pred_O_tst
-    Dif_Obs_pred2 <- Dif_Obs_pred^2
-
-    MSEP_vec = tryCatch({
-      apply(Dif_Obs_pred2, 2, mean, na.rm = T)
-    }, error = function(e) {
-      mean(Dif_Obs_pred2, na.rm = T)
-    })
-
-    if (length(Cor_all_tst)[1] == 1) {
-      Cor_vec = Cor_all_tst
-    }else{
-      Cor_vec = diag(Cor_all_tst)
-    }
-
-    Pearson <- c(Pearson, round(Cor_vec, digits = dec))
-    MSEP <- c(MSEP, round(MSEP_vec, digits = dec))
-    Names_Trait_env <- c(paste(Years.testing[q], colnames(DataSet_tst), sep = "_"))
-    Year_Trait <- c(Year_Trait, Names_Trait_env)
-  }
-  names(Pearson) <- Year_Trait
-  names(MSEP) <- Year_Trait
-  Summary_predictions <- data.frame(Year_Trait, Pearson, MSEP)
+  results <- data.frame(Position = pos.Years.testing,
+                        Environment = Data.Obs[pos.Years.testing, 1],
+                        Trait = Data.Obs$Trait[pos.Years.testing],
+                        Observed = round(Data.Obs$Response[pos.Years.testing],dec),
+                        Predicted = round(Data.Pred$Response[pos.Years.testing], dec))
 
   out <- list(Years.testing = Years.testing,
               Traits.testing = Traits.testing,
-              predictions_Summary = Summary_predictions,
-              observed = Data.Obs,
-              predicted = Data.Pred,
-              Data.Obs_Pred = Data.Obs_Pred
+              predictions_Summary = results,
+              observed = Data.Obs$Response,
+              predicted = Data.Pred$Response,
+              Data.Obs_Pred = Data.Obs_Pred,
+              executionTime = proc.time()[3] - time.init
   )
   class(out) <- 'IBCFY'
   return(out)
