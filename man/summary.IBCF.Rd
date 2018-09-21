@@ -4,10 +4,15 @@
 \alias{summary.IBCF}
 \title{Summary}
 \usage{
-\method{summary}{IBCF}(object, ...)
+\method{summary}{IBCF}(object, information = "compact", digits = 4,
+  ...)
 }
 \arguments{
 \item{object}{\code{IBCF object} IBCF object, result of use the IBCF() function}
+
+\item{information}{\code{string} ...}
+
+\item{digits}{\code{numeric} ...}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

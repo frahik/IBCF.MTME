@@ -4,10 +4,12 @@
 \alias{summary.IBCFY}
 \title{Summary}
 \usage{
-\method{summary}{IBCFY}(object, ...)
+\method{summary}{IBCFY}(object, digits = 4, ...)
 }
 \arguments{
 \item{object}{\code{IBCFY object} IBCFY object, result of use the IBCF.Years() function}
+
+\item{digits}{\code{numeric} Number of digits of the output.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

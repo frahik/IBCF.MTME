@@ -25,7 +25,7 @@ A list with the next components
 \item{Year.testing}{\code{vector} a vector with the Years used for the testing data}
 \item{Traits.testing}{\code{vector} a vector with the Traits used for the testing data}
 \item{Data_Obs_Pred}{\code{data.frame} Contains the values observed and predicted (the predicted values has '.1' after the name)}
-\item{predictions_Summary}{\code{data.frame} Contains the summary of the correlation of the predictions and the mean squared error of the predictions (MSEP)}
+\item{predictions_Summary}{\code{data.frame} Contains the summary of the correlation of the predictions and the MAAPE}
 }
 \description{
 Item Based Collaborative Filtering for Years data

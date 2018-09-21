@@ -9,7 +9,7 @@
 \arguments{
 \item{height}{\code{IBCFY object} IBCFY object, result of use the IBCF.Years() function}
 
-\item{select}{\code{character} By default ('Pearson'), plot the Pearson Correlations of the IBCF Object, else ('MSEP'), plot the MSEP of the IBCF Object.}
+\item{select}{\code{character} By default ('Pearson'), plot the Pearson Correlations of the IBCF Object, else ('MAAPE'), plot the MAAPE of the IBCF Object.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
