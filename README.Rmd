@@ -143,7 +143,7 @@ summary(pm)
 ```{r}
 par(mai = c(2, 1, 1, 1))
 plot(pm, select = 'Pearson')
-plot(pm, select = 'MSEP')
+plot(pm, select = 'MAAPE')
 ```
 
 <h3 id="example2">
@@ -205,9 +205,9 @@ pm <- IBCF.Years(Data.Example, colYears = 1, Years.testing = c('2014', '2015', '
 ```{r}
 summary(pm)
 
-par(mai = c(3, 1, 1, 1))
+par(mai = c(2, 1, 1, 1))
 barplot(pm, las = 2)
-barplot(pm, select = 'MSEP', las = 2)
+barplot(pm, select = 'MAAPE', las = 2)
 ```
 
 <h4 id="load-data">

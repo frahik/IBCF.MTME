@@ -8,13 +8,13 @@
 
 **I**tem **B**ased **C**ollaborative **F**ilterign For
 **M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R -
-Development version 1.3.2.
+Development version 1.4.1.
 
 </h4>
 
 <h4 align="center">
 
-\[Last README update: 2018-06-08\]
+\[Last README update: 2018-09-21\]
 
 </h4>
 
@@ -61,7 +61,7 @@ Development version 1.3.2.
 
 <h2 id="news">
 
-News of this version (1.3.2)
+News of this version (1.4.1)
 
 </h2>
 
@@ -185,11 +185,11 @@ Show some results
 summary(pm)
 ```
 
-    ##   Trait_Env Pearson SE_Cor   MSEP SE_MSEP
-    ## 1     _Env1 -0.1307 0.0230 1.9010  0.0452
-    ## 2     _Env2  0.6859 0.0092 0.5454  0.0118
-    ## 3     _Env3  0.6116 0.0164 0.6284  0.0234
-    ## 4     _Env4  0.3068 0.0257 1.0640  0.0495
+    ##   Environment Trait Pearson SE_Pearson  MAAPE SE_MAAPE
+    ## 1        Env1       -0.1307     0.0243 0.9312   0.0114
+    ## 2        Env2        0.6859     0.0097 0.6737   0.0119
+    ## 3        Env3        0.6116     0.0173 0.6823   0.0068
+    ## 4        Env4        0.3068     0.0270 0.7623   0.0112
 
 ``` r
 par(mai = c(2, 1, 1, 1))
@@ -199,7 +199,7 @@ plot(pm, select = 'Pearson')
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
-plot(pm, select = 'MSEP')
+plot(pm, select = 'MAAPE')
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
@@ -277,32 +277,20 @@ Show some results
 summary(pm)
 ```
 
-    ##              Year_Trait Pearson   MSEP
-    ## 2014_Trait1 2014_Trait1  0.7549 0.4836
-    ## 2014_Trait2 2014_Trait2  0.1562 0.7769
-    ## 2014_Trait3 2014_Trait3  0.6130 0.4164
-    ## 2014_Trait4 2014_Trait4  0.5208 0.6821
-    ## 2014_Trait5 2014_Trait5  0.7587 0.2408
-    ## 2015_Trait1 2015_Trait1  0.8432 0.2987
-    ## 2015_Trait2 2015_Trait2  0.6792 0.5828
-    ## 2015_Trait3 2015_Trait3  0.7944 0.4416
-    ## 2015_Trait4 2015_Trait4  0.7394 0.5425
-    ## 2015_Trait5 2015_Trait5  0.7650 0.4739
-    ## 2016_Trait1 2016_Trait1  0.7690 0.3517
-    ## 2016_Trait2 2016_Trait2  0.7753 0.3818
-    ## 2016_Trait3 2016_Trait3  0.6763 0.5527
-    ## 2016_Trait4 2016_Trait4  0.8157 0.4076
-    ## 2016_Trait5 2016_Trait5  0.8533 0.2779
+    ##   Environment  Trait Pearson  MAAPE
+    ## 1        2014 Trait1  0.7549 0.0409
+    ## 2        2015 Trait1  0.8432 0.0277
+    ## 3        2016 Trait1  0.7690 0.0343
 
 ``` r
-par(mai = c(3, 1, 1, 1))
+par(mai = c(2, 1, 1, 1))
 barplot(pm, las = 2)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ``` r
-barplot(pm, select = 'MSEP', las = 2)
+barplot(pm, select = 'MAAPE', las = 2)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
@@ -366,7 +354,7 @@ citation('IBCF.MTME')
     ##   Francisco Javier Luna-Vazquez, Osval Antonio Montesinos-Lopez,
     ##   Abelardo Montesinos-Lopez and Jose Crossa (2018). IBCF.MTME:
     ##   Item Based Collaborative Filtering for Multi-Trait and
-    ##   Multi-Environment Data. R package version 1.3-2.
+    ##   Multi-Environment Data. R package version 1.4-1.
     ##   https://github.com/frahik/IBCF.MTME
     ## 
     ## A BibTeX entry for LaTeX users is
@@ -375,7 +363,7 @@ citation('IBCF.MTME')
     ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data},
     ##     author = {Francisco Javier Luna-Vazquez and Osval Antonio Montesinos-Lopez and Abelardo Montesinos-Lopez and Jose Crossa},
     ##     year = {2018},
-    ##     note = {R package version 1.3-2},
+    ##     note = {R package version 1.4-1},
     ##     url = {https://github.com/frahik/IBCF.MTME},
     ##   }
 
