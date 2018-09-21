@@ -23,23 +23,16 @@
 #'
 IBCF <- function(object, dec = 4) {
   if (!inherits(object, 'CrossValidation')) stop("This function only works for objects of class 'CrossValidation'")
-
+  time.init <- proc.time()[3]
   nIL <- ncol(object$DataSet) - 1
 
-  post_cor <- matrix(0, ncol = 1, nrow = nIL)
-  post_cor_2 <- matrix(0, ncol = 1, nrow = nIL)
-  post_MSEP <- matrix(0, ncol = 1, nrow = nIL)
-  post_MSEP_2 <- matrix(0, ncol = 1, nrow = nIL)
   Y_avr <- matrix(0, ncol = nIL, nrow = nrow(object$DataSet))
-  Ind_all <- Y_avr
-  nSums <- 0
-
   NPartitions <- length(object$CrossValidation_list)
-  Ave_predictions <- matrix(NA, ncol = 5, nrow = nIL)
 
   predicted <- vector('list', NPartitions)
   names(predicted) <- paste0('Partition', 1:NPartitions)
 
+  results <- data.frame()
   for (j in seq_len(NPartitions)) {
     Part <- object$CrossValidation_list[[j]]
 
@@ -104,61 +97,28 @@ IBCF <- function(object, dec = 4) {
     All.Pred_O_tst <- All.Pred_O[rows.Na, ]
 
     predicted[[paste0('Partition', j)]] <- c(All.Pred_O)
-
-    DataSet_tst <- object$DataSet[, -1]
+    pos.No_NA[,2] <- pos.No_NA[,2] + 1
+    DataSet_tst <- object$DataSet
     DataSet_tst[pos.No_NA] <- NA
     DataSet_tst <- DataSet_tst[rows.Na, ]
 
-    Y_all_tst <- cbind(DataSet_tst, All.Pred_O_tst)
-
-    Cor_all_tst <- cor(Y_all_tst[,1:nIL], Y_all_tst[,(nIL + 1):(2*nIL)] , use = "pairwise.complete.obs")
-
-    Dif_Obs_pred <- Y_all_tst[,1:nIL] - Y_all_tst[,(nIL + 1):(2*nIL)]
-
-    MSEP <- apply(Dif_Obs_pred^2, 2, mean, na.rm = T)
-    Cor_vec <- diag(Cor_all_tst)
-    YYY <- All.Pred_O
-    Ind <-  is.na(YYY)
-    YYY[Ind] <- 0
-    Y_avr <- Y_avr + YYY
-    Ind <-  !(Ind)
-    Ind_all <- Ind_all + Ind
-
-    nSums <- nSums + 1
-
-    k <- (nSums - 1)/(nSums)
-    post_cor <- post_cor*k + Cor_vec/nSums
-    post_cor_2 <- post_cor_2*k + (Cor_vec^2)/nSums
-
-    post_MSEP <- post_MSEP*k + MSEP/nSums
-    post_MSEP_2 <- post_MSEP_2*k + (MSEP^2)/nSums
+    Data.Obs_tst <- getTidyForm(DataSet_tst)
+    posTST <- which(complete.cases(Data.Obs_tst) == TRUE)
+    results <- rbind(results, data.frame(Partition = j,
+      Environment = Data.Obs_tst$Env[posTST],
+      Trait = Data.Obs_tst$Trait[posTST],
+      Observed = round(Data.Obs_tst$Response[posTST],dec),
+      Predicted = round(c(All.Pred_O_tst[which(!is.na(All.Pred_O_tst))]), dec)))
   }
-
-  Y_avr <- Y_avr/Ind_all
   Yhat_Obs_pred <- data.frame(object$DataSet, Y_avr)
 
-  SD_Cor <- sqrt(post_cor_2 - (post_cor^2))
-  SD_MSEP <- sqrt(post_MSEP_2 - (post_MSEP^2))
-
-  Ave_predictions[, 2] <- round(post_cor, digits = dec)
-  Ave_predictions[, 3] <- round(SD_Cor/sqrt(NPartitions), digits = dec)
-  Ave_predictions[, 4] <- round(post_MSEP, digits = dec)
-  Ave_predictions[, 5] <- round(SD_MSEP/sqrt(NPartitions), digits = dec)
-
-  Ave_predictions <- data.frame(Ave_predictions)
-  colnames(Ave_predictions) <- c('Trait_Env', 'Pearson', 'SE_Cor', 'MSEP', 'SE_MSEP')
-  Ave_predictions$Trait_Env <- colnames(object$DataSet[,-c(1)])
-
-  if (any(is.na(Ave_predictions[, 2]))) {
-    Ave_predictions <- Ave_predictions[which(!is.na(Ave_predictions[, 2])),]
-  }
-
   out <- list(NPartitions = NPartitions,
-              predictions_Summary = Ave_predictions,
+              predictions_Summary = results,
               observed = getTidyForm(object$DataSet)$Response,
               yHat = Y_avr,
               predicted_Partition = predicted,
-              Data.Obs_Pred = Yhat_Obs_pred)
+              Data.Obs_Pred = Yhat_Obs_pred,
+              executionTime = proc.time()[3] - time.init)
   class(out) <- 'IBCF'
   return(out)
 }
