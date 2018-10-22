@@ -50,6 +50,9 @@ output: github_document
 <h2 id="news">
   News of this version (`r packageVersion('IBCF.MTME')`)
 </h2>
+  * `MSEP` was changed to `MAAPE`.
+  * `print` function was added.
+  * `ORCID` was added to the authors of the package.
   * `IBCF.Years()` now has `colID` parameter to select the identifiers of the observations.
   * Fixed a bug caused by the sequence in a for cycle.
   
