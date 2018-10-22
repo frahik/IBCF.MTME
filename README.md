@@ -8,13 +8,13 @@
 
 **I**tem **B**ased **C**ollaborative **F**ilterign For
 **M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R -
-Development version 1.4.1.
+Development version 1.4.2.
 
 </h4>
 
 <h4 align="center">
 
-\[Last README update: 2018-09-21\]
+\[Last README update: 2018-10-22\]
 
 </h4>
 
@@ -61,7 +61,7 @@ Development version 1.4.1.
 
 <h2 id="news">
 
-News of this version (1.4.1)
+News of this version (1.4.2)
 
 </h2>
 
@@ -354,7 +354,7 @@ citation('IBCF.MTME')
     ##   Francisco Javier Luna-Vazquez, Osval Antonio Montesinos-Lopez,
     ##   Abelardo Montesinos-Lopez and Jose Crossa (2018). IBCF.MTME:
     ##   Item Based Collaborative Filtering for Multi-Trait and
-    ##   Multi-Environment Data. R package version 1.4-1.
+    ##   Multi-Environment Data. R package version 1.4-2.
     ##   https://github.com/frahik/IBCF.MTME
     ## 
     ## A BibTeX entry for LaTeX users is
@@ -363,7 +363,7 @@ citation('IBCF.MTME')
     ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data},
     ##     author = {Francisco Javier Luna-Vazquez and Osval Antonio Montesinos-Lopez and Abelardo Montesinos-Lopez and Jose Crossa},
     ##     year = {2018},
-    ##     note = {R package version 1.4-1},
+    ##     note = {R package version 1.4-2},
     ##     url = {https://github.com/frahik/IBCF.MTME},
     ##   }
 
