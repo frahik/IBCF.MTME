@@ -7,12 +7,12 @@
 \method{print}{IBCFY}(x, ...)
 }
 \arguments{
-\item{x}{object a}
+\item{x}{IBCFY object}
 
-\item{...}{more objects}
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-test
+printable object
 }
 \description{
 Print IBCFY information object
