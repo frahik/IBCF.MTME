@@ -6,3 +6,20 @@
 #' @docType package
 #' @name IBCF.MTME
 NULL
+
+if (getRversion() >= "2.15.1")
+  utils::globalVariables(
+    c('.',
+      'Environment',
+      'Trait',
+      'Partition',
+      'Predicted',
+      'Observed',
+      'Pearson',
+      'MAAPE',
+      'SE_Pearson',
+      'SE_MAAPE',
+      'n'
+    )
+
+  )
