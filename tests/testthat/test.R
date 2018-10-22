@@ -31,7 +31,7 @@ test_that('Crossvalidation.RP function', {
   expect_equal(CrossV1, CrossV2)
   expect_equal(CrossV1, CrossV3)
 
-  expect_output(str(CrossV1), 'List of 7')
+  expect_output(str(CrossV1), 'List of 6')
   expect_is(CrossV1, 'CrossValidation')
 
   expect_output(str(CrossV1$DataSet), '250 obs. of  13 variables')
@@ -223,3 +223,4 @@ test_that('IBCFY function with Wheat_IBCF Training', {
   expect_false(any(is.null(pm$observed)))
   expect_length(pm$predicted, length(pm$observed))
 })
+
