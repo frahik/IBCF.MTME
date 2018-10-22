@@ -1,3 +1,10 @@
+IBCF.MTME v1.4 (Release date: 2018-10-22)
+==============
+
+* `MSEP` was changed to `MAAPE`.
+* `print` function was added.
+* `ORCID` was added to the authors of the package.
+
 IBCF.MTME v1.3 (Release date: 2018-06-08)
 ==============
 
