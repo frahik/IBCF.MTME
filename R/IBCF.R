@@ -11,7 +11,7 @@
 #'
 #' @export
 #'
-#' @importFrom stats cor na.omit sd
+#' @importFrom stats cor na.omit sd complete.cases
 #' @examples
 #'  \dontrun{
 #'   library(IBCF.MTME)
