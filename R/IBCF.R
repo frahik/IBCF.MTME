@@ -104,7 +104,9 @@ IBCF <- function(object, dec = 4) {
 
     Data.Obs_tst <- getTidyForm(DataSet_tst)
     posTST <- which(complete.cases(Data.Obs_tst) == TRUE)
-    results <- rbind(results, data.frame(Partition = j,
+
+    results <- rbind(results, data.frame(Position = posTST,
+      Partition = j,
       Environment = Data.Obs_tst$Env[posTST],
       Trait = Data.Obs_tst$Trait[posTST],
       Observed = round(Data.Obs_tst$Response[posTST],dec),

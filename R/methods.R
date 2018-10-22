@@ -133,10 +133,10 @@ barplot.IBCFY <- function(height, select = 'Pearson', ...){
 
 #' Print IBCF information object
 #'
-#' @param x IBCF object.
-#' @param ...  Further arguments passed to or from other methods.
+#' @param x IBCF object
+#' @param ...   Further arguments passed to or from other methods.
 #'
-#' @return printable object
+#' @return printeable object
 #' @importFrom utils head
 #' @export
 #'
@@ -159,9 +159,9 @@ print.IBCF <- function(x, ...){
 #' Print IBCFY information object
 #'
 #' @param x IBCFY object
-#' @param ...  Further arguments passed to or from other methods.
+#' @param ...   Further arguments passed to or from other methods.
 #'
-#' @return printable object
+#' @return printeable object
 #' @importFrom utils head
 #' @export
 #'
