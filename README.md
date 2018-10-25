@@ -14,7 +14,7 @@ Development version 1.4.2.
 
 <h4 align="center">
 
-\[Last README update: 2018-10-22\]
+\[Last README update: 2018-10-25\]
 
 </h4>
 
@@ -343,7 +343,18 @@ Citation
 
 First option, by the article paper
 
-(Comming soon)
+    @article{IBCF2018,
+    author = {Montesinos-L{\'{o}}pez, Osval A. and Luna-V{\'{a}}zquez, Francisco Javier and Montesinos-L{\'{o}}pez, Abelardo and Juliana, Philomin and Singh, Ravi and Crossa, Jos{\'{e}}},
+    doi = {10.3835/plantgenome2018.02.0013},
+    issn = {1940-3372},
+    journal = {The Plant Genome},
+    number = {3},
+    pages = {16},
+    title = {{An R Package for Multitrait and Multienvironment Data with the Item-Based Collaborative Filtering Algorithm}},
+    url = {https://dl.sciencesocieties.org/publications/tpg/abstracts/0/0/180013},
+    volume = {11},
+    year = {2018}
+    }
 
 Second option, by the manual package
 
