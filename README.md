@@ -14,13 +14,15 @@ Development version 1.4.2.
 
 <h4 align="center">
 
-\[Last README update: 2018-10-25\]
+\[Last README update: 2018-11-13\]
 
 </h4>
 
 <p align="center">
 
-<a href="https://www.gnu.org/licenses/lgpl-3.0">
+<a href="https://www.tidyverse.org/lifecycle/#maturing">
+<img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing">
+</a> <a href="https://www.gnu.org/licenses/lgpl-3.0">
 <img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0">
 </a> <a href="http://www.repostatus.org/#active">
 <img src="http://www.repostatus.org/badges/latest/active.svg" alt="Status of the Repo: Active">
@@ -369,16 +371,17 @@ citation('IBCF.MTME')
     ##   Abelardo Montesinos-Lopez and Jose Crossa (2018). IBCF.MTME:
     ##   Item Based Collaborative Filtering for Multi-Trait and
     ##   Multi-Environment Data. R package version 1.4-2.
-    ##   https://github.com/frahik/IBCF.MTME
+    ##   https://CRAN.R-project.org/package=IBCF.MTME
     ## 
     ## A BibTeX entry for LaTeX users is
     ## 
     ##   @Manual{,
-    ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data},
+    ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and
+    ## Multi-Environment Data},
     ##     author = {Francisco Javier Luna-Vazquez and Osval Antonio Montesinos-Lopez and Abelardo Montesinos-Lopez and Jose Crossa},
     ##     year = {2018},
     ##     note = {R package version 1.4-2},
-    ##     url = {https://github.com/frahik/IBCF.MTME},
+    ##     url = {https://CRAN.R-project.org/package=IBCF.MTME},
     ##   }
 
 <h2 id="contributions">

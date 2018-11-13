@@ -14,7 +14,9 @@ output: github_document
   </h4>
   
   <p align="center">
-  <a href="https://www.gnu.org/licenses/lgpl-3.0">
+  <a href="https://www.tidyverse.org/lifecycle/#maturing">
+    <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing">
+  </a> <a href="https://www.gnu.org/licenses/lgpl-3.0">
     <img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0">
   </a> <a href="http://www.repostatus.org/#active">
     <img src="http://www.repostatus.org/badges/latest/active.svg" alt="Status of the Repo: Active">
