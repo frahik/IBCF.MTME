@@ -36,9 +36,9 @@ IBCF <- function(object, dec = 4) {
   for (j in seq_len(NPartitions)) {
     Part <- object$CrossValidation_list[[j]]
 
-    pos.NA <- which(Part == 2, arr.ind = T)
+    pos.NA <- which(Part == 2, arr.ind = TRUE)
     pos.NA[, 2] <- c(pos.NA[, 2]) + 1
-    pos.No_NA <- which(Part == 1, arr.ind = T)
+    pos.No_NA <- which(Part == 1, arr.ind = TRUE)
     # pos.No_NA[, 2] <- c(pos.No_NA[, 2])
 
     if (length(pos.NA) == 0) {
@@ -51,13 +51,13 @@ IBCF <- function(object, dec = 4) {
 
     rows.Na <- which(apply(Data.trn, 1, function(x) any(is.na(x))) == TRUE)
 
-    Means_trn <- apply(Data.trn[, -c(1)], 2, mean, na.rm = T)
-    SDs_trn <- apply(Data.trn[, -c(1)], 2, sd, na.rm = T)
+    Means_trn <- apply(Data.trn[, -c(1)], 2, mean, na.rm = TRUE)
+    SDs_trn <- apply(Data.trn[, -c(1)], 2, sd, na.rm = TRUE)
 
     Scaled_Col <- scale(Data.trn[, -c(1)])
 
-    Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = T)
-    SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = T)
+    Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = TRUE)
+    SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = TRUE)
 
     if (any(is.na(SDs_trn_Row))) {
       Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, c(1)]), Scaled_Col)
@@ -86,10 +86,10 @@ IBCF <- function(object, dec = 4) {
 
 
     if (any(is.na(SDs_trn_Row))) {
-      All.Pred_O <- sapply(1:ncol(All.Pred), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
+      All.Pred_O <- sapply(seq_len(ncol(All.Pred)), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
     } else {
-      All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
-      All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
+      All.Pred_O_Row <- t(sapply(seq_len(nrow(All.Pred)), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
+      All.Pred_O <- sapply(seq_len(ncol(All.Pred_O_Row)), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
     }
 
     colnames(All.Pred_O) <- colnames(Data.trn_scaled[,-c(1)])

@@ -17,14 +17,14 @@ rec_itm_for_geno <- function(geno_no, item_sim, ratings)  {
 
     weight_mat <- df * ratings[geno_no,]
 
-    non_rated_pred_score <- c(non_rated_pred_score, rowSums(weight_mat, na.rm = T)/temp_sum)
+    non_rated_pred_score <- c(non_rated_pred_score, rowSums(weight_mat, na.rm = TRUE)/temp_sum)
   }
 
   pred_rat_mat <- as.data.frame(non_rated_pred_score)
   names(pred_rat_mat) <- non_rated_items
 
-  for (k in 1:ncol(pred_rat_mat)) {
-    ratings[geno_no,][which(names(ratings[geno_no,]) == names(pred_rat_mat)[k])] = pred_rat_mat[1,k]
+  for (k in seq_len(ncol(pred_rat_mat))) {
+    ratings[geno_no,][which(names(ratings[geno_no,]) == names(pred_rat_mat)[k])] <- pred_rat_mat[1,k]
   }
 
   return(ratings[geno_no,])

@@ -23,8 +23,8 @@ summary.IBCF <- function(object, information = 'compact', digits = 4, ...){
     as.data.frame() -> presum
 
   presum %>%  group_by(Environment, Trait) %>%
-    summarise(SE_MAAPE = sd(MAAPE, na.rm = T)/sqrt(n()), MAAPE = mean(MAAPE, na.rm = T),
-              SE_Pearson = sd(Pearson, na.rm = T)/sqrt(n()), Pearson = mean(Pearson, na.rm = T))  %>%
+    summarise(SE_MAAPE = sd(MAAPE, na.rm = TRUE)/sqrt(n()), MAAPE = mean(MAAPE, na.rm = TRUE),
+              SE_Pearson = sd(Pearson, na.rm = TRUE)/sqrt(n()), Pearson = mean(Pearson, na.rm = TRUE))  %>%
     select(Environment, Trait, Pearson, SE_Pearson, MAAPE, SE_MAAPE) %>%
     mutate_if(is.numeric, funs(round(., digits))) %>%
     as.data.frame() -> finalSum
@@ -95,7 +95,7 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
   }
 
   x.labels <- paste0(results$Trait, '_', results$Env)
-  plot.x <- 1:length(x.labels)
+  plot.x <- seq_len(length(x.labels))
 
   plot(plot.x, results[, select], ylim = range(c(results[, select] - results$SE, results[, select] + results$SE)),
       type = 'p', ylab = ylab, xlab = '', xaxt = "n", ...)

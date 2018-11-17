@@ -43,7 +43,7 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Traits.test
     DataSet$Trait <- ''
   }
 
-  new_Data <- getMatrixForm(DataSet, onlyTrait = F)
+  new_Data <- getMatrixForm(DataSet, onlyTrait = FALSE)
   NLine <- dim(new_Data)[1]
 
   if (length(unique(DataSet$Env)) == 1 ) {
@@ -105,15 +105,15 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Traits.test
 
     if (!is.null(Traits.testing)) {
       Traits_Selec_F <- c()
-      for (r in 1:length(Traits.testing)) {
-        Traits_Selec <- which(grepl(Traits.testing[r], Names_MFormat) == T)
+      for (r in seq_len(Traits.testing)) {
+        Traits_Selec <- which(grepl(Traits.testing[r], Names_MFormat) == TRUE)
         Traits_Selec_F <- c(Traits_Selec_F,Traits_Selec)
       }
 
-      B1[, -c(Traits_Selec_F)] = 1
+      B1[, -c(Traits_Selec_F)] <- 1
     }
 
-    p_list[[paste('p', i, sep = '')]] = B1
+    p_list[[paste('p', i, sep = '')]] <- B1
   }
 
 

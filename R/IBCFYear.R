@@ -18,7 +18,7 @@
 #' \dontrun{
 #'   library(IBCF.MTME)
 #'   data('Year_IBCF')
-#'   DataSet <- getMatrixForm(Year_IBCF, withYears = T)
+#'   DataSet <- getMatrixForm(Year_IBCF, withYears = TRUE)
 #'   IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
 #'
 #' }
@@ -50,12 +50,12 @@ IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Tra
 
   rows.Na <- which(apply(Data.trn[, -c(colYears, colID)],1,function(x)any(is.na(x))) == TRUE)
 
-  Means_trn <- apply(Data.trn[, -c(colYears, colID)], 2, mean, na.rm = T)
-  SDs_trn <- apply(Data.trn[, -c(colYears, colID)], 2, sd, na.rm = T)
+  Means_trn <- apply(Data.trn[, -c(colYears, colID)], 2, mean, na.rm = TRUE)
+  SDs_trn <- apply(Data.trn[, -c(colYears, colID)], 2, sd, na.rm = TRUE)
 
   Scaled_Col <- scale(Data.trn[, -c(colYears, colID)])
-  Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = T)
-  SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = T)
+  Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = TRUE)
+  SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = TRUE)
 
   if (any(is.na(SDs_trn_Row))) {
     Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, colID]), Scaled_Col)
@@ -81,18 +81,18 @@ IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Tra
 
   if (any(is.na(SDs_trn_Row))) {
     ## cambiar por all.Pred solo si ocurre error
-    All.Pred_O <- sapply(1:ncol(All.Pred), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
+    All.Pred_O <- sapply(seq_len(ncol(All.Pred)), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
   } else {
     ## Si ocurre error, este se evita.
-    All.Pred_O_Row <- t(sapply(1:nrow(All.Pred), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
-    All.Pred_O <- sapply(1:ncol(All.Pred_O_Row), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
+    All.Pred_O_Row <- t(sapply(seq_len(nrow(All.Pred)), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
+    All.Pred_O <- sapply(seq_len(ncol(All.Pred_O_Row)), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
   }
 
   All.Pred_O <- data.frame(DataSet[, c(colYears, colID)], All.Pred_O)
     colnames(All.Pred_O) <- c(colnames(DataSet[, c(colYears, colID)]), colnames(Data.trn_scaled[, -1]))
 
-  Data.Obs <- getTidyForm(DataSet[, c(colYears, colID, pos.Traits.testing)], onlyTrait = T)
-  Data.Pred <- getTidyForm(All.Pred_O[, c(colYears, colID, pos.Traits.testing)], onlyTrait = T)
+  Data.Obs <- getTidyForm(DataSet[, c(colYears, colID, pos.Traits.testing)], onlyTrait = TRUE)
+  Data.Pred <- getTidyForm(All.Pred_O[, c(colYears, colID, pos.Traits.testing)], onlyTrait = TRUE)
   Data.Obs_Pred <- data.frame(DataSet[pos.Years.testing, c(colYears, colID, pos.Traits.testing)],
                               All.Pred_O[pos.Years.testing, pos.Traits.testing])
   colnames(Data.Obs_Pred) <- c(colnames(DataSet)[ c(colYears, colID, pos.Traits.testing)], paste0(colnames(All.Pred_O)[pos.Traits.testing],'.1'))

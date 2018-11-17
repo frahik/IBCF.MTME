@@ -65,7 +65,7 @@ getMatrixForm <- function(Tidy_DataSet, onlyTrait = FALSE){
 #'   Tidy.Y <- getTidyForm(M.Y, onlyTrait = T)
 #' }
 #'
-getTidyForm <- function(Matrix_DataSet, onlyTrait = F){
+getTidyForm <- function(Matrix_DataSet, onlyTrait = FALSE){
 
   if (onlyTrait) {
     return(tidyr::gather(Matrix_DataSet, 'Trait', 'Response', -c(1:2)))
