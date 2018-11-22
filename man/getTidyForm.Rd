@@ -4,7 +4,7 @@
 \alias{getTidyForm}
 \title{Matrix format to Tidy data format}
 \usage{
-getTidyForm(Matrix_DataSet, onlyTrait = F)
+getTidyForm(Matrix_DataSet, onlyTrait = FALSE)
 }
 \arguments{
 \item{Matrix_DataSet}{A data.frame object with the response values divided in \eqn{n} environments or traits columns}

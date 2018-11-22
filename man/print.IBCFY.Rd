@@ -12,7 +12,7 @@
 \item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-printable object
+printeable object
 }
 \description{
 Print IBCFY information object
