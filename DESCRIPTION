@@ -1,7 +1,7 @@
 Package: IBCF.MTME
 Title: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data
-Version: 1.4-2
-Date: 2018-10-22
+Version: 1.5-1
+Date: 2018-11-22
 Authors@R: c(person("Francisco Javier", "Luna-Vazquez", email = "frahik@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-5370-7152")),
              person("Osval Antonio", "Montesinos-Lopez", email= "oamontes1@ucol.mx", role = "aut", comment = c(ORCID = "0000-0002-3973-6547")),
              person("Abelardo", "Montesinos-Lopez", role = "aut"),
