@@ -27,6 +27,7 @@ IBCF <- function(object, dec = 4) {
   nIL <- ncol(object$DataSet) - 1
 
   Y_avr <- matrix(0, ncol = nIL, nrow = nrow(object$DataSet))
+  Ind_all <- Y_avr
   NPartitions <- length(object$CrossValidation_list)
 
   predicted <- vector('list', NPartitions)
@@ -104,6 +105,12 @@ IBCF <- function(object, dec = 4) {
 
     Data.Obs_tst <- getTidyForm(DataSet_tst)
     posTST <- which(complete.cases(Data.Obs_tst) == TRUE)
+    YYY <- All.Pred_O
+    Ind <-  is.na(YYY)
+    YYY[Ind] <- 0
+    Y_avr <- Y_avr + YYY
+    Ind <-  !(Ind)
+    Ind_all <- Ind_all + Ind
 
     results <- rbind(results, data.frame(Position = posTST,
       Partition = j,
@@ -112,6 +119,7 @@ IBCF <- function(object, dec = 4) {
       Observed = round(Data.Obs_tst$Response[posTST],dec),
       Predicted = round(c(All.Pred_O_tst[which(!is.na(All.Pred_O_tst))]), dec)))
   }
+  Y_avr <- Y_avr/Ind_all
   Yhat_Obs_pred <- data.frame(object$DataSet, Y_avr)
 
   out <- list(NPartitions = NPartitions,
