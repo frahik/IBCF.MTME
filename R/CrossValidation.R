@@ -105,8 +105,8 @@ CV.RandomPart <- function(DataSet, NPartitions = 10, PTesting = .35, Traits.test
 
     if (!is.null(Traits.testing)) {
       Traits_Selec_F <- c()
-      for (r in seq_len(Traits.testing)) {
-        Traits_Selec <- which(grepl(Traits.testing[r], Names_MFormat) == TRUE)
+      for (T.T in Traits.testing) {
+        Traits_Selec <- which(grepl(T.T, Names_MFormat) == TRUE)
         Traits_Selec_F <- c(Traits_Selec_F,Traits_Selec)
       }
 
