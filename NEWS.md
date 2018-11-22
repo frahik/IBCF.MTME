@@ -1,3 +1,10 @@
+IBCF.MTME v1.5 (Release date: 2018-11-22)
+==============
+
+* Fixed issue with the predictions in the pm$Data.Obs_Pred output.
+* Fixed issue with the Cross-validation with two or more traits to use as testing.
+
+
 IBCF.MTME v1.4 (Release date: 2018-10-22)
 ==============
 
