@@ -52,12 +52,10 @@ output: github_document
 <h2 id="news">
   News of this version (`r packageVersion('IBCF.MTME')`)
 </h2>
-  * `MSEP` was changed to `MAAPE`.
-  * `print` function was added.
-  * `ORCID` was added to the authors of the package.
-  * `IBCF.Years()` now has `colID` parameter to select the identifiers of the observations.
-  * Fixed a bug caused by the sequence in a for cycle.
-  
+
+ * Fixed issue [2] with the predictions in the pm$Data.Obs_Pred output, thanks to @melissa-garcia to report it.
+ * Fixed issue with the Cross-validation with two or more traits to use as testing.
+
 
 See the last updates in [NEWS](NEWS.md).
 
@@ -85,7 +83,7 @@ devtools::install_github('frahik/IBCF.MTME')
 If you want to use the stable version of `IBCF.MTME` package, install it from CRAN.
 
 ```{r, eval=FALSE}
-install.packages('BGGE')
+install.packages('IBCF.MTME')
 ```
 
 <h3 id="package">
@@ -141,9 +139,23 @@ pm <- IBCF(CrossV)
   Show some results
 </h4>
 
+All the predictive model printed output:
+
 ```{r}
-summary(pm)
+pm
 ```
+
+Predictions and observed data in tidy format
+```{r}
+head(pm$predictions_Summary, 6)
+```
+
+Predictions and observed data in matrix format
+```{r}
+head(pm$Data.Obs_Pred, 5)
+```
+
+Some plots
 
 ```{r}
 par(mai = c(2, 1, 1, 1))

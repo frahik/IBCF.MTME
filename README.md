@@ -14,7 +14,7 @@ Development version 1.4.2.
 
 <h4 align="center">
 
-\[Last README update: 2018-11-13\]
+\[Last README update: 2018-11-22\]
 
 </h4>
 
@@ -67,12 +67,10 @@ News of this version (1.4.2)
 
 </h2>
 
-  - `MSEP` was changed to `MAAPE`.
-  - `print` function was added.
-  - `ORCID` was added to the authors of the package.
-  - `IBCF.Years()` now has `colID` parameter to select the identifiers
-    of the observations.
-  - Fixed a bug caused by the sequence in a for cycle.
+  - Fixed issue \[2\] with the predictions in the pm$Data.Obs\_Pred
+    output, thanks to @melissa-garcia to report it.
+  - Fixed issue with the Cross-validation with two or more traits to use
+    as testing.
 
 See the last updates in [NEWS](NEWS.md).
 
@@ -107,7 +105,7 @@ If you want to use the stable version of `IBCF.MTME` package, install it
 from CRAN.
 
 ``` r
-install.packages('BGGE')
+install.packages('IBCF.MTME')
 ```
 
 <h3 id="package">
@@ -186,28 +184,78 @@ Show some results
 
 </h4>
 
+All the predictive model printed output:
+
 ``` r
-summary(pm)
+pm
 ```
 
-    ##   Environment Trait Pearson SE_Pearson  MAAPE SE_MAAPE
-    ## 1        Env1       -0.1307     0.0243 0.9312   0.0114
-    ## 2        Env2        0.6859     0.0097 0.6737   0.0119
-    ## 3        Env3        0.6116     0.0173 0.6823   0.0068
-    ## 4        Env4        0.3068     0.0270 0.7623   0.0112
+    ## Item Based Collaborative Filtering Model: 
+    ##  Fitted with  10  random partitions
+    ##  Runtime:  18.25  seconds 
+    ## 
+    ##  Some predicted values: 
+    ##  [1]  -0.9554  -0.2731  -0.5007  -0.0909  -0.0501  -0.2599  -0.3494
+    ##  [8]   0.0913  -0.0215  -0.4023  -0.8106   0.5702   0.4918  -1.5810
+    ## [15]  -0.1540  -0.8060  -0.6665  -0.0671  -0.1934  -0.3210
+    ## 
+    ## Predictive capacity of the model: 
+    ##    Environment  Trait  Pearson  SE_Pearson  MAAPE  SE_MAAPE
+    ## 1         Env1          -0.131       0.024  0.931     0.011
+    ## 2         Env2           0.686       0.010  0.674     0.012
+    ## 3         Env3           0.612       0.017  0.682     0.007
+    ## 4         Env4           0.307       0.027  0.762     0.011
+    ## 
+    ##  Use str() function to found more datailed information.
+
+Predictions and observed data in tidy format
+
+``` r
+head(pm$predictions_Summary, 6)
+```
+
+    ##   Position Partition Environment Trait Observed Predicted
+    ## 1        1         1        Env1         1.6716   -0.9554
+    ## 2       14         1        Env1         0.3160   -0.2731
+    ## 3       25         1        Env1        -1.1272   -0.5007
+    ## 4       26         1        Env1        -0.4852   -0.0909
+    ## 5       28         1        Env1         2.5940   -0.0501
+    ## 6       30         1        Env1        -0.5190   -0.2599
+
+Predictions and observed data in matrix
+    format
+
+``` r
+head(pm$Data.Obs_Pred, 5)
+```
+
+    ##   ID   X_Env1.1    X_Env2.1   X_Env3.1   X_Env4.1     X_Env1     X_Env2
+    ## 1  1  1.6716295 -1.72746986 -1.8902848  0.0509159 -0.9894943 -0.8744692
+    ## 2  2 -0.2527028  0.40952243  0.3093855 -1.7387588 -0.5478389 -0.4165869
+    ## 3  3  0.3418151 -0.64862633 -0.7995592 -1.0535691 -0.8596543 -0.6766007
+    ## 4  4  0.7854395  0.09394919  0.5704677  0.5517574  0.4040118  0.5769577
+    ## 5  5  0.9983176 -0.28248062  1.6186819 -0.1142848  0.3243855  1.0403187
+    ##         X_Env3     X_Env4
+    ## 1 -0.635018256 -0.5894103
+    ## 2 -0.370835578  0.1360170
+    ## 3          NaN -0.3162934
+    ## 4  0.347986885  0.5066996
+    ## 5  0.001053535  0.7813698
+
+Some plots
 
 ``` r
 par(mai = c(2, 1, 1, 1))
 plot(pm, select = 'Pearson')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 plot(pm, select = 'MAAPE')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
 <h3 id="example2">
 
@@ -292,13 +340,13 @@ par(mai = c(2, 1, 1, 1))
 barplot(pm, las = 2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 barplot(pm, select = 'MAAPE', las = 2)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
 
 <h4 id="load-data">
 
@@ -371,17 +419,16 @@ citation('IBCF.MTME')
     ##   Abelardo Montesinos-Lopez and Jose Crossa (2018). IBCF.MTME:
     ##   Item Based Collaborative Filtering for Multi-Trait and
     ##   Multi-Environment Data. R package version 1.4-2.
-    ##   https://CRAN.R-project.org/package=IBCF.MTME
+    ##   https://github.com/frahik/IBCF.MTME
     ## 
     ## A BibTeX entry for LaTeX users is
     ## 
     ##   @Manual{,
-    ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and
-    ## Multi-Environment Data},
+    ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data},
     ##     author = {Francisco Javier Luna-Vazquez and Osval Antonio Montesinos-Lopez and Abelardo Montesinos-Lopez and Jose Crossa},
     ##     year = {2018},
     ##     note = {R package version 1.4-2},
-    ##     url = {https://CRAN.R-project.org/package=IBCF.MTME},
+    ##     url = {https://github.com/frahik/IBCF.MTME},
     ##   }
 
 <h2 id="contributions">
