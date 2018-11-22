@@ -1,6 +1,7 @@
 Package: IBCF.MTME
 Title: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data
 Version: 1.5-1
+Language: en-US
 Date: 2018-11-22
 Authors@R: c(person("Francisco Javier", "Luna-Vazquez", email = "frahik@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-5370-7152")),
              person("Osval Antonio", "Montesinos-Lopez", email= "oamontes1@ucol.mx", role = "aut", comment = c(ORCID = "0000-0002-3973-6547")),
@@ -14,7 +15,7 @@ License: LGPL-3
 Encoding: UTF-8
 LazyData: true
 Type: Package
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 URL: https://github.com/frahik/IBCF.MTME
 BugReports: https://github.com/frahik/IBCF.MTME/issues/new
 NeedsCompilation: no
