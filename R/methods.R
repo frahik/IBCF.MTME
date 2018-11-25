@@ -12,8 +12,6 @@
 #'
 #' @export
 summary.IBCF <- function(object, information = 'compact', digits = 4, ...){
-  if (!inherits(object, "IBCF")) stop("This function only works for objects of class 'IBCF'")
-
   object$predictions_Summary %>%
     group_by(Environment, Trait, Partition) %>%
     summarise(Pearson = cor(Predicted, Observed, use = 'pairwise.complete.obs'),
@@ -56,8 +54,6 @@ summary.IBCF <- function(object, information = 'compact', digits = 4, ...){
 #'
 #' @export
 summary.IBCFY <- function(object, digits = 4, ...) {
-  if (!inherits(object, "IBCFY")) stop("This function only works for objects of class 'IBCFY'")
-
   object$predictions_Summary %>%
     group_by(Environment, Trait) %>%
     summarise(Pearson = cor(Predicted, Observed, use = 'pairwise.complete.obs'),
@@ -80,9 +76,6 @@ summary.IBCFY <- function(object, digits = 4, ...) {
 #' @importFrom graphics arrows axis plot
 #' @export
 plot.IBCF <- function(x, select = 'Pearson', ...){
-  ### Check that object is compatible
-  if (!inherits(x, "IBCF")) stop("This function only works for objects of class 'IBCF'")
-
   results <- summary(x)
   results[, select] <- results[order(results[, select]), select]
 
@@ -115,9 +108,6 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
 #' @importFrom graphics barplot
 #' @export
 barplot.IBCFY <- function(height, select = 'Pearson', ...){
-  ### Check that object is compatible
-  if (!inherits(height, "IBCFY")) stop("This function only works for objects of class 'IBCF'")
-
   results <- summary(height)
   vector <- as.numeric(paste(results[, select]))
   names(vector) <- results[, 1]
