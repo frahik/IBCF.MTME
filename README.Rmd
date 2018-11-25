@@ -15,20 +15,19 @@ output: github_document
   
   <p align="center">
   <a href="https://www.tidyverse.org/lifecycle/#maturing">
-    <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing">
-  </a> <a href="https://travis-ci.org/frahik/IBCF.MTME">
-    <img src="https://travis-ci.org/frahik/IBCF.MTME.svg?branch=master" alt="Travis build status">
-  </a> <a href="https://coveralls.io/r/frahik/IBCF.MTME?branch=master">
-    <img src="https://coveralls.io/repos/github/frahik/IBCF.MTME/badge.svg" alt="Coverage status">
-  </a> <a href="https://www.gnu.org/licenses/lgpl-3.0">
-    <img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0">
-  </a> <a href="http://www.repostatus.org/#active">
-    <img src="http://www.repostatus.org/badges/latest/active.svg" alt="Status of the Repo: Active">
-  </a> <a href="">
-    <img src="http://cranlogs.r-pkg.org/badges/IBCF.MTME" alt="Dowloads from the CRAN">
-  </a> <a href="https://cran.r-project.org/package=IBCF.MTME">
-    <img src="http://www.r-pkg.org/badges/version-ago/IBCF.MTME" alt="CRAN">
-  </a>
+    <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing"> </a>
+  <a href="https://travis-ci.org/frahik/IBCF.MTME">
+    <img src="https://travis-ci.org/frahik/IBCF.MTME.svg?branch=master" alt="Travis build status"> </a> 
+  <a href='https://coveralls.io/github/frahik/IBCF.MTME?branch=master'>
+    <img src='https://coveralls.io/repos/github/frahik/IBCF.MTME/badge.svg?branch=master' alt='Coverage Status' /> </a> 
+  <a href="https://www.gnu.org/licenses/lgpl-3.0">
+    <img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0"> </a> 
+  <a href="http://www.repostatus.org/#active">
+    <img src="http://www.repostatus.org/badges/latest/active.svg" alt="Status of the Repo: Active"> </a>
+  <a href="">
+    <img src="http://cranlogs.r-pkg.org/badges/IBCF.MTME" alt="Dowloads from the CRAN"> </a> 
+  <a href="https://cran.r-project.org/package=IBCF.MTME">
+    <img src="http://www.r-pkg.org/badges/version-ago/IBCF.MTME" alt="CRAN"> </a>
   </p>
 </p>
 
