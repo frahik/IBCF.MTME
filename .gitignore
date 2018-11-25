@@ -33,3 +33,5 @@ vignettes/*.pdf
 *.knit.md
 DataExample.RData
 .Rproj.user
+
+*.pdf
