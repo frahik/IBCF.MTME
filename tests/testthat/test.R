@@ -13,8 +13,13 @@ test_that('getMatrixForm and getTidyForm functions', {
   M.Y <- getMatrixForm(Year_IBCF, onlyTrait = T)
   Tidy.Y <- getTidyForm(M.Y, onlyTrait = T)
 
+  newData <- data.frame(GID = sample(1:100, 50), Response = rnorm(50))
+  M.noNames <- getMatrixForm(newData)
+
+
   expect_output(str(M), '250 obs. of  13 variables')
   expect_output(str(M.Y), '60 obs. of  14 variables')
+  expect_output(str(M.noNames), '50 obs. of  2 variable')
 
   expect_output(str(Tidy), '3000 obs. of  4 variables')
   expect_output(str(Tidy.Y), '720 obs. of  4 variables')
@@ -70,6 +75,10 @@ test_that('IBCF Test - With RP for 3 Envs, 4 Traits', {
 
   expect_false(any(is.null(pm$observed)))
   expect_length(pm$yHat, length(pm$observed))
+
+  expect_output(print(pm), 'Item Based Collaborative Filtering Model:')
+  expect_silent(plot(pm))
+  expect_silent(plot(pm, select = 'MAAPE'))
 })
 
 
@@ -162,6 +171,10 @@ test_that('IBCFY function', {
   expect_false(any(is.null(pm$predicted)))
   expect_false(any(is.null(pm$observed)))
   expect_length(pm$predicted, length(pm$observed))
+
+  expect_output(print(pm), 'Item Based Collaborative Filtering Model:')
+  expect_silent(barplot(pm))
+  expect_silent(barplot(pm, select = 'MAAPE'))
 })
 
 test_that('IBCFY function one Trait for test', {
