@@ -24,9 +24,9 @@ Development version 1.5.1.
 <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing">
 </a> <a href="https://travis-ci.org/frahik/IBCF.MTME">
 <img src="https://travis-ci.org/frahik/IBCF.MTME.svg?branch=master" alt="Travis build status">
-</a> <a href="https://ci.appveyor.com/project/frahik/IBCF.MTME">
-<img src="https://ci.appveyor.com/api/projects/status/github/frahik/IBCF.MTME?branch=master&svg=true" alt="AppVeyor build status">
-</a><a href="https://www.gnu.org/licenses/lgpl-3.0">
+</a> <a href="https://coveralls.io/r/frahik/IBCF.MTME?branch=master">
+<img src="https://coveralls.io/repos/github/frahik/IBCF.MTME/badge.svg" alt="Coverage status">
+</a> <a href="https://www.gnu.org/licenses/lgpl-3.0">
 <img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0">
 </a> <a href="http://www.repostatus.org/#active">
 <img src="http://www.repostatus.org/badges/latest/active.svg" alt="Status of the Repo: Active">
@@ -196,7 +196,7 @@ pm
 
     ## Item Based Collaborative Filtering Model: 
     ##  Fitted with  10  random partitions
-    ##  Runtime:  22.16  seconds 
+    ##  Runtime:  14.95  seconds 
     ## 
     ##  Some predicted values: 
     ##  [1]  -0.9554  -0.2731  -0.5007  -0.0909  -0.0501  -0.2599  -0.3494
