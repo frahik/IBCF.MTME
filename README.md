@@ -8,13 +8,13 @@
 
 **I**tem **B**ased **C**ollaborative **F**ilterign For
 **M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R -
-Development version 1.4.2.
+Development version 1.5.1.
 
 </h4>
 
 <h4 align="center">
 
-\[Last README update: 2018-11-22\]
+\[Last README update: 2018-11-24\]
 
 </h4>
 
@@ -22,7 +22,11 @@ Development version 1.4.2.
 
 <a href="https://www.tidyverse.org/lifecycle/#maturing">
 <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing">
-</a> <a href="https://www.gnu.org/licenses/lgpl-3.0">
+</a> <a href="https://travis-ci.org/frahik/IBCF.MTME">
+<img src="https://travis-ci.org/frahik/IBCF.MTME.svg?branch=master" alt="Travis build status">
+</a> <a href="https://ci.appveyor.com/project/frahik/IBCF.MTME">
+<img src="https://ci.appveyor.com/api/projects/status/github/frahik/IBCF.MTME?branch=master&svg=true" alt="AppVeyor build status">
+</a><a href="https://www.gnu.org/licenses/lgpl-3.0">
 <img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0">
 </a> <a href="http://www.repostatus.org/#active">
 <img src="http://www.repostatus.org/badges/latest/active.svg" alt="Status of the Repo: Active">
@@ -63,7 +67,7 @@ Development version 1.4.2.
 
 <h2 id="news">
 
-News of this version (1.4.2)
+News of this version (1.5.1)
 
 </h2>
 
@@ -192,7 +196,7 @@ pm
 
     ## Item Based Collaborative Filtering Model: 
     ##  Fitted with  10  random partitions
-    ##  Runtime:  18.25  seconds 
+    ##  Runtime:  22.16  seconds 
     ## 
     ##  Some predicted values: 
     ##  [1]  -0.9554  -0.2731  -0.5007  -0.0909  -0.0501  -0.2599  -0.3494
@@ -418,7 +422,7 @@ citation('IBCF.MTME')
     ##   Francisco Javier Luna-Vazquez, Osval Antonio Montesinos-Lopez,
     ##   Abelardo Montesinos-Lopez and Jose Crossa (2018). IBCF.MTME:
     ##   Item Based Collaborative Filtering for Multi-Trait and
-    ##   Multi-Environment Data. R package version 1.4-2.
+    ##   Multi-Environment Data. R package version 1.5-1.
     ##   https://github.com/frahik/IBCF.MTME
     ## 
     ## A BibTeX entry for LaTeX users is
@@ -427,7 +431,7 @@ citation('IBCF.MTME')
     ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data},
     ##     author = {Francisco Javier Luna-Vazquez and Osval Antonio Montesinos-Lopez and Abelardo Montesinos-Lopez and Jose Crossa},
     ##     year = {2018},
-    ##     note = {R package version 1.4-2},
+    ##     note = {R package version 1.5-1},
     ##     url = {https://github.com/frahik/IBCF.MTME},
     ##   }
 
