@@ -34,6 +34,7 @@ Imports:
   tidyr,
   dplyr
 Suggests:
-  testthat,
-  knitr,
-  rmarkdown
+    testthat,
+    knitr,
+    rmarkdown,
+    covr
