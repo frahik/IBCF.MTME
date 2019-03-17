@@ -18,7 +18,7 @@
 #' \dontrun{
 #'   library(IBCF.MTME)
 #'   data('Year_IBCF')
-#'   DataSet <- getMatrixForm(Year_IBCF, withYears = TRUE)
+#'   DataSet <- getMatrixForm(Year_IBCF, onlyTrait = TRUE)
 #'   IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
 #'
 #' }
@@ -26,42 +26,28 @@
 #' @export
 IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Traits.testing = '', dec = 4) {
   time.init <- proc.time()[3]
-  DataSet[, colYears] <- as.character(DataSet[, colYears]) #No factors admited
-  No.Years <- length(unique(DataSet[, colYears]))
-  No.Years.testing <- length(Years.testing)
-  No.Traits <- length(colnames(DataSet)) - 2
-  No.Traits.testing <- length(Traits.testing)
-  No.Traits.Accepted <- round(0.7*No.Traits)
-  colYears <- ifelse(is.numeric(colYears), colYears, which(names(DataSet) == colYears))
-  colID <- ifelse(is.numeric(colID), colID, which(names(DataSet) == colID))
+  Records <- validate.model(DataSet, colYears, colID, Years.testing, Traits.testing)
 
-  if (No.Years.testing == No.Years) {
-    stop("No.Years.testing must be less than No.Years in the whole data set") }
+  Years.tst <- which(Records$DataSet[, Records$colYears] %in% Years.testing)
+  Traits.tst <- which(colnames(Records$DataSet) %in% Traits.testing)
 
-  if (No.Traits.testing > No.Traits.Accepted) {
-    stop( "No.Traits.testing must be larger than No.Traits.Accepted in the whole data set")}
+  Data.trn <- Records$DataSet
+  Data.trn[Years.tst, Traits.tst] <- NA
 
-  pos.Years.testing <- which(DataSet[, colYears] %in% Years.testing)
+  rows.Na <- which(apply(Data.trn[, -c(Records$colYears, Records$colID)],1,function(x)any(is.na(x))) == TRUE)
 
-  pos.Traits.testing <- which(colnames(DataSet) %in% Traits.testing)
+  Means_trn <- apply(Data.trn[, -c(Records$colYears, Records$colID)], 2, mean, na.rm = TRUE)
+  SDs_trn <- apply(Data.trn[, -c(Records$colYears, Records$colID)], 2, sd, na.rm = TRUE)
 
-  Data.trn <- DataSet
-  Data.trn[pos.Years.testing, pos.Traits.testing] <- NA
-
-  rows.Na <- which(apply(Data.trn[, -c(colYears, colID)],1,function(x)any(is.na(x))) == TRUE)
-
-  Means_trn <- apply(Data.trn[, -c(colYears, colID)], 2, mean, na.rm = TRUE)
-  SDs_trn <- apply(Data.trn[, -c(colYears, colID)], 2, sd, na.rm = TRUE)
-
-  Scaled_Col <- scale(Data.trn[, -c(colYears, colID)])
+  Scaled_Col <- scale(Data.trn[, -c(Records$colYears, Records$colID)])
   Means_trn_Row <- apply(Scaled_Col, 1, mean, na.rm = TRUE)
   SDs_trn_Row <- apply(Scaled_Col, 1, sd, na.rm = TRUE)
 
   if (any(is.na(SDs_trn_Row))) {
-    Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, colID]), Scaled_Col)
+    Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, Records$colID]), Scaled_Col)
   } else {
     Scaled_Row <- t(scale(t(Scaled_Col)))
-    Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, colID]), Scaled_Row)
+    Data.trn_scaled <- data.frame(ID = as.character(Data.trn[, Records$colID]), Scaled_Row)
   }
 
   ratings <- within(Data.trn_scaled, rm('ID'))
@@ -70,7 +56,7 @@ IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Tra
   x[is.na(x)] <- 0
   item_sim <- lsa::cosine(as.matrix((x)))
 
-  Hyb.pred <- within(Data.trn_scaled, rm('ID'))
+  Hyb.pred <- ratings
 
   for (i in seq_len(length(rows.Na))) {
     pos <- rows.Na[i]
@@ -80,28 +66,26 @@ IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Tra
   All.Pred <- data.matrix(Hyb.pred)
 
   if (any(is.na(SDs_trn_Row))) {
-    ## cambiar por all.Pred solo si ocurre error
     All.Pred_O <- sapply(seq_len(ncol(All.Pred)), function(i) (All.Pred[,i]*SDs_trn[i] + Means_trn[i]))
   } else {
-    ## Si ocurre error, este se evita.
     All.Pred_O_Row <- t(sapply(seq_len(nrow(All.Pred)), function(i) (All.Pred[i,]*SDs_trn_Row[i] + Means_trn_Row[i])) )
     All.Pred_O <- sapply(seq_len(ncol(All.Pred_O_Row)), function(i) (All.Pred_O_Row[,i]*SDs_trn[i] + Means_trn[i]))
   }
 
-  All.Pred_O <- data.frame(DataSet[, c(colYears, colID)], All.Pred_O)
-    colnames(All.Pred_O) <- c(colnames(DataSet[, c(colYears, colID)]), colnames(Data.trn_scaled[, -1]))
+  All.Pred_O <- data.frame(Records$DataSet[, c(Records$colYears, Records$colID)], All.Pred_O)
+  colnames(All.Pred_O) <- c(colnames(Records$DataSet[, c(Records$colYears, Records$colID)]), colnames(Data.trn_scaled[, -1]))
 
-  Data.Obs <- getTidyForm(DataSet[, c(colYears, colID, pos.Traits.testing)], onlyTrait = TRUE)
-  Data.Pred <- getTidyForm(All.Pred_O[, c(colYears, colID, pos.Traits.testing)], onlyTrait = TRUE)
-  Data.Obs_Pred <- data.frame(DataSet[pos.Years.testing, c(colYears, colID, pos.Traits.testing)],
-                              All.Pred_O[pos.Years.testing, pos.Traits.testing])
-  colnames(Data.Obs_Pred) <- c(colnames(DataSet)[ c(colYears, colID, pos.Traits.testing)], paste0(colnames(All.Pred_O)[pos.Traits.testing],'.1'))
+  Data.Obs <- getTidyForm(Records$DataSet[Years.tst, c(Records$colYears, Records$colID, Traits.tst)], onlyTrait = TRUE)
+  Data.Pred <- getTidyForm(All.Pred_O[Years.tst, c(Records$colYears, Records$colID, Traits.tst)], onlyTrait = TRUE)
+  Data.Obs_Pred <- data.frame(Records$DataSet[Years.tst, c(Records$colYears, Records$colID, Traits.tst)],
+                              All.Pred_O[Years.tst, Traits.tst])
+  colnames(Data.Obs_Pred) <- c(colnames(Records$DataSet)[ c(Records$colYears, Records$colID, Traits.tst)], paste0(colnames(All.Pred_O)[Traits.tst],'.predicted'))
 
-  results <- data.frame(Position = pos.Years.testing,
-                        Environment = Data.Obs[pos.Years.testing, 1],
-                        Trait = Data.Obs$Trait[pos.Years.testing],
-                        Observed = round(Data.Obs$Response[pos.Years.testing],dec),
-                        Predicted = round(Data.Pred$Response[pos.Years.testing], dec))
+  results <- data.frame(Position = Years.tst,
+                        Environment = Data.Obs[, colYears],
+                        Trait = Data.Obs$Trait,
+                        Observed = round(Data.Obs$Response, dec),
+                        Predicted = round(Data.Pred$Response, dec))
 
   out <- list(Years.testing = Years.testing,
               Traits.testing = Traits.testing,
@@ -113,4 +97,37 @@ IBCF.Years <- function(DataSet, colYears = 1, colID = 2, Years.testing = '', Tra
   )
   class(out) <- 'IBCFY'
   return(out)
+}
+
+validate.model <- function(DataSet, colYears, colID, Years.testing, Traits.testing){
+  DataSet[, colYears] <- as.character(DataSet[, colYears]) #No factors admited
+  No.Years <- length(unique(DataSet[, colYears]))
+  No.Years.testing <- length(Years.testing)
+  No.Traits <- length(colnames(DataSet)) - 2
+  No.Traits.testing <- length(Traits.testing)
+  No.Traits.Accepted <- round(0.7*No.Traits)
+  colYears <- ifelse(is.numeric(colYears), colYears, which(names(DataSet) == colYears))
+  colID <- ifelse(is.numeric(colID), colID, which(names(DataSet) == colID))
+  colYears.tst <- ifelse(is.numeric(Years.testing), Years.testing, which(names(DataSet) == Years.testing))
+  colTraits.tst <- ifelse(is.numeric(Traits.testing), Traits.testing, which(names(DataSet) == Traits.testing))
+
+  if (No.Years.testing == No.Years) {
+    stop("No.Years.testing must be less than No.Years in the whole data set.") }
+
+  if (No.Traits.testing > No.Traits.Accepted) {
+    stop( "No.Traits.testing must be larger than No.Traits.Accepted in the whole data set.")}
+
+  if (colID == colYears) {
+    stop("colID shouldn't be colYears.")
+  }
+
+  if(colID %in% colTraits.tst){
+    stop("colID shouldn't be in Traits.testing")
+  }
+
+  if(colYears %in% colTraits.tst){
+    stop("colYears shouldn't be in Traits.testing")
+  }
+
+  return(list(DataSet = DataSet, colYears = colYears, colID = colID))
 }
