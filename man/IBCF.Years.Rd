@@ -34,7 +34,7 @@ Item Based Collaborative Filtering for Years data
 \dontrun{
   library(IBCF.MTME)
   data('Year_IBCF')
-  DataSet <- getMatrixForm(Year_IBCF, withYears = TRUE)
+  DataSet <- getMatrixForm(Year_IBCF, onlyTrait = TRUE)
   IBCF.Years(DataSet , Years.testing = c('2015', '2016'), Traits.testing = c('T5', 'T6'))
 
 }
