@@ -108,8 +108,7 @@ validate.model <- function(DataSet, colYears, colID, Years.testing, Traits.testi
   No.Traits.Accepted <- round(0.7*No.Traits)
   colYears <- ifelse(is.numeric(colYears), colYears, which(names(DataSet) == colYears))
   colID <- ifelse(is.numeric(colID), colID, which(names(DataSet) == colID))
-  colYears.tst <- ifelse(is.numeric(Years.testing), Years.testing, which(names(DataSet) == Years.testing))
-  colTraits.tst <- ifelse(is.numeric(Traits.testing), Traits.testing, which(names(DataSet) == Traits.testing))
+  colTraits.tst <- which(colnames(DataSet) %in% Traits.testing)
 
   if (No.Years.testing == No.Years) {
     stop("No.Years.testing must be less than No.Years in the whole data set.") }
