@@ -253,3 +253,13 @@ test_that('IBCFY function with Wheat_IBCF Training', {
   expect_false(any(summary(pm)$MAAPE>1))
 })
 
+test_that('IBCFY function ERR expectations',{
+  data('Wheat_IBCF')
+
+  DataSet <- getMatrixForm(Wheat_IBCF, onlyTrait = T)
+  expect_error(IBCF.Years(DataSet, colID = 1, colYears = 1, Years.testing = 'Drip', Traits.testing = c('DH','GY')))
+  expect_error(IBCF.Years(DataSet, colID = 1, colYears = 'Env', Years.testing = 'Drip', Traits.testing = c('DH','GY','NDVI','PH')))
+  expect_error(IBCF.Years(DataSet, colID = 1, colYears = 'Env', Years.testing = c('Drip','Bed2IR','Bed5IR'), Traits.testing = c('DH','GY')))
+  expect_error(IBCF.Years(DataSet, colID = 3, colYears = 'Env', Years.testing = 'Drip', Traits.testing = c('DH','GY')))
+  expect_error(IBCF.Years(DataSet, colID = 1, colYears = 3, Years.testing = 'Drip', Traits.testing = c('DH','GY')))
+})
