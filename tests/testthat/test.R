@@ -253,13 +253,21 @@ test_that('IBCFY function with Wheat_IBCF Training', {
   expect_false(any(summary(pm)$MAAPE>1))
 })
 
-test_that('IBCFY function ERR expectations',{
+test_that('function ERR expectations',{
   data('Wheat_IBCF')
 
   DataSet <- getMatrixForm(Wheat_IBCF, onlyTrait = T)
+
   expect_error(IBCF.Years(DataSet, colID = 1, colYears = 1, Years.testing = 'Drip', Traits.testing = c('DH','GY')))
   expect_error(IBCF.Years(DataSet, colID = 1, colYears = 'Env', Years.testing = 'Drip', Traits.testing = c('DH','GY','NDVI','PH')))
   expect_error(IBCF.Years(DataSet, colID = 1, colYears = 'Env', Years.testing = c('Drip','Bed2IR','Bed5IR'), Traits.testing = c('DH','GY')))
   expect_error(IBCF.Years(DataSet, colID = 3, colYears = 'Env', Years.testing = 'Drip', Traits.testing = c('DH','GY')))
   expect_error(IBCF.Years(DataSet, colID = 1, colYears = 3, Years.testing = 'Drip', Traits.testing = c('DH','GY')))
+
+
+  CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 1, PTesting = 0.25, Set_seed = 123)
+  CrossV$CrossValidation_list$p1[,] <- 1
+
+  expect_error(IBCF(DataSet, 4))
+  expect_error(IBCF(CrossV, 4))
 })
