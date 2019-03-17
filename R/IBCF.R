@@ -121,6 +121,7 @@ IBCF <- function(object, dec = 4) {
   }
   Y_avr <- Y_avr/Ind_all
   Yhat_Obs_pred <- data.frame(object$DataSet, Y_avr)
+  colnames(Yhat_Obs_pred) <- c(colnames(object$DataSet), paste0(colnames(Y_avr),'.predicted'))
 
   out <- list(NPartitions = NPartitions,
               predictions_Summary = results,
