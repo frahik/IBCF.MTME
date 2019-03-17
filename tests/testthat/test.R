@@ -58,7 +58,7 @@ test_that('Crossvalidation.RP function', {
 context('IBCF Test - With RPartition')
 test_that('IBCF Test - With RP for 3 Envs, 4 Traits', {
   data('Wheat_IBCF')
-  CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = 0.25, Set_seed = 123)
+  CrossV <- CV.RandomPart(Wheat_IBCF, NPartitions = 10, PTesting = 0.4, Set_seed = 123)
   pm <- IBCF(CrossV)
 
   expect_is(pm, 'IBCF')
@@ -72,6 +72,7 @@ test_that('IBCF Test - With RP for 3 Envs, 4 Traits', {
 
   expect_false(any(is.null(pm$predicted_Partition)))
   expect_output(str(pm$predicted_Partition), 'List of 10')
+  expect_equivalent(tail(summary(pm), 4), tail(summary(pm, 'extended'), 4)[,c(1,2,4,6,5,7)])
 
   expect_false(any(is.null(pm$observed)))
   expect_length(pm$yHat, length(pm$observed))
