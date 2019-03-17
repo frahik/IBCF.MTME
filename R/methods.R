@@ -8,7 +8,7 @@
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @importFrom stats cor
-#' @importFrom dplyr summarise group_by select '%>%' mutate_if funs
+#' @importFrom dplyr summarise group_by select '%>%' mutate_if funs n ungroup
 #'
 #' @export
 summary.IBCF <- function(object, information = 'compact', digits = 4, ...){
@@ -17,6 +17,7 @@ summary.IBCF <- function(object, information = 'compact', digits = 4, ...){
     summarise(Pearson = cor(Predicted, Observed, use = 'pairwise.complete.obs'),
               MAAPE = mean(atan(abs(Observed-Predicted)/abs(Observed)))) %>%
     select(Environment, Trait, Partition, Pearson, MAAPE) %>%
+    ungroup() %>%
     mutate_if(is.numeric, funs(round(., digits))) %>%
     as.data.frame() -> presum
 
@@ -24,6 +25,7 @@ summary.IBCF <- function(object, information = 'compact', digits = 4, ...){
     summarise(SE_MAAPE = sd(MAAPE, na.rm = TRUE)/sqrt(n()), MAAPE = mean(MAAPE, na.rm = TRUE),
               SE_Pearson = sd(Pearson, na.rm = TRUE)/sqrt(n()), Pearson = mean(Pearson, na.rm = TRUE))  %>%
     select(Environment, Trait, Pearson, SE_Pearson, MAAPE, SE_MAAPE) %>%
+    ungroup() %>%
     mutate_if(is.numeric, funs(round(., digits))) %>%
     as.data.frame() -> finalSum
 
@@ -50,7 +52,7 @@ summary.IBCF <- function(object, information = 'compact', digits = 4, ...){
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @importFrom stats cor
-#' @importFrom dplyr summarise group_by select '%>%' mutate_if funs
+#' @importFrom dplyr summarise group_by select '%>%' mutate_if funs n ungroup
 #'
 #' @export
 summary.IBCFY <- function(object, digits = 4, ...) {
@@ -59,6 +61,7 @@ summary.IBCFY <- function(object, digits = 4, ...) {
     summarise(Pearson = cor(Predicted, Observed, use = 'pairwise.complete.obs'),
               MAAPE = mean(atan(abs(Observed-Predicted)/abs(Observed)))) %>%
     select(Environment, Trait, Pearson, MAAPE) %>%
+    ungroup() %>%
     mutate_if(is.numeric, funs(round(., digits))) %>%
     as.data.frame() -> out
 
@@ -140,7 +143,7 @@ print.IBCF <- function(x, ...){
 
   cat('\nPredictive capacity of the model: \n')
 
-  print.data.frame(summary(x, 'compact', digits = 3), print.gap = 2L, quote = FALSE)
+  print.data.frame(head(summary(x, 'compact', digits = 3)), print.gap = 2L, quote = FALSE)
 
   cat('\n Use str() function to found more datailed information.')
   invisible(x)
@@ -166,7 +169,7 @@ print.IBCFY <- function(x, ...){
 
   cat('\nPredictive capacity of the model: \n')
 
-  print.data.frame(summary(x, 'compact', digits = 3), print.gap = 2L, quote = FALSE)
+  print.data.frame(head(summary(x, 'compact', digits = 3)), print.gap = 2L, quote = FALSE)
 
   cat('\n Use str() function to found more datailed information.')
   invisible(x)
