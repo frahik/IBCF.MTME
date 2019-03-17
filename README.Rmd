@@ -56,9 +56,8 @@ output: github_document
   News of this version (`r packageVersion('IBCF.MTME')`)
 </h2>
 
- * Fixed issue [2] with the predictions in the pm$Data.Obs_Pred output, thanks to @melissa-garcia to report it.
- * Fixed issue with the Cross-validation with two or more traits to use as testing.
-
+* Fixed important issue with the predictions output.
+* Fixed compatibility with dplyr 0.8.
 
 See the last updates in [NEWS](NEWS.md).
 

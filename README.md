@@ -8,13 +8,13 @@
 
 **I**tem **B**ased **C**ollaborative **F**ilterign For
 **M**ulti-**T**rait and **M**ulti-**E**nvironment Data in R -
-Development version 1.5.1.
+Development version 1.6.0.
 
 </h4>
 
 <h4 align="center">
 
-\[Last README update: 2018-11-24\]
+\[Last README update: 2019-03-17\]
 
 </h4>
 
@@ -68,14 +68,12 @@ Development version 1.5.1.
 
 <h2 id="news">
 
-News of this version (1.5.1)
+News of this version (1.6.0)
 
 </h2>
 
-  - Fixed issue \[2\] with the predictions in the pm$Data.Obs\_Pred
-    output, thanks to @melissa-garcia to report it.
-  - Fixed issue with the Cross-validation with two or more traits to use
-    as testing.
+  - Fixed important issue with the predictions output.
+  - Fixed compatibility with dplyr 0.8.
 
 See the last updates in [NEWS](NEWS.md).
 
@@ -197,7 +195,7 @@ pm
 
     ## Item Based Collaborative Filtering Model: 
     ##  Fitted with  10  random partitions
-    ##  Runtime:  14.47  seconds 
+    ##  Runtime:  12.355  seconds 
     ## 
     ##  Some predicted values: 
     ##  [1]  -0.9554  -0.2731  -0.5007  -0.0909  -0.0501  -0.2599  -0.3494
@@ -234,18 +232,18 @@ Predictions and observed data in matrix
 head(pm$Data.Obs_Pred, 5)
 ```
 
-    ##   ID   X_Env1.1    X_Env2.1   X_Env3.1   X_Env4.1     X_Env1     X_Env2
-    ## 1  1  1.6716295 -1.72746986 -1.8902848  0.0509159 -0.9894943 -0.8744692
-    ## 2  2 -0.2527028  0.40952243  0.3093855 -1.7387588 -0.5478389 -0.4165869
-    ## 3  3  0.3418151 -0.64862633 -0.7995592 -1.0535691 -0.8596543 -0.6766007
-    ## 4  4  0.7854395  0.09394919  0.5704677  0.5517574  0.4040118  0.5769577
-    ## 5  5  0.9983176 -0.28248062  1.6186819 -0.1142848  0.3243855  1.0403187
-    ##         X_Env3     X_Env4
-    ## 1 -0.635018256 -0.5894103
-    ## 2 -0.370835578  0.1360170
-    ## 3          NaN -0.3162934
-    ## 4  0.347986885  0.5066996
-    ## 5  0.001053535  0.7813698
+    ##   ID      _Env1       _Env2      _Env3      _Env4 X_Env1.predicted
+    ## 1  1  1.6716295 -1.72746986 -1.8902848  0.0509159       -0.9894943
+    ## 2  2 -0.2527028  0.40952243  0.3093855 -1.7387588       -0.5478389
+    ## 3  3  0.3418151 -0.64862633 -0.7995592 -1.0535691       -0.8596543
+    ## 4  4  0.7854395  0.09394919  0.5704677  0.5517574        0.4040118
+    ## 5  5  0.9983176 -0.28248062  1.6186819 -0.1142848        0.3243855
+    ##   X_Env2.predicted X_Env3.predicted X_Env4.predicted
+    ## 1       -0.8744692     -0.635018256       -0.5894103
+    ## 2       -0.4165869     -0.370835578        0.1360170
+    ## 3       -0.6766007              NaN       -0.3162934
+    ## 4        0.5769577      0.347986885        0.5066996
+    ## 5        1.0403187      0.001053535        0.7813698
 
 Some plots
 
@@ -335,10 +333,22 @@ Show some results
 summary(pm)
 ```
 
-    ##   Environment  Trait Pearson  MAAPE
-    ## 1        2014 Trait1  0.7549 0.0409
-    ## 2        2015 Trait1  0.8432 0.0277
-    ## 3        2016 Trait1  0.7690 0.0343
+    ##    Environment  Trait Pearson  MAAPE
+    ## 1         2014 Trait1  0.7549 0.0409
+    ## 2         2014 Trait2  0.1562 0.0473
+    ## 3         2014 Trait3  0.6130 0.0353
+    ## 4         2014 Trait4  0.5208 0.0447
+    ## 5         2014 Trait5  0.7587 0.0240
+    ## 6         2015 Trait1  0.8432 0.0277
+    ## 7         2015 Trait2  0.6792 0.0371
+    ## 8         2015 Trait3  0.7944 0.0327
+    ## 9         2015 Trait4  0.7394 0.0384
+    ## 10        2015 Trait5  0.7651 0.0298
+    ## 11        2016 Trait1  0.7690 0.0343
+    ## 12        2016 Trait2  0.7753 0.0286
+    ## 13        2016 Trait3  0.6763 0.0369
+    ## 14        2016 Trait4  0.8157 0.0325
+    ## 15        2016 Trait5  0.8533 0.0250
 
 ``` r
 par(mai = c(2, 1, 1, 1))
@@ -421,9 +431,9 @@ citation('IBCF.MTME')
     ## To cite package 'IBCF.MTME' in publications use:
     ## 
     ##   Francisco Javier Luna-Vazquez, Osval Antonio Montesinos-Lopez,
-    ##   Abelardo Montesinos-Lopez and Jose Crossa (2018). IBCF.MTME:
+    ##   Abelardo Montesinos-Lopez and Jose Crossa (2019). IBCF.MTME:
     ##   Item Based Collaborative Filtering for Multi-Trait and
-    ##   Multi-Environment Data. R package version 1.5-1.
+    ##   Multi-Environment Data. R package version 1.6-0.
     ##   https://github.com/frahik/IBCF.MTME
     ## 
     ## A BibTeX entry for LaTeX users is
@@ -431,8 +441,8 @@ citation('IBCF.MTME')
     ##   @Manual{,
     ##     title = {IBCF.MTME: Item Based Collaborative Filtering for Multi-Trait and Multi-Environment Data},
     ##     author = {Francisco Javier Luna-Vazquez and Osval Antonio Montesinos-Lopez and Abelardo Montesinos-Lopez and Jose Crossa},
-    ##     year = {2018},
-    ##     note = {R package version 1.5-1},
+    ##     year = {2019},
+    ##     note = {R package version 1.6-0},
     ##     url = {https://github.com/frahik/IBCF.MTME},
     ##   }
 
