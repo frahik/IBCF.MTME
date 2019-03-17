@@ -80,7 +80,7 @@ summary.IBCFY <- function(object, digits = 4, ...) {
 #' @export
 plot.IBCF <- function(x, select = 'Pearson', ...){
   results <- summary(x)
-  results[, select] <- results[order(results[, select]), select]
+  results <- results[order(results[, select]), ]
 
   if (select == "Pearson") {
     results$SE <- results$SE_Pearson * 1.96
@@ -90,12 +90,12 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
     ylab <- select
   }
 
-  x.labels <- paste0(results$Trait, '_', results$Env)
-  plot.x <- seq_len(length(x.labels))
+  results$TxE <- paste0(results$Trait, '_', results$Env)
+  plot.x <- seq_len(length(results$TxE))
 
   plot(plot.x, results[, select], ylim = range(c(results[, select] - results$SE, results[, select] + results$SE)),
-      type = 'p', ylab = ylab, xlab = '', xaxt = "n", ...)
-  axis(1, at = plot.x, labels = x.labels, las = 2)
+      type = 'p', ylab = ylab, xlab = '', xaxt = "n")
+  axis(1, at = plot.x, labels = results$TxE, las = 2)
   arrows(plot.x, results[, select] - results$SE, plot.x, results[, select] + results$SE, code = 3, length = 0.02, angle = 90)
 }
 
