@@ -58,6 +58,7 @@ output: github_document
 
 * Fixed important issue with the predictions output.
 * Fixed compatibility with dplyr 0.8.
+* Fixed barplot function.
 
 See the last updates in [NEWS](NEWS.md).
 

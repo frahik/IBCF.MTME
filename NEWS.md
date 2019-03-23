@@ -3,6 +3,7 @@ IBCF.MTME v1.6 (Release data: 2019-03-17)
 
 * Fixed important issue with the predictions output.
 * Fixed compatibility with dplyr 0.8.
+* Fixed barplot function.
 
 IBCF.MTME v1.5 (Release date: 2018-11-22)
 ==============

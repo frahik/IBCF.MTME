@@ -14,7 +14,7 @@ Development version 1.6.0.
 
 <h4 align="center">
 
-\[Last README update: 2019-03-17\]
+\[Last README update: 2019-03-22\]
 
 </h4>
 
@@ -74,6 +74,7 @@ News of this version (1.6.0)
 
   - Fixed important issue with the predictions output.
   - Fixed compatibility with dplyr 0.8.
+  - Fixed barplot function.
 
 See the last updates in [NEWS](NEWS.md).
 
@@ -195,7 +196,7 @@ pm
 
     ## Item Based Collaborative Filtering Model: 
     ##  Fitted with  10  random partitions
-    ##  Runtime:  12.355  seconds 
+    ##  Runtime:  12.408  seconds 
     ## 
     ##  Some predicted values: 
     ##  [1]  -0.9554  -0.2731  -0.5007  -0.0909  -0.0501  -0.2599  -0.3494
