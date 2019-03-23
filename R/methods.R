@@ -113,7 +113,7 @@ plot.IBCF <- function(x, select = 'Pearson', ...){
 barplot.IBCFY <- function(height, select = 'Pearson', ...){
   results <- summary(height)
   vector <- as.numeric(paste(results[, select]))
-  names(vector) <- results[, 1]
+  names(vector) <- paste0(results[, 2], '_', results[, 1])
   vector <- vector[order(vector)]
 
   if (select == 'Pearson')
