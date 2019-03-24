@@ -24,8 +24,9 @@ Development version 1.6.0.
 <img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Maturing">
 </a> <a href="https://travis-ci.org/frahik/IBCF.MTME">
 <img src="https://travis-ci.org/frahik/IBCF.MTME.svg?branch=master" alt="Travis build status">
-</a>
-<a href='https://coveralls.io/github/frahik/IBCF.MTME?branch=master'>
+</a> <a href="https://ci.appveyor.com/project/frahik/ibcf-mtme">
+<img src="https://ci.appveyor.com/api/projects/status/xvfx0ch4vbyko1fs?svg=true" alt="Appveyor build status">
+</a> <a href='https://coveralls.io/github/frahik/IBCF.MTME?branch=master'>
 <img src='https://coveralls.io/repos/github/frahik/IBCF.MTME/badge.svg?branch=master' alt='Coverage Status' />
 </a> <a href="https://www.gnu.org/licenses/lgpl-3.0">
 <img src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" alt="LGPL, Version 3.0">
